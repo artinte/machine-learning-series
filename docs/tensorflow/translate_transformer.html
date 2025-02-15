@@ -413,11 +413,14 @@ print(sample_gsa(pt_emb).shape)</code></pre>
             <pre><samp>(64, 64, 512)
 (64, 64, 512)</samp></pre>
             <p>我们可以像下图这样绘制：</p>
-            <img src="res/global_self_attention.png" alt="全局自注意力" width="600">
+            <img src="res/global_self_attention.png" alt="全局自注意力" width="400">
             <p>为了简单期间，残差层被忽略。下图绘制更加紧凑，并且同样精确：</p>
             <img src="res/self_attention_new.png" alt="全局自注意力" width="600">
 
             <h4>7.4.5.6 因果自注意力层</h4>
+            <p>对于输出序列，该层的作用与全局自注意力层类似：</p>
+            <img src="res/causal_self_attention.png" alt="因果自注意力层" width="400">
+            <p>Transformer 是一种自回归模型：它们一次生成一个标记文本，并将该输出反馈给输入。为了提高效率，这些模型确保每个序列元素的输出仅取决于前一个序列元素。</p>
             <h4>7.4.5.7 前馈网络</h4>
             <h4>7.4.5.8 编码器层</h4>
             <h4>7.4.5.9 编码器</h4>
