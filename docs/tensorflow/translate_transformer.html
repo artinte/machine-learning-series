@@ -366,6 +366,29 @@ print(result)</code></pre>
             <p>并不直接使用输入向量，在使用之前，<code>layers.MultiHeadAttention</code> 包含一个 <code>layers.Dense</code> 层将输入向量进行 <em>投影 (Project)</em> 。</p>
 
             <h4>7.4.5.4 交叉注意力层</h4>
+            <p>Transformer 的核心是交叉注意力层， 该层连接编码器和解码器。该层是模型中最直接使用注意力的层，它执行的任务与 <a href="translate_seq2seq.html">第 7.3 小节 Seq2Seq 翻译</a> 中的注意力模块相同。</p>
+            <img src="res/cross_attention.png" alt="交叉注意力" width="400">
+            <p>为了实现这一点，当调用 <code>mha</code> 层时，你将目标序列 <em>x</em> 作为 <em>query</em> ，<em>context</em> 序列作为 <em>key/value</em> 。</p>
+            <pre><code>class CrossAttention(BaseAttention):
+    def call(self, x, context):
+        attn_output, attn_scores = self.mha(query=x,
+                                            key=context,
+                                            value=context,
+                                            return_attention_scores=True)
+        # Cache the attention scores for plotting later.
+        self.last_attn_scores = attn_scores
+        x = self.add([x, attn_output])
+        x = self.layernorm(x)
+        return x</code></pre>
+            <pre><code>sample_ca = CrossAttention(num_heads=2, key_dim=512)
+
+print(pt_emb.shape)
+print(en_emb.shape)
+print(sample_ca(en_emb, pt_emb).shape)</code></pre>
+            <pre><samp>(64, 64, 512)
+(64, 59, 512)
+(64, 59, 512)</samp></pre>
+
             <h4>7.4.5.5 全局自注意力层</h4>
             <h4>7.4.5.6 因果自注意力层</h4>
             <h4>7.4.5.7 前馈网络</h4>

@@ -385,7 +385,7 @@ if __name__ == '__main__':
     print(result)
 
     sample_ca = CrossAttention(num_heads=2, key_dim=512)
-
+    print('> Cross attention:')
     print(pt_emb.shape)
     print(en_emb.shape)
     print(sample_ca(en_emb, pt_emb).shape)
