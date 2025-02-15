@@ -189,7 +189,7 @@ pyplot.show()</code></pre>
                 <li><p>将它们进行标记化；</p></li>
                 <li><p>最大长度不超过 <code>MAX_TOKENS</code> ；</p></li>
                 <li><p>将目标拆分为输入和标签。这些标记回移动一步，这样每个输入位置的标签是下一个预测的标记；</p></li>
-                <li><p>将 <code>RaggedTensor</code> 转换为填充的密集 <code>Tensor</code></p> 。</li>
+                <li><p>将 <code>RaggedTensor</code> 转换为填充的密集 <code>Tensor</code> 。</p></li>
                 <li>返回 <code>(inputs, labels)</code> 文本对。</li>
             </ol>
             <pre><code>    def prepare_batch(pt, en):
@@ -235,7 +235,7 @@ print(en.shape)
 print(en_labels.shape)
 print(en[0][:10])
 print(en_labels[0][:10])</code></pre>
-            <p><code>en</code> 和 <em>em_labels</em> 是相同的，只是移动了一位：</p>
+            <p><code>en</code> 和 <code>em_labels</code> 是相同的，只是移动了一位：</p>
             <pre><samp>(64, 64)
 (64, 59)
 (64, 59)
@@ -261,20 +261,110 @@ tf.Tensor([  76  144  162  317   77 5461   72  155  395   13], shape=(10,), dtyp
 
             <h4>7.4.5.1 嵌入和位置编码</h4>
 
-            <p>编码器和解码器的输入使用相同的嵌入和位置编码逻辑。</p>
+            <p>编码器和解码器的输入使用相同的嵌入和位置编码逻辑：</p>
+            <img src="res/pos_embed.png" alt="嵌入和位置编码" width="600">
             <p>给定一个标记序列，输入标记（葡萄牙语）和目标标记（英语）都必须使用一个层转换为 <code>keras.layers.Embedding</code> 向量。</p>
-            <p>整个模型中使用的注意力层将其输入市委一组无序的向量。由于模型不包含任何循环层或者卷积层。它需要某种方法来识别词序，否则它会将输入序列市委一个词语背包，例如 <em>how are you</em> 等它是无法区分 <em>how you are</em> 和 <em>you how are</em> 的，</p>
-            <p>Transformer 为嵌入向量添加了位置编码。它使用一组不同频率的正弦和余弦（跨序列）。根据定义，附近的元素将具有相似的位置编码。</p>
+
+            <p>整个模型中使用的注意力层将其输入视为一组无序的向量。由于模型不包含任何循环层或者卷积层。它需要某种方法来识别词序，否则它会将输入序列视为一个词语背包，例如 <em>how are you</em> ，<em>how you are</em> 和 <em>you how are</em> ，它是无法区分的。</p>
+            <p>Transformer 为嵌入向量添加了 <strong>位置编码 (Positional Encoding)</strong> 。它使用一组不同频率的正弦和余弦（跨序列）。根据定义，附近的元素将具有相似的位置编码。</p>
             <p>原始论文采用以下公式来计算位置编码：</p>
+            <p class="highlight-math" style="text-align: center;">
+                \(PE_{(pos, 2i)} = sin(pos/10000^{2i/d_{model}})\)
+            </p>
+            <p class="highlight-math" style="text-align: center;">
+                \(PE_{(pos, 2i+1)} = cos(pos/10000^{2i/d_{model}})\)
+            </p>
+            <p class="comment">下面的代码实现了它，但不是交错的正弦和余弦，而是简单地连接正弦和余弦向量。在功能上是等效的，而且更容易实现，并在下面的图中显示。</p>
+            <pre><code>def positional_encoding(length, depth):
+    depth = depth / 2
 
-            <p>位置编码函数是一堆正弦和余弦，它们根据沿嵌入向量深度的位置以不同的频率振动，</p>
+    positions = numpy.arange(length)[:, numpy.newaxis]  # (seq, 1)
+    depths = numpy.arange(depth)[numpy.newaxis, :] / depth # (1, depth)
 
-            <h4>7.4.5.2 添加并规范化</h4>
+    angle_rates = 1 / (10000**depths)   # (1, depth)
+    angle_rads = positions * angle_rates # (pos, depth)
+
+    pos_encoding = numpy.concatenate(
+        [numpy.sin(angle_rads), numpy.cos(angle_rads)],
+        axis=-1)
+    return tf.cast(pos_encoding, dtype=tf.float32)</code></pre>
+            <p>位置编码函数是一堆正弦和余弦，它们根据沿嵌入向量，根据不同的位置深度，以不同的频率振动。</p>
+            <pre><code>pos_encoding = positional_encoding(length=2048, depth=512)
+# Check the shape.
+print(pos_encoding.shape)
+
+# Plot the dimensions.
+pyplot.pcolormesh(pos_encoding.numpy().T, cmap='RdBu')
+pyplot.ylabel('Depth')
+pyplot.xlabel('Position')
+pyplot.colorbar()
+pyplot.show()</code></pre>
+
+            <p>使用它来创建一个 <code>PositionEmbedding</code> 层，查找嵌入向量的标记，将它和位置向量进行相加：</p>
+            <pre><code>class PositionalEmbedding(keras.layers.Layer):
+    def __init__(self, vocab_size, d_model):
+        super().__init__()
+        self.d_model = d_model
+        self.embedding = keras.layers.Embedding(vocab_size, d_model, mask_zero=True)
+        self.pos_encoding = positional_encoding(length=2048, depth=d_model)
+    
+    def compute_mask(self, *args, **kwargs):
+        return self.embedding.compute_mask(*args, **kwargs)
+    
+    def call(self, x):
+        length = tf.shape(x)[1]
+        x = self.embedding(x)
+        # This factor sets the relative savel of the embedding and position_encoding.
+        x *= tf.math.sqrt(tf.cast(self.d_model, tf.float32))
+        x = x + self.pos_encoding[tf.newaxis, :length, :]
+        return x</code></pre>
+            <p class="comment">注：原始论文中对源语言和目标语言都使用单个标记器和权重矩阵。本教程使用两个单独的标记器和权重矩阵。</p>
+            <pre><code>embed_pt = PositionalEmbedding(vocab_size=tokenizers.pt.get_vocab_size().numpy(), d_model=512)
+embed_en = PositionalEmbedding(vocab_size=tokenizers.en.get_vocab_size().numpy(), d_model=512)
+
+pt_emb = embed_pt(pt)
+en_emb = embed_en(en)</code></pre>
+            <img src="res/add_norm.png" alt="相加并归一化" width="600">
+
+            <h4>7.4.5.2 相加并规范化</h4>
+            <p>这些 "Add & Norm" 块分散在整个模型中，每个块都加入一个残差连接，通过 <code>LayerNormalization</code> 进行归一化：</p>
+            <p>包含残差块可以提升训练效率，残差连接为梯度提供了直接路径（并确保向量由注意层更新而不是替换），而规范化则为输出保持合理的比例。</p>
+            <p class="comment">下面的实现，使用 <code>Add</code> 层确保 Keras 掩码可以被传播（ + 符号不会）。</p>
+
             <h4>7.4.5.3 基础注意力层</h4>
 
-            <p>整个模型都使用了注意力层，除了注意力的配置方式外，这些层都是相同的。每个层都包含一个 <code>layers.MultiHeadAttention</code> 、一个 <code>layers.LayerNormalization</code> 和一个 <code>layers.Add</code> 。</p>
+            <p>整个模型都使用了注意力层，除了注意力的配置方式外，它们都是相同的。每个层都包含一个 <code>layers.MultiHeadAttention</code> 、一个 <code>layers.LayerNormalization</code> 和一个 <code>layers.Add</code> 。</p>
+            <img src="res/base_attention.png" alt="注意力层" width="400">
 
-            <p>要实现这些注意层，请从仅包含组件层的简单基类开始。每个用例都将作为子类实现。这样编写的代码会多一点，但意图却很明确。</p>
+            <p>要实现这些注意层，请从仅包含组件层的简单基类开始。每个用例都将作为子类实现。这样编写的代码会多一点，但意图却很明确：</p>
+            <pre><code>class BaseAttention(keras.layers.Layer):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.mha = keras.layers.MultiHeadAttention(**kwargs)
+        self.layernorm = keras.layers.LayerNormalization()
+        self.add = keras.layers.Add()</code></pre>
+            <p>在了解每种用法的具体细节之前，先快速回顾一下注意力的工作原理：</p>
+            <img src="res/basic_attention_theory.png" alt="注意力基本原理" width="400">
+            <p>有两个输入：</p>
+            <ol>
+                <li><p><strong>查询 (Query)</strong> 序列（底部）；</p></li>
+                <li><p>上下文序列（左边）。</p></li>
+            </ol>
+            <p>输出和查询序列有相同的维度，可以将此操作与模糊的、可微的、矢量化的字典查找做比较，下面是一个常规的 Python 字典，其中有 3 个键和 3 个值，通过单个查询传递：</p>
+            <pre><code>d = {'color': 'blue', 'age': 22, 'type': 'pickup'}
+result = d['color']
+print(result)</code></pre>
+            <ul>
+                <li><p><strong>query</strong> 就是我们正在寻找的；</p></li>
+                <li><p><strong>key</strong> 就是字典里信息的类型；</p></li>
+                <li><p><strong>value</strong>就是实际的信息。</p></li>
+            </ul>
+            <p>当你在一个字典中想要查询 <strong>query</strong> 时，字典发现对应的 <strong>key</strong> ，并返回和它相关联的 <strong>value</strong> 。<strong>query</strong> 可能有，也可能没有对应的 <strong>key</strong> 。你可以将它想象成为一个模糊的字典，其中的 <strong>key</strong> 并不完全匹配。如果你在上面字典里查找 <code>d["species"]</code> ，它可能会返回 <code>"pickup"</code> ，因为那就是查询的最佳匹配。</p>
+            <p>注意力层灰进行这样的模糊查找，但它不只是寻找最佳键。它会根据 <strong>query</strong> 和每个 <strong>key</strong> 的匹配程度，将 <strong>values</strong> 进行组合。</p> 
+            <p>它是如何工作的？在注意层中 <strong>query</strong> 、 <strong>key</strong> 和 <strong>value</strong> 都是向量。注意层不会进行哈希查找，而是将 <strong>query</strong> 和 <strong>key</strong> 向量组合起来确定它们的匹配程度，即 <strong>注意分数 (Attention Score)</strong> 。该层返回所有 <strong>values</strong>的平均值，由注意力的粉进行加权。</p>
+            <p>查询序列的每个位置都提供一个 <strong>query</strong> 向量。上下文序列充当字典，他的每个位置都提供一个 <strong>key</strong> 和 <strong>value</strong> 向量。</p>
+            <p>并不直接使用输入向量，在使用之前，<code>layers.MultiHeadAttention</code> 包含一个 <code>layers.Dense</code> 层将输入向量进行 <em>投影 (Project)</em> 。</p>
+
             <h4>7.4.5.4 交叉注意力层</h4>
             <h4>7.4.5.5 全局自注意力层</h4>
             <h4>7.4.5.6 因果自注意力层</h4>
