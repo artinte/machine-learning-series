@@ -391,7 +391,7 @@ if __name__ == '__main__':
     print(sample_ca(en_emb, pt_emb).shape)
 
     sample_gsa = GlobalSelfAttention(num_heads=2, key_dim=512)
-
+    print('> Global self attention:')
     print(pt_emb.shape)
     print(sample_gsa(pt_emb).shape)
 

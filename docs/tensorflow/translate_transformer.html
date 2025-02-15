@@ -390,6 +390,33 @@ print(sample_ca(en_emb, pt_emb).shape)</code></pre>
 (64, 59, 512)</samp></pre>
 
             <h4>7.4.5.5 全局自注意力层</h4>
+            <p>该层负责处理上下文信息，并在其中传递信息：</p>
+            <img src="res/self_attention.png" alt="自注意力层" width="400">
+            <p>由于在生成翻译时上下文序列时固定的，因此信息可以双向流。在 Transformer 和自注意力之前，模型通常使用 RNN 或 CNN 来完成这项任务，下图分别显示 RNN 和 CNN ：</p>
+            <img src="res/rnn_bidirectional_info.png" alt="双向 RNN" width="600">
+            <img src="res/cnn_info.png" alt="CNN 信息传递" width="600">
+            <p>RNN 和 CNN 都有其局限性：</p>
+            <ul class="with-bullets">
+                <li>
+                    <p>RNN 允许信息在整个序列中流动，但它需要经过许多处理步骤才能到达那里。这些 RNN 步骤必须按顺序执行，因此 RNN 不太能够利用现代并行设备。</p>
+                </li>
+                <li>
+                    <p>在 CNN 中，每个位置都可以并行处理，但它仅提供有限的接受场。接受场仅随 CNN 层数线性增长，你需要堆叠多个卷积层才能在序列中传递信息。</p>
+                </li>
+            </ul>
+            <p>另一方面，全局自注意力允许每个元素直接访问每个其它序列元素，只需少量操作，并且所有输出都可以并行计算。</p>
+            <p>要实现这一层，我们只需要将目标序列 <em>x</em> 作为 <em>query</em> 和 <em>value</em> 传递给 <code>mha</code> 层：</p>
+            <pre><code>sample_gsa = GlobalSelfAttention(num_heads=2, key_dim=512)
+print('> Global self attention:')
+print(pt_emb.shape)
+print(sample_gsa(pt_emb).shape)</code></pre>
+            <pre><samp>(64, 64, 512)
+(64, 64, 512)</samp></pre>
+            <p>我们可以像下图这样绘制：</p>
+            <img src="res/global_self_attention.png" alt="全局自注意力" width="600">
+            <p>为了简单期间，残差层被忽略。下图绘制更加紧凑，并且同样精确：</p>
+            <img src="res/self_attention_new.png" alt="全局自注意力" width="600">
+
             <h4>7.4.5.6 因果自注意力层</h4>
             <h4>7.4.5.7 前馈网络</h4>
             <h4>7.4.5.8 编码器层</h4>
