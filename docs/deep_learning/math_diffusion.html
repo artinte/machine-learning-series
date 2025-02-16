@@ -94,11 +94,20 @@ pyplot.subplots_adjust(top=0.92, right=0.92)
 pyplot.show()</code></pre>
             <img src="res/diffusion_one_dim.png" alt="一维扩散过程" width="600">
 
-            <p>这到底是什么意思呢？我们可以将上述表达式具体化。</p>
+            <p>这到底是什么意思呢？我们可以将上述表达式具体化，定义一个很小的离散增量 \(\Delta{t}\) ：</p>
             <div class="highlight-math" style="text-align: center;">
-                \(x(t + \Delta{t}) = x(t) + \sigma\sqrt{\Delta{t}}r\)
+                \(x(t + \Delta{t}) = x(t) + \sigma\sqrt{\Delta{t}} \cdot r\)
             </div>
-            <p>其中 \(\sim \mathcal{N}(0, 1)\) 是标准正态分布的样本。</p>
+            <p>其中 \(r \sim \mathcal{N}(0, 1)\) 是标准正态分布的样本。<em>Euler-Maruyama</em> 是个很好的示例，Euler-Maruyama 方法是数值解随机微分方程的一种显示欧拉方法。它是标准欧拉方法在随机过程下的推广，用于求解具有布朗运动或噪声项的微分方程。标准形式的 SDE 为：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(dX_t = f(X_t, t)dt + g(X_t, t)dW_t\)
+            </div>
+            <p>其中 \(X_t\) 是随机过程，\(f(X_t, t)\) 是漂移项，表示系统确定性部分，\(g(X_t, t)\) 是扩散项，表示噪声的影响，\(W_t\) 是布朗运动。给定时间步长 \(\Delta{t}\) ， Euler-Maruyama 方法的离散化形式为：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(X_{n+1} = X_n + f(X_n, t_n)\Delta{t} + g(X_n, t_n)\Delta{W_n}\)
+            </div>
+            <p class="comment">\(f(X_n, t_n)\) 近似表示在时间步 \(t_n\) 系统的变化率。</p>
+
             <p>上述扩散描述对于模拟很有用。给定一个数字 \(x\) ，我们可以使用上述更新规则使其经过一个时间步的扩散。但是互补的观点描述概率密度 \(p(x, t)\) ，系统在 \(t\) 时刻 \(x\) 位置的概率，随着时间而变化。</p>
             <p>尤其是 \(p(x, t)\) 随着著名的扩散等式变化：</p>
             <div class="highlight-math" style="text-align: center;">
