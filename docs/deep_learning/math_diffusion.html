@@ -57,7 +57,7 @@
             <p>其中 \(\sigma > 0 \) 是常数，\(\eta(t)\) 表示高斯白噪声。</p>
             <p class="comment">注：\(\dot{x}\) 表示的是 \(x\) 的导数。</p>
             <p class="comment">注：高斯函数表达式 \(f(x) = A e^{-\frac{(x - \mu)^2}{2\sigma^2}}\) ，其中 \(\mu\) 是均值，\(\sigma\) 是标准差。</p>
-            <p>为了计算并通过数据说明上述方程，我们可以使用树脂方法对其进行模拟。假设 \(\sigma = 2\) ，并且 \(\eta(t)\) 是一个标准的高斯白噪声。那么计算步骤如下：</p>
+            <p>为了计算并通过数据说明上述方程，我们可以使用数值方法对其进行模拟。假设 \(\sigma = 2\) ，并且 \(\eta(t)\) 是一个标准的高斯白噪声。那么计算步骤如下：</p>
             <ol>
                 <li><p>设定初始条件，比如 \(x(0) = 0\) ；</p></li>
                 <li><p>使用离散时间步长（例如 \(\Delta{t} = 0.01\) ），模拟 \(x(t)\) 在时间 \(t\) 上的变化；</p></li>
@@ -65,7 +65,35 @@
                 <li><p>计算每个时间步的变化 \(\dot{x}(t) = \sigma \cdot \eta(t)\) ；</p></li>
                 <li><p>更新 \(x(t)\) 的值：\(x(t + \Delta{t}) = x(t) + \dot{x}(t)\Delta{t}\) 。</p></li>
             </ol>
-            <p>使用 Python 进行模拟</p>
+
+            <p>使用 Python 进行模拟，代码在文件 <a href=""></a> 中：</p>
+            <pre><code>import numpy
+from matplotlib import pyplot
+
+sigma = 2
+duration = 10
+dt = 0.01
+num = int(duration / dt)
+
+t = numpy.linspace(0, duration, num)
+x = numpy.zeros(num)
+
+rng = numpy.random.default_rng(0)
+eta = rng.standard_normal(num)
+
+for i in range(1, num):
+    dot_x = sigma * eta[i]
+    x[i] = x[i-1] + dot_x * dt
+
+pyplot.plot(t, x)
+pyplot.title('Simulated System with Gaussian White Noise')
+pyplot.xlabel('Time (t)')
+pyplot.ylabel('x(t)')
+pyplot.grid(True)
+pyplot.subplots_adjust(top=0.92, right=0.92)
+pyplot.show()</code></pre>
+            <img src="res/diffusion_one_dim.png" alt="一维扩散过程" width="600">
+
             <p>这到底是什么意思呢？我们可以将上述表达式具体化。</p>
             <div class="highlight-math" style="text-align: center;">
                 \(x(t + \Delta{t}) = x(t) + \sigma\sqrt{\Delta{t}}r\)
