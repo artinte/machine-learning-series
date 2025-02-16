@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../laptop_coding_48.png" type="image/png">
+    <title>扩散模型的数学基础</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../article_style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 左侧小节列表 -->
+        <nav class="col-md-2 sidebar">
+
+        </nav>
+
+        <!-- 中间内容：显示具体某一个小节 -->
+        <main class="col-md-8 content">
+            <h2 class="custom-title">11.1 扩散模型的数学基础</h2>
+            <p class="title-subtext">理解噪声和去噪的数学原理！</p>
+            <p style="color: #a0a0a0;">创建日期: 2025-02-16</p>
+
+            <p>在本教程中，我们介绍了扩散生成模型的数学基础，目标是以下几点：</p>
+            <ul class="with-bullets">
+                <li><p>用神经网络近似得分函数；</p></li>
+                <li><p>从扩散模型中抽样。</p></li>
+            </ul>
+            <h3>11.1.1 理论</h3>
+            <p>扩散生成模型是一种从分布中生成样本的方法；它与其它方法（如生成对抗网络 (GAN) 和变分自动编码器 (VAE) 有很大不同。值得注意的是，它是 OpenAI 最近的 DALL·E 2 系统的核心元素之一，该系统用于将自然语言描述转换为详细图像。</p>
+            <p>扩散生成模型使用如下思想：来自某些分布（例如图像）的样本逐渐受到越来越多的噪声的破坏，直到它们变成无法识别的静态 - 这就是扩散。然后我们反转这一过程，以便我们可以将无法识别的静态变成来自我们感兴趣的分布的样本。因为很容易对无法识别的静态进行采样，所以映射使我们能够轻松地从目标分布中进行采样。</p>
+            <p>我们将重点关注扩散生成模型的基础，并且主要使用简单的示例用于分布分析。</p>
+
+            <h4>11.1.1.1 动机</h4>
+            <p>生成模型是统计学和机器学习的一个领域，涉及从给定的数据集采样的概率分布。通过学习这样的分布（例如人脸图片），我们可以从中采样新的数据 - 例如一张新的人脸图像。</p>
+            <p>生成建模有不同的方法，包括使用生成对抗网络 (GAN) 和变分自动编码器 (VAE) 。一种较新的方法是向样本添加大量噪声，然后学习消除噪声。通过这种方式，我们可以学习将纯噪声转换为我们感兴趣的某个分布的样本。因为生成各种纯噪声岩本很容易，而且每个样本都通过我们的噪声消除映射转换为目标分布的样本，所以我们有一个生成模型。</p>
+            <p>这种生成建模的方法有各种吸引人的特点，其中一个值得注意的特点是，我们不必直接学习概率分布，而是可以学习一个有时称为 <strong>得分 (Score)</strong> ，下面是对数概率密度函数相对于 \(x\) 的梯度：</p>
+            <p class="highlight-math" style="text-align: center;">
+                \(s(x) := \nabla_xlogp(x)\)
+            </p>
+            <p>这样我们就避免了必须学习概率密度的标准化常数，它通常是一项麻烦的任务。</p>
+            <p>我们可以用基于扩散的生成模型做什么？以下是一些常见的事情：</p>
+            <ol>
+                <li><p>类别生成（给定一个类别标签，生成一个新的样本）；</p></li>
+                <li><p>修复（填补部分损坏图像的缺失部分）；</p></li>
+                <li><p>着色（为灰度图像添加合理的颜色）。</p></li>
+            </ol>
+            <h4>11.1.1.2 正向扩散</h4>
+            <p>我们如何适当地向分布样本添加噪声？尽快对此的看法各不相同，但最近的研究已经统一了不同的方法。总的来说，关于如何做到这一点的，各种想法都相当于对给定的分布样本进行某种扩散过程。更一般地说，我们可以想象将某种随机过程（由随机微分方程或 SDE 定义）应用于分布样本。</p>
+            <h5>扩散基础知识</h5>
+            <p>让我们看一下扩散的基础知识，一维扩散过程（在实线上）可以用 <strong>随机微分方程 (Stochastic Differential Equation, SDE)</strong> 来定义：</p>
+            <p class="highlight-math" style="text-align: center;">
+                \(\dot{x} = \sigma \cdot \eta(t)\)
+            </p>
+            <p>其中 \(\sigma > 0 \) 是常数，\(\eta(t)\) 表示高斯白噪声。</p>
+            <p class="comment">注：\(\dot{x}\) 表示的是 \(x\) 的导数。</p>
+            <p class="comment">注：高斯函数表达式 \(f(x) = A e^{-\frac{(x - \mu)^2}{2\sigma^2}}\) ，其中 \(\mu\) 是均值，\(\sigma\) 是标准差。</p>
+            <p>为了计算并通过数据说明上述方程，我们可以使用树脂方法对其进行模拟。假设 \(\sigma = 2\) ，并且 \(\eta(t)\) 是一个标准的高斯白噪声。那么计算步骤如下：</p>
+            <ol>
+                <li><p>设定初始条件，比如 \(x(0) = 0\) ；</p></li>
+                <li><p>使用离散时间步长（例如 \(\Delta{t} = 0.01\) ），模拟 \(x(t)\) 在时间 \(t\) 上的变化；</p></li>
+                <li><p>生成每个时间步的高斯白噪声增量 \(\eta(t)\) ；</p></li>
+                <li><p>计算每个时间步的变化 \(\dot{x}(t) = \sigma \cdot \eta(t)\) ；</p></li>
+                <li><p>更新 \(x(t)\) 的值：\(x(t + \Delta{t}) = x(t) + \dot{x}(t)\Delta{t}\) 。</p></li>
+            </ol>
+            <p>使用 Python 进行模拟</p>
+            <p>这到底是什么意思呢？我们可以将上述表达式具体化。</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(x(t + \Delta{t}) = x(t) + \sigma\sqrt{\Delta{t}}r\)
+            </div>
+            <p>其中 \(\sim \mathcal{N}(0, 1)\) 是标准正态分布的样本。</p>
+            <p>上述扩散描述对于模拟很有用。给定一个数字 \(x\) ，我们可以使用上述更新规则使其经过一个时间步的扩散。但是互补的观点描述概率密度 \(p(x, t)\) ，系统在 \(t\) 时刻 \(x\) 位置的概率，随着时间而变化。</p>
+            <p>尤其是 \(p(x, t)\) 随着著名的扩散等式变化：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(\frac{\partial{p(x, t)}}{\partial{t}} = \frac{\sigma^2}{2} \cdot \frac{\partial^{2}p(x, t)}{\partial{x^2}}\)
+            </div>
+            <p>你可能习惯于看到这个方程具有扩散常数 \(D\) 而不是参数 \(sigma\) ，它们之间的转换关系为 \(D := \frac{\sigma^2}{2}\) 。</p>
+            <p>给定 \(\delta\) 函数初始条件 \(p(x, 0) = \delta(x - x_0)\) （也就是说系统在初始 \(x_0\) 位置） ，那么扩散方程的通解为：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(p(x, t|x_0, 0) = \frac{1}{\sqrt{2\pi\sigma^{2}t}} exp \{-frac{(x - x_0)^2}{2\sigma^{2}t}\}\)
+            </div>
+            <p>给定任意初始条件 \(p(x, 0) = p_{0}(x)\) ，扩散函数的通解是：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(p(x, t) = \int_{-\infty}^{\infty}p(x, t|x_0, 0)p_0(x_0)dx_0\)
+            </div>
+
+            <h3>11.1.2 扩散和得分函数</h3>
+            <h3>11.1.3 去噪</h3>
+            <h3>11.1.4 练习</h3>
+            <div class="navigation">
+                <a href="#">上一节：1.0 环境配置</a>
+                <a href="#">下一节：1.2 专家速览</a>
+            </div>
+        </main>
+
+            <!-- 右侧小标题导航 -->
+            <aside class="col-md-2 right-sidebar">
+                <h5><a href="index.html#section1">快速入门</a></h5>
+                <ul id="dynamic-sidebar" class="nav flex-column">
+                    <!-- 动态内容 -->
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+        <!-- 引入 Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+        </script>
+
+        <script src="../article_script.js"></script>
+</body>
+</html>
