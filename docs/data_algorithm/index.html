@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../laptop_coding_48.png" type="image/png">
+    <title>数据结构与算法</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../outline_style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 左侧目录 -->
+            <nav class="col-md-2 bg-light sidebar">
+                <h5 class="p-3"><a href="../index.html">主页</a></h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01 数组与链表</a>
+                        <ul id="chapter1" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section1-sub1">1.1 数组</a></li>
+                            <li><a class="nav-link" href="#section1-sub2">1.2 链表</a></li>
+                            <li><a class="nav-link" href="#section1-sub3">1.3 列表</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02 栈与队列</a>
+                        <ul id="chapter2" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section2-sub1">2.1 栈</a></li>
+                            <li><a class="nav-link" href="#section2-sub2">2.2 队列</a></li>
+                            <li><a class="nav-link" href="#section2-sub2">2.2 双向队列</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- 中间内容 -->
+            <main class="col-md-8">
+                <h1>数据结构与算法</h1>
+                <section id="section1" class="content-section">
+                    <h2>01 数组与链表</h2>
+
+                    <h3 id="section1-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">1.1 数组</a>
+                    </h3>
+
+                    <h3 id="section1-sub2" class="content-section-sub">
+                        <a href="#" style="color: inherit;">1.2 链表</a>
+                    </h3>
+
+                    <h3 id="section1-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">1.2 列表</a>
+                    </h3>
+                </section>
+
+                <section id="section2" class="content-section">
+                    <h2>02 栈与队列</h2>
+
+                    <h3 id="section2-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">2.1 栈</a>
+                    </h3>
+
+                    <h3 id="section2-sub2" class="content-section-sub">
+                        <a href="#" style="color: inherit;">2.2 队列</a>
+                    </h3>
+
+                    <h3 id="section2-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">2.3 双向队列</a>
+                    </h3>
+                </section>
+
+                <section id="section3" class="content-section">
+                    <h2>03 树</h2>
+
+                    <h3 id="section3-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">3.1 二叉树</a>
+                    </h3>
+                </section>
+
+                <section id="section4" class="content-section">
+                    <h2>04 排序</h2>
+
+                    <h3 id="section4-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">4.1 选择排序</a>
+                    </h3>
+                </section>
+
+                <section id="section5" class="content-section">
+                    <h2>05 分治</h2>
+
+                    <h3 id="section5-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">5.1 分治算法</a>
+                    </h3>
+                </section>
+
+                <section id="section6" class="content-section">
+                    <h2>06 回溯</h2>
+
+                    <h3 id="section6-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">6.1 回溯算法</a>
+                    </h3>
+                </section>
+
+                <section id="section7" class="content-section">
+                    <h2>07 动态规划</h2>
+
+                    <h3 id="section7-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">7.1 初探动态规划</a>
+                    </h3>
+                </section>
+
+                <section id="section8" class="content-section">
+                    <h2>08 贪心</h2>
+
+                    <h3 id="section8-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">8.1 贪心算法</a>
+                    </h3>
+                </section>
+            </main>
+
+            <!-- 右侧小标题导航 -->
+            <aside class="col-md-2 right-sidebar">
+                <!-- <h5>标题</h5>
+                <ul id="dynamic-sidebar" class="nav flex-column"> -->
+                    <!-- 动态内容 -->
+                <!-- </ul> -->
+            </aside>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script src="../outline_script.js"></script>
+</body>
+</html>
