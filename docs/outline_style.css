@@ -120,9 +120,10 @@ li p {
 }
 a {
     text-decoration: underline;
-    text-underline-offset: 8px;
+    text-underline-offset: 7px;
     color: #3498db;
 }
+
 /* 移动端样式（只在屏幕宽度 < 1024 px 时生效 */
 @media screen and (max-width: 1024px) {
     .sidebar, .right-sidebar {
