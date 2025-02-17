@@ -28,12 +28,11 @@
                 <li><p>用神经网络近似得分函数；</p></li>
                 <li><p>从扩散模型中抽样。</p></li>
             </ul>
-            <h3>11.1.1 理论</h3>
             <p>扩散生成模型是一种从分布中生成样本的方法；它与其它方法（如生成对抗网络 (GAN) 和变分自动编码器 (VAE) 有很大不同。值得注意的是，它是 OpenAI 最近的 DALL·E 2 系统的核心元素之一，该系统用于将自然语言描述转换为详细图像。</p>
             <p>扩散生成模型使用如下思想：来自某些分布（例如图像）的样本逐渐受到越来越多的噪声的破坏，直到它们变成无法识别的静态 - 这就是扩散。然后我们反转这一过程，以便我们可以将无法识别的静态变成来自我们感兴趣的分布的样本。因为很容易对无法识别的静态进行采样，所以映射使我们能够轻松地从目标分布中进行采样。</p>
             <p>我们将重点关注扩散生成模型的基础，并且主要使用简单的示例用于分布分析。</p>
 
-            <h4>11.1.1.1 动机</h4>
+            <h3>11.1.1 动机</h3>
             <p>生成模型是统计学和机器学习的一个领域，涉及从给定的数据集采样的概率分布。通过学习这样的分布（例如人脸图片），我们可以从中采样新的数据 - 例如一张新的人脸图像。</p>
             <p>生成建模有不同的方法，包括使用生成对抗网络 (GAN) 和变分自动编码器 (VAE) 。一种较新的方法是向样本添加大量噪声，然后学习消除噪声。通过这种方式，我们可以学习将纯噪声转换为我们感兴趣的某个分布的样本。因为生成各种纯噪声岩本很容易，而且每个样本都通过我们的噪声消除映射转换为目标分布的样本，所以我们有一个生成模型。</p>
             <p>这种生成建模的方法有各种吸引人的特点，其中一个值得注意的特点是，我们不必直接学习概率分布，而是可以学习一个有时称为 <strong>得分 (Score)</strong> ，下面是对数概率密度函数相对于 \(x\) 的梯度：</p>
@@ -47,9 +46,9 @@
                 <li><p>修复（填补部分损坏图像的缺失部分）；</p></li>
                 <li><p>着色（为灰度图像添加合理的颜色）。</p></li>
             </ol>
-            <h4>11.1.1.2 正向扩散</h4>
+            <h3>11.1.2 正向扩散和随机过程</h3>
             <p>我们如何适当地向分布样本添加噪声？尽快对此的看法各不相同，但最近的研究已经统一了不同的方法。总的来说，关于如何做到这一点的，各种想法都相当于对给定的分布样本进行某种扩散过程。更一般地说，我们可以想象将某种随机过程（由随机微分方程或 SDE 定义）应用于分布样本。</p>
-            <h5>扩散基础知识</h5>
+            <h4>11.1.2.1 扩散基础知识</h4>
             <p>让我们看一下扩散的基础知识，一维扩散过程（在实线上）可以用 <strong>随机微分方程 (Stochastic Differential Equation, SDE)</strong> 来定义：</p>
             <p class="highlight-math" style="text-align: center;">
                 \(\dot{x} = \sigma \cdot \eta(t)\)
@@ -113,19 +112,67 @@ pyplot.show()</code></pre>
             <div class="highlight-math" style="text-align: center;">
                 \(\frac{\partial{p(x, t)}}{\partial{t}} = \frac{\sigma^2}{2} \cdot \frac{\partial^{2}p(x, t)}{\partial{x^2}}\)
             </div>
-            <p>你可能习惯于看到这个方程具有扩散常数 \(D\) 而不是参数 \(sigma\) ，它们之间的转换关系为 \(D := \frac{\sigma^2}{2}\) 。</p>
+            <p>你可能习惯于看到这个方程具有扩散常数 \(D\) 而不是参数 \(\sigma\) ，它们之间的转换关系为 \(D := \frac{\sigma^2}{2}\) 。</p>
             <p>给定 \(\delta\) 函数初始条件 \(p(x, 0) = \delta(x - x_0)\) （也就是说系统在初始 \(x_0\) 位置） ，那么扩散方程的通解为：</p>
             <div class="highlight-math" style="text-align: center;">
-                \(p(x, t|x_0, 0) = \frac{1}{\sqrt{2\pi\sigma^{2}t}} exp \{-frac{(x - x_0)^2}{2\sigma^{2}t}\}\)
+                \(p(x, t|x_0, 0) = \frac{1}{\sqrt{2\pi\sigma^{2}t}} exp \{-\frac{(x - x_0)^2}{2\sigma^{2}t}\}\)
             </div>
             <p>给定任意初始条件 \(p(x, 0) = p_{0}(x)\) ，扩散函数的通解是：</p>
             <div class="highlight-math" style="text-align: center;">
                 \(p(x, t) = \int_{-\infty}^{\infty}p(x, t|x_0, 0)p_0(x_0)dx_0\)
             </div>
 
-            <h3>11.1.2 扩散和得分函数</h3>
-            <h3>11.1.3 去噪</h3>
-            <h3>11.1.4 练习</h3>
+            <h4>11.1.2.2 随机微分方程基础</h4>
+            <p>扩散只是由随机微分方程控制的随机过程的一个特别简单的例子。最一般的随机微分方程如下所示：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(\dot{x} = f(x, t) + g(x, t)\eta(t)\)
+            </div>
+            <p>其中 \(f(x, t)\) 和 \(g(x, t)\) 是函数，\(\eta(t)\) 是高斯白噪声。函数 \(f(x,t )\) 是漂移项，描述了 \(x(t)\) 随时间的变化。\(g(x, t)\) 是噪声或者扩散项，描述 \(x(t)\) 的随机波动。</p>
+            <p>它意味着什么？不像扩散那样，\(g(x, t)\) 是常数，使上述表达式定义明确还需要一些其它数学知识。为了我们的目的，选择限免的公式进行描述：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(x(t + \Delta{t}) = x(t) + f(x(t), t)\Delta{t} + g(x, t)\sqrt{\Delta{t}}r\)
+            </div>
+            <p>\(r \sim \mathcal{N}(0, 1)\) 是标准正态分布的样本。这是更通用的 <em>Euler-Maruyama</em> 方法（尽管考虑到我们目前只在一维上工作，它仍然不是最通用的形式），</p>
+            <p>扩散方程的类似方程是 <em>Fokker-Planck</em> 等式，它描述了 \(p(x, t)\) 在随机微分方程下随时间的变化。其表达式可以写成：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(\frac{\partial{p(x, t)}}{\partial{t}} = -\frac{\partial}{\partial{x}}[f(x, t)p(x, t)] + \frac{\partial^2}{\partial{x^2}}[\frac{{g(x, t)^2}}{2}p(x, t)]\)
+            </div>
+            <p>绝大多数 <em>Fokker-Planck</em> 等式都非常难解决，因此我们无法获得 \(p(x, t)\) 准确的解。我们可以解决的 \(p(x, t)\) 只包含扩散，和 <em>Ornstein-Uhlenbeck-like</em> 过程，该过程使反向随机过程，以下是一维的示例：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(\dot{x} = \frac{1}{\tau}[\mu - x] + \sigma\sqrt{frac{2}{\tau}}\eta(t)\)
+            </div>
+            <p>对于初始条件 \(p(x, 0) = \delta(x - x_0)\) ，它的解为：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(p(x, t|x_0, 0) = \frac{1}{\sqrt{2\pi{s}{t}^2}}exp\{-\frac{[x - \mu(t)]^2}{2st^2}\}\)
+            </div>
+            <p>其中：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(u(t) := x_0e^{-t/r} + \mu(1 - e^{-t/\tau})\)
+            </div>
+            <div class="highlight-math" style="text-align: center;">
+                \(s(t)^2 := \sigma^2(1 - e^{-2t/\tau})\)
+            </div>
+            <p>通用的 <em>Ornstein-Uhlenbeck-like</em> 解决方法（初始分布 \(p(x, 0) = p_0(x)\)）：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(p(x, t) = \int_{-\infty}^{\infty} p(x,t|x_0, 0)p_0(x_0) \, dx_0\)
+            </div>
+            <p><em>Ornstein-Uhlenbeck</em> 过程与严格扩散过程不同之处在于，<em>Ornstein-Uhlenbeck</em> 过程的长期行为会丢失所有关于其初始条件的记忆。也就是说，随着 \(t\) 时间的增加，\(p(x, t)\) 越来越不依赖 \(p_0(x)\) 。</p>
+
+            <h4>11.1.2.3 基础示例</h4>
+            <h4>11.1.2.4 通用 SDE</h4>
+
+            <h3>11.1.3 反向扩散</h3>
+            <h4>11.1.3.1 反向 1D 扩散</h4>
+            <h4>11.1.3.2 反向随机过程</h4>
+            <h4>11.1.3.3 得分函数</h4>
+            <h4>11.1.3.4 得分函数示例</h4>
+            <h4>11.1.3.5 基础示例代码</h4>
+
+            <h3>11.1.4 学习得分函数</h3>
+            <h4>11.1.4.1 定义目标函数</h4>
+            <h4>11.1.4.2 使用样本逼近</h4>
+            <h4>11.1.4.3 神经网络逼近</h4>
+
             <div class="navigation">
                 <a href="#">上一节：1.0 环境配置</a>
                 <a href="#">下一节：1.2 专家速览</a>

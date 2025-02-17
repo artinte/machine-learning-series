@@ -85,6 +85,9 @@ code {
     margin-top: 40px;
     color: #8e44ad;
 }
+.content h5 {
+    color: #8e44ad;
+}
 .content p {
     font-size: 1.1em;
     margin: 20px 0;
