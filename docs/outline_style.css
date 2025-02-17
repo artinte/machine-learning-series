@@ -124,6 +124,15 @@ a {
     color: #3498db;
 }
 
+img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 -2px 6px rgba(0, 0, 0, 0.1);;
+}
+
 /* 移动端样式（只在屏幕宽度 < 1024 px 时生效 */
 @media screen and (max-width: 1024px) {
     .sidebar, .right-sidebar {
