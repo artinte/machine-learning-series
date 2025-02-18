@@ -129,12 +129,12 @@ pyplot.show()</code></pre>
             </div>
             <p>其中 \(f(x, t)\) 和 \(g(x, t)\) 是函数，\(\eta(t)\) 是高斯白噪声。函数 \(f(x,t )\) 是漂移项，描述了 \(x(t)\) 随时间的变化。\(g(x, t)\) 是噪声或者扩散项，描述 \(x(t)\) 的随机波动。</p>
             <p>它意味着什么？不像扩散那样，\(g(x, t)\) 是常数，使上述表达式定义明确还需要一些其它数学知识。为了我们的目的，选择限免的公式进行描述：</p>
-            <div class="highlight-math" style="text-align: center;">
+            <div class="highlight-math scroll-container" style="text-align: center;">
                 \(x(t + \Delta{t}) = x(t) + f(x(t), t)\Delta{t} + g(x, t)\sqrt{\Delta{t}}r\)
             </div>
             <p>\(r \sim \mathcal{N}(0, 1)\) 是标准正态分布的样本。这是更通用的 <em>Euler-Maruyama</em> 方法（尽管考虑到我们目前只在一维上工作，它仍然不是最通用的形式），</p>
             <p>扩散方程的类似方程是 <em>Fokker-Planck</em> 等式，它描述了 \(p(x, t)\) 在随机微分方程下随时间的变化。其表达式可以写成：</p>
-            <div class="highlight-math" style="text-align: center;">
+            <div class="highlight-math scroll-container" style="text-align: center;">
                 \(\frac{\partial{p(x, t)}}{\partial{t}} = -\frac{\partial}{\partial{x}}[f(x, t)p(x, t)] + \frac{\partial^2}{\partial{x^2}}[\frac{{g(x, t)^2}}{2}p(x, t)]\)
             </div>
             <p>绝大多数 <em>Fokker-Planck</em> 等式都非常难解决，因此我们无法获得 \(p(x, t)\) 准确的解。我们可以解决的 \(p(x, t)\) 只包含扩散，和 <em>Ornstein-Uhlenbeck-like</em> 过程，该过程使反向随机过程，以下是一维的示例：</p>
@@ -194,19 +194,7 @@ pyplot.show()</code></pre>
         <!-- 引入 Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <script>
-            window.MathJax = {
-                tex: {
-                    inlineMath: [['$', '$'], ['\\(', '\\)']]  // 允许使用 $...$ 或 \( ... \) 作为行内数学公式
-                },
-                svg: {
-                    fontCache: 'global'  // 提高渲染性能
-                }
-            };
-        </script>
-        <script type="text/javascript" async
-            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-        </script>
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
         <script src="../article_script.js"></script>
 </body>
