@@ -55,32 +55,26 @@ class GaussianMixture:
     
     def score(self, x):
         component_pdf = np.array([rv.pdf(x) for rv in self.RVs]).T
-
         weighted_compon_pdf = component_pdf * self.norm_weights[np.newaxis, :]
         participance = weighted_compon_pdf / weighted_compon_pdf.sum(axis=1, keepdims=True)
 
         scores = np.zeros_like(x)
-        # 计算每个分量对 score 的贡献     
+        # 计算每个分量对 score 的贡献
+        for i in range(self.n_component):
+            gradvec = - (x - self.mus[i]) @ self.precs[i]
+            scores += participance[:, i:i+1] * gradvec
         return scores
 
     def score_decompose(self, x):
         component_pdf = np.array([rv.pdf(x) for rv in self.RVs]).T
-        
-        weighted_pdfs = component_pdf * self.weights
-        total_pdf = weighted_pdfs.sum(axis=1, keepdims=True)
-        participance = weighted_pdfs / total_pdf
+        weighted_compon_pdf = component_pdf * self.norm_weights[np.newaxis, :]
+        participance = weighted_compon_pdf / weighted_compon_pdf.sum(axis=1, keepdims=True)
         
         gradvec_list = []
         for i in range(self.n_component):
-            mean = self.RVs[i].mean
-            cov = self.RVs[i].cov
-            
-            cov_inv = np.linalg.inv(cov)
-            diff = x - mean
-            gradvec = np.dot(diff, cov_inv)
-            
-            gradvec_list.append(participance[:, i].reshape(-1, 1) * gradvec)
-            
+            gradvec = -(x - self.mus[i]) @ self.precs[i]
+            gradvec_list.append(gradvec)
+
         return gradvec_list, participance
 
 
@@ -143,3 +137,18 @@ quiver_plot(gmm_samps, scorevecs)
 plt.title("Score vector field")
 plt.axis("image")
 plt.show()
+
+gmm_samps_few, _, _ = gmm.sample(200)
+scorevecs_few = gmm.score(gmm_samps_few)
+gradvec_list, participance = gmm.score_decompose(gmm_samps_few)
+quiver_plot(gmm_samps_few, gradvec_list[0], color="blue", alpha=0.4, scale=45, label="score of gauss mode1")
+quiver_plot(gmm_samps_few, gradvec_list[1], color="orange", alpha=0.4, scale=45, label="score of gauss mode2")
+plt.legend()
+plt.show()
+
+quiver_plot(gmm_samps_few, gradvec_list[0]*participance[:,0:1], color="blue", alpha=0.4, scale=15, label="weighted score of gauss mode1")
+quiver_plot(gmm_samps_few, gradvec_list[1]*participance[:,1:2], color="orange", alpha=0.4, scale=15, label="weighted score of gauss mode2")
+quiver_plot(gmm_samps_few, scorevecs_few, scale=15, alpha=0.7, width=0.003, label="score of GMM")
+plt.legend()
+plt.show()
+
