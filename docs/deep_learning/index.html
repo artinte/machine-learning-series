@@ -286,6 +286,7 @@
                     <li>
                         <div class="title">第 1 - 4 章：数学与深度学习基础</div>
                         <p>复习数学知识（函数、线性代数、统计学、微积分）。使用 Keras 高级 API 快速实现分类问题，理解什么是深度学习，包括数据、前向传播、反向传播、神经元、神经网络、优化器、损失函数、激活函数、梯度下降等基础概念。</p>
+                        <p>理解一些常见的损失函数，并能够求解它们的导数。使用 NumPy ，结合多维数组，从头实现简单的分类问题，推导反向传播算法的具体逻辑。</p>
                     </li>
                     <li>
                         <div class="title">第 5 - 6 章： 机器学习框架入门</div>
@@ -293,11 +294,14 @@
                     </li>
                     <li>
                         <div class="title">第 7 - 9 章： 经典网络与理论提升</div>
-                        <p>通过翻译经典论文的方式，介绍三大深度学习网络：卷积神经网络、循环神经网络、注意力机制。深度学习的发展是循序渐进的，论文可以清晰地看到人们是如何思考，并解决实际问题的。</p>
+                        <p>使用 NumPy 实现卷积神经网络和循环神经网络，进一步加强数学理论知识。理解循环网络的限制，而发展出 LSTM 、GRU 网络，注意力机制。</p>
+                        <p>深度学习的发展是循序渐进的，通过翻译经典论文的方式，理解 AlexNet 、ResNet、Unet、Seq2Seq等网络。通过论文，可以清晰地看到人们是如何思考，并解决实际问题的。</p>
                     </li>
                     <li>
                         <div class="title">第 10 - 12 章：实际应用与前沿探索</div>
-                        <p>聚焦深度学习在文本、图片和语音生成中的实际应用，介绍稳定扩散、生成对抗网络等技术。探索大模型的简单实现，并详细解析 Llama 模型的运行与关键原理。</p>
+                        <p>聚焦深度学习在文本、图片和语音生成中的实际应用，深入理解两大类架构：Transformer 和 Diffusion 模型。探索大模型的简单实现，并详细解析 Llama 模型的运行与关键原理。</p>
+                        <p>看清 Transformer 是如何从循环网络进化而来，包括词嵌入、注意力机制、编码器-解码器架构。</p>
+                        <p>深入理解扩散模型的数学原理，包括扩散和逆扩散过程。使用 MNIST 数据集实现简单的图片生成。</p>
                     </li>
                 </ul>
                 <p>文本以清晰简洁的风格编写，使其成为任何有兴趣学习深度学习的人的理想资源。</p>
@@ -324,6 +328,12 @@
                     <h3 id="section1-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">1.3 常见函数</a>
                     </h3>
+                    <p>参考教材 <a href="https://openstax.org/details/books/precalculus-2e">Precalculus 2e</a> 第 3 、4 、5 章：</p>
+                    <ul>
+                        <li><p><a href="https://openstax.org/books/precalculus-2e/pages/3-introduction-to-polynomial-and-rational-functions">Introduction to Polynomial and Rational Functions</a></p></li>
+                        <li><p><a href="https://openstax.org/books/precalculus-2e/pages/4-introduction-to-exponential-and-logarithmic-functions">Introduction to Exponential and Logarithmic Functions</a></p></li>
+                        <li><p><a href="https://openstax.org/books/precalculus-2e/pages/5-introduction-to-trigonometric-functions">Introduction to Trigonometric Functions</a></p></li>
+                    </ul>
                     <p>简单介绍后续机器学习经常碰到的函数，比如二次函数、有理函数、log 函数、对数函数、三角 (sin/cos) 函数等。</p>
 
 
@@ -332,7 +342,7 @@
 
 
                     <h3 id="section1-sub5">1.5 机器学习求解</h3>
-                    <p>这是章节 1 的子标题 5 内容。</p>
+                    <p>使用机器学习的思维解决线性回归问题，理解线性回归的本质，以及它在多维空间的拓展。</p>
 
                 </section>
                 <section id="section2" class="content-section">
@@ -343,14 +353,17 @@
                     <p>将日常生活中的常见表示（特征数据、文字、图片、视频、声音）转换为神经网络的数据输入，对数据进行一些预处理操作，手动实现常见的数据处理算法。</p>
 
                     <h3 id="section2-sub1">2.1 什么是机器学习</h3>
-                    <p>这是章节 2 的子标题 1 内容。</p>
+                    <p>介绍什么是机器学习，它与传统编程的区别。深度学习是机器学习的一个子领域，它是一种从数据中学习表示的新方法，其强调学习连续的、越来越有意义的层。</p>
                     
                     <h3 id="section2-sub2">2.2 人工神经网络</h3>
-                    <p>这是章节 2 的子标题 2 内容。</p>
+                    <p>理解神经网络的各大组件，包括层、优化器、损失函数、目标值等。</p>
 
                     <h3 id="section2-sub3">2.3 线性代数</h3>
+
                     <h3 id="section2-sub4">2.4 数据表示</h3>
+
                     <h3 id="section2-sub5">2.5 数据操作</h3>
+
                     <h3 id="section2-sub6">2.6 常见微型数据集</h3>
                 </section>
                 <section id="section3" class="content-section">
@@ -362,13 +375,18 @@
                     <p>本章主要使用 Keras 高级 API 来解决以上两个问题，进一步熟悉深度学习中常见的模块，包括模型、层、损失函数、优化器等。通过快速上手简单的示例，理解深度学习全流程，为后续详细介绍奠定基础。</p>
                     
                     <h3 id="section3-sub1">3.1 统计学入门</h3>
-                    <p>这是章节 3 的子标题 1 内容。</p>
+                    <p>参考教材 <a href="https://openstax.org/details/books/introductory-statistics-2e">Introductory Statistics 2e</a></p>
+
                     <h3 id="section3-sub2">3.2 二分类问题</h3>
-                    <p>这是章节 3 的子标题 2 内容。</p>
+                    <p>Keras 实现二分类问题</p>
                     <h3 id="section3-sub3">3.3 Keras 快速入门</h3>
-                    <p>这是章节 3 的子标题 3 内容。</p>
+                    <p>全面但粗略地介绍 Keras 深度学习高级 API 。</p>
+
                     <h3 id="section3-sub4">3.4 图片分类</h3>
+                    <p>使用 Keras 进行图片分类。</p>
+
                     <h3 id="section3-sub5">3.5 其它分类问题</h3>
+                    <p>进一步熟悉 Keras ，解决其它类型的分类问题。</p>
                 </section>
                 <section id="section4" class="content-section">
                     <h2>04 详解反向传播算法</h2>
@@ -406,6 +424,7 @@
                     <h3 id="section4-sub7" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.7 坐标点分类</a>
                     </h3>
+                    <p>翻译教程 <a href="https://dennybritz.com/posts/wildml/implementing-a-neural-network-from-scratch/">Implementing a Neural Network from Scratch in Python</a></p>
                 </section>
                 <section id="section5" class="content-section">
                     <h2>05 张量和自动微分</h2>
@@ -422,6 +441,7 @@
                     <h3 id="section5-sub4" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.4 micrograd</a>
                     </h3>
+                    <p>复现 <a href="https://github.com/karpathy/micrograd">micrograd</a> 库的内容。</p>
                     <h3 id="section5-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.5 tinygrad 分析</a>
                     </h3>
