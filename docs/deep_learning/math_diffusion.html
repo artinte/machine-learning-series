@@ -158,22 +158,92 @@ pyplot.show()</code></pre>
             <p class="comment">扩散过程：没有回归到某个平衡值得趋势，状态得变化完全依赖于随机噪声。OU 过程：具有回归到均值得趋势，状态变化不仅受随机扰动影响，还有回归到某个平衡点得力量。</p>
 
             <h4>11.1.2.3 基础示例</h4>
-            <p>让我们看看模拟一维扩散（一种特别简单的随机过程）会是什么样子。也可以使用代码来模拟其它 SDE，例如 OU 过程。</p>
+            <p>让我们看看模拟一维扩散（一种特别简单的随机过程）会是什么样子。也可以使用代码来模拟其它 SDE，例如 OU 过程，具体实现在文件 <a href=""></a> 里。</p>
             <p>以下是一些实用函数，前几个函数用于正向模拟 1D 扩散（尽管 <code>forward_SDE_simulation</code> 可用于模拟更通用的 SDE ）。</p>
+
             <h4>11.1.2.4 通用 SDE</h4>
+            <div class="highlight-math" style="text-align: center;">
+                \(\dot(x) = f(x, t) + g(x, t)\eta(t)\)
+            </div>
 
             <h3>11.1.3 逆扩散</h3>
-            <p>我们如何消除在正向扩散过程中添加到样本中的噪声？虽然这有点违背直觉 -- 例如我们期望观察到奶油和咖啡通过扩散混合，但不希望它们自发分离 -- 但事实证明，由 SDE 控制的随机过程的时间反转在数学上是很简单的事。时间反转过程本身就是由 SDE 控制的随机过程，器概率密度根据 方程随时间演变。</p>
+            <p>我们如何消除在正向扩散过程中添加到样本中的噪声？虽然这有点违背直觉 -- 例如我们期望观察到奶油和咖啡通过扩散混合，但不希望它们自发分离 -- 但事实证明，由 SDE 控制的随机过程的时间反转在数学上是很简单的事。时间反转过程本身就是由 SDE 控制的随机过程，器概率密度根据 <em>Fokker-Planck</em> 方程随时间演变。</p>
+
             <h4>11.1.3.1 反向 1D 扩散</h4>
-            <h4>11.1.3.2 反向随机过程</h4>
+            <p>回想一下，一维扩散（持续一段时间 \(T\) ）可以用 SDE 描述：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(\dot(x) = \sigma \dot \eta(t)\)
+            </div>
+            <p>直观上看，扩散会导致物质散开。我们预计，这一过程的时间逆转会导致物质重新聚集在一起。</p>
+            <p>一个随机过程是 OU 过程，它将事物集中起来，而不是将它们分散开来。某种 OU 过程可能是 1D 扩散的时间反转吗？事实证明，由以下公式描述的 OU 过程：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(\dot(x) = \frac{x_0 - x}{T - t} + \sigma \dot \eta(t)\)
+            </div>
+            <p>是开始于点 \(x_0\) ，经过时间 \(T\) 的扩散过程的时间逆转。换句话说，这个过程压缩了高斯函数，直到它变成时间 \(T\) 的中心点在 \(x_0\) 。</p>
+            <p>转移概率也反转：</p>
+
+            <p>请注意，我们使用的是时间向前运行的惯例，从 \(t = 0\) 到 \(t = T\) 。这里，需要将时间反转过来，从 \(t = T\) 到 \(t = 0\) ，那么有以下的公式：</p>
+            <div class="highlight-math scroll-container" style="text-align: center;">
+                \(x(t - \Delta{t}) = x(t) - \frac{(x_0 - x)}{t}\Delta{t} + \sigma \sqrt{\Delta{t}}r\)
+            </div>
+
+            <h4>11.1.3.2 通用反向随机过程</h4>
+            <p>是否有一些系统的方法来推导逆过程？幸运的是：</p>
+            <div class="highlight-math scroll-container" style="text-align: center;">
+                \(\dot(x) = f(x, t) + g(t)\eta(t)\)
+            </div>
+            <div class="highlight-math " style="text-align: center;">
+                \(q(x, t) = p(x, T - t)\)
+            </div>
+
             <h4>11.1.3.3 得分函数</h4>
+            <p>上述表达式的逆过程包含一个看起来很有趣的函数：得分函数，如下定义：</p>
+            <div class="highlight-math " style="text-align: center;">
+                \(s(x, t) := \nabla_{x}p(x, t)\)
+            </div>
+            <p class="comment">表示在 \(t\) 时刻，概率密度函数 \(p(x, t)\) 关于空间位置 \(x\) 的梯度。</p>
+            <p>如果我们想对某些噪声进行逆过程，并将其转换为目标分布中的样本，我们需要知道得分函数，这实际上是整个生成建模方法的关键难点。</p>
+            <p>为什么这很难？我们不知道 \(p(x, t)\) ！如果我们知道，就可以直接从中取样，而不是进行逆扩散。</p>
+            <p>虽然这看起来像是先有鸡还是先有蛋的问题，但情况并没有看起来那么糟糕。我们确实需要学习得分函数，比直接学习 \(p(x, t)\) 容易，我们还需要学习一个标准化因子（这很难）。</p>
             <h4>11.1.3.4 得分函数示例</h4>
+            <h5>从质量点的 1D 扩散</h5>
+            <p>考虑具有 \delta 函数的一维扩散情况，时间相关概率为：</p>
+            <div class="highlight-math " style="text-align: center;">
+                \(p(x, t) = \frac{1}{\sqrt{2\pi\sigma^{2}t}}exp\{-\frac{(x-x_0)^2}{2\sigma^2t}\}\)
+            </div>
+            <p>它的得分函数是：</p>
+            <div class="highlight-math " style="text-align: center;">
+                \(s(x, t) = \frac{\partial}{x}logp(x, t) = -\frac{(x - x_0)}{\sigma^2t}\)
+            </div>
             <h4>11.1.3.5 基础示例代码</h4>
 
             <h3>11.1.4 学习得分函数</h3>
+            <p>现在让我们尝试真正解决先有鸡还是先有蛋的问题，我们希望通过反向扩散从某个目标分布（其函数形式未知，并且我们只能通过样本访问）中进行采样，但这样做需要我们知道与目标分布相对应的得分函数。知道得分函数（该分布对数的梯度）似乎等同于知道分布本身。我们如何学习得分函数？</p>
+            <p>首先，让我们写下一个合理的目标函数。假设我们有一个参数化的得分函数 \(s_{\theta}(x, t)\) ，它依赖于一系列的参数 \(\theta\) 。对于所有的 \(x\) 和 \(t\) ，我们希望尽可能近似，所以有如下公式：</p>
+            <div class="highlight-math scroll-container" style="text-align: center;">
+                \(J(\theta) :\stackrel{?}{=} \frac{1}{2}\int dxdt[s_{\theta}(x, t) - \Delta_xlogp(x, t)]^2\)
+            </div>
+            <p>上面的目标函数有个问题就是没有考虑有特定的 \(x\) 比其它更有价值。我们特别感兴趣的是让得分函数对哪些可能性很高的值计算正确，因此对上述内容进行合理的修改：</p>
+            <div class="highlight-math scroll-container" style="text-align: center;">
+                \(J(\theta) :\stackrel{?}{=} \frac{1}{2}\int dxdtp(x, t)[s_{\theta}(x, t) - \Delta_xlogp(x, t)]^2\)
+            </div>
+            <p>类似的，我们可以考虑添加一个随着时间而变化的加权因子，因为与精确得分函数的偏差尺度会随着时间而改变：</p>
+            <div class="highlight-math scroll-container" style="text-align: center;">
+                \(J_{naive}(\theta) :\stackrel{?}{=} \frac{1}{2}\int dxdt\lambda(t)p(x, t)[s_{\theta}(x, t) - \Delta_xlogp(x, t)]^2\)
+            </div>
+            <p>这是一个非常合理的目标函数。但我们有一个重大的问题：就是很难估计 \(p(x,t)\) 的梯度，因为 \(p(x, t)\) 可能强烈依赖于 \(p(x, 0)\) （比如目标分布）。我们不知道目标分支，这就是我们做着一切的原因。</p>
+            <p>此时，我们可以使用一个有趣的技巧。尽管上述目标函数非常合理，但很难使用；技巧是找到具有相同全局最小值的代替目标函数。事实证明，可以通过以下公式提供：</p>
+
             <h4>11.1.4.1 定义目标函数</h4>
             <h4>11.1.4.2 使用样本逼近</h4>
+            <p>转移概率对数的梯度为：</p>
+            <div class="highlight-math scroll-container" style="text-align: center;">
+                \(\Delta_xlogp(x, t|x^{(0)}, 0) = - \frac{[x - x^{(0)}]}{\sigma^2(t)}\)
+            </div>
+            <p>现在我们可以近似地评估损失函数，可以让计算机处理梯度...剩下的是计算时间！</p>
             <h4>11.1.4.3 神经网络逼近</h4>
+            <p>现在我们有了一个定义明确的优化问题，以及一个解决该问题的简单方法，我们开业i利用各种工具来解决这个问题。由于我们需要构建得分函数的一些参数化近似值，（深度）神经网络就是这样一种工具。</p>
+            <p>转向神经网络并不需要对我们上面概述的图景进行任何实质性的概念改变。我们将会在下一个小节看到，一旦其它一切都设置好，将神经网络作为得分函数近似器实际上就非常简单！</p>
 
             <div class="navigation">
                 <a href="#">上一节：1.0 环境配置</a>
