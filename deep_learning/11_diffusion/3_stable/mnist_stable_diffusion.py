@@ -6,6 +6,95 @@ import functools
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 import torch
+import matplotlib.pyplot as plt
+from torchvision.utils import make_grid
+
+def forward_diffusion_1D(x0, noise_strength_fn, t0, nsteps, dt):
+    '''
+    x0: initial sample value, scalar
+    noise_strength_fn: function of time, outputs scalar noise strength
+    t0: initial time
+    nsteps: number of diffusion steps
+    dt: time step size
+    '''
+    # Initialize trajectory.
+    x = np.zeros(nsteps+1)
+    x[0] = x0
+    t = t0 + np.arange(nsteps+1) * dt
+    
+    # Perform many Euler-Maruyama time steps.
+    for i in range(nsteps):
+        noise_strength = noise_strength_fn(t[i])
+        random_normal = np.random.randn()
+        x[i+1] = x[i] + np.sqrt(dt) * noise_strength * random_normal
+    return x, t
+
+# Example noise strength function: always equal to 1.
+def noise_strength_constant(t):
+    return 1
+
+nsteps = 100
+t0 = 0
+dt = 0.1
+noise_strength_fn = noise_strength_constant
+x0 = 0
+num_tries = 5
+for i in range(num_tries):
+    x, t = forward_diffusion_1D(x0, noise_strength_fn, t0, nsteps, dt)
+    
+    plt.plot(t, x)
+    plt.xlabel('time')
+    plt.ylabel('$x$')
+plt.title('Forward diffusion visualized')
+plt.show()
+
+# Simulate forward diffusion for N steps.
+def reverse_diffusion_1D(x0, noise_strength_fn, score_fn, T, nsteps, dt):
+    '''
+    x0: initial sample value, scalar
+    noise_strength_fn: function of time, outputs scalar noise strength
+    score_fn: score_function
+    T: final time
+    nsteps: number of diffusion steps
+    dt: time step size
+    '''
+    # Initialize trajectory.
+    x = np.zeros(nsteps+1)
+    x[0] = x0
+    t = np.arange(nsteps+1) * dt
+    
+    # Perform many Euler-Maruyama time steps.
+    for i in range(nsteps):
+        noise_strength = noise_strength_fn(T - t[i])
+        score = score_fn(x[i], 0, noise_strength, T - t[i])
+        random_normal = np.random.randn()
+        x[i+1] = x[i] + (noise_strength**2)*score*dt + np.sqrt(dt) * noise_strength * random_normal
+    return x, t
+
+# Example noise strength function: always equal to 1.
+def score_simple(x, x0, noise_strength, t):
+    score = - (x - x0) / ((noise_strength**2)*t)
+    return score
+
+nsteps = 100
+t0 = 0
+dt = 0.1
+noise_strength_fn = noise_strength_constant
+score_fn = score_simple
+x0 = 0
+T = 11
+
+num_tries = 5
+for i in range(num_tries):
+    # Draw from the noise distribution.
+    x0 = np.random.normal(loc=0, scale=T)
+    x, t = reverse_diffusion_1D(x0, noise_strength_fn, score_fn, T, nsteps, dt)
+    plt.plot(t, x)
+    plt.xlabel('time')
+    plt.ylabel('$x$')
+    plt.title('Reverse diffusion visualized')
+plt.show()
+
 
 # residual block
 class ResBlock(nn.Module):
@@ -62,6 +151,3 @@ def Euler_Maruyama_sampler(score_model,
 digit = 4
 sample_batch_size = 64
 num_steps = 250
-
-
-sampler = Euler_Maruyama_sampler
