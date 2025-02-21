@@ -1,101 +1,40 @@
 # 机器学习系列
 
-🚀 **[访问官方网站](https://artinte.github.io/machine-learning-series/)** 🌟
+🚀🚀🚀 **[访问官方网站](https://artinte.github.io/machine-learning-series/)** 🌟🌟🌟
 
 《机器学习系列》是一个深入浅出地介绍机器学习各个领域的学习资源的集合，旨在帮助读者全面理解和掌握机器学习的核心技术与应用。包括以下几个部分：
 
-* [Python 语言入门](https://docs.google.com/document/d/13dJIhnj4FbxFApRbaxyYz436vsRMAK9FhqPyuqBMY9Q/edit?usp=sharing)
+* Python 语言入门
 
 * 深度学习 7 天速成
 
-* [深度学习综合指南](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?usp=sharing)
+* [深度学习综合指南](https://artinte.github.io/machine-learning-series/deep_learning/index.html)  
 
-* [机器学习速览课程](https://developers.google.com/machine-learning/crash-course)
+* TensorFlow 详解
 
----
+* PyTorch 详解
 
-## 📖 深度学习 7 天速成
+* 微型数据集
 
-这是《深度学习综合指南》的极简版，手写几个典型的神经网络模型，快速建立对深度学习的认识，判断自己是否想要继续学习。相比于现有的经验知识，学习的兴趣更加重要！
+* 经典论文
 
-* [ [VIDEO](https://youtu.be/op7y3C70YFU) ] 1-1-《深度学习 7 天速成》课程介绍
+* 预科微积分
 
-**第 01 天：NumPy 介绍**
+* 微积分
 
-讲述 [1.2 小节 - NumPy 介绍](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?tab=t.0#heading=h.2487081sleby) 的内容，主要分为三个部分：数组创建、数组索引、数组计算。
+* 统计学介绍
 
-* [ [VIDEO](https://youtu.be/5KISqYekgxA) ] 1-2-NumPy（多维数组计算库）入门
-* [ [VIDEO]() ] 1-3-数组创建：几种常用方法
-* [ [VIDEO]() ] 1-4-数组索引 `indexing` ：基础和高级
-* [ [VIDEO]() ] 1-5-数组计算：排序、统计、转换等
+* 线性代数
 
-**第 02 天：线性回归**
+* 数据结构与算法
 
-讲述 [1.5 小节 - 机器学习求解](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?tab=t.0#heading=h.18l76umvbf2c) 的内容，找到随机分布点的最佳拟合直线。
-
-* [ [VIDEO]() ] 1-6-使用线性回归模型寻找最佳拟合直线
-* [ [VIDEO]() ] 1-7-Matplotlib 绘制线性回归动画
-
-**第 03 天：二分类**
-
-讲述 [2.2 小节 - 人工神经网络](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?tab=t.0#heading=h.y414c71icdjb) 和 [3.2 小节 - 二分类问题](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?tab=t.0#heading=h.gwlce2gp5532) 的内容，理解深度学习原理，解决二分类问题，快速认识模型架构。
-
-* [ [VIDEO]() ] 1-8-深度学习原理（前向和反向传播）
-* [ [VIDEO]() ] 1-9-使用 Keras 快速实现二分类模型
-
-**第 04 天：全连接神经网络**
-
-讲述 [4.5 小节 - 手写神经网络](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?tab=t.0#heading=h.cloq0vde3l33) 的内容，详解反向传播算法，理解全连接神经网络。
-
-* [ [VIDEO]() ] 1-10-全连接网络的前向传播
-* [ [VIDEO]() ] 1-11-微积分中的导数和链式法则
-* [ [VIDEO]() ] 1-12-手写梯度计算训练神经网络
-
-**第 05 天：卷积神经网络**
-
-讲述 [7.2 小节 - 手写卷积网络](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?tab=t.0#heading=h.55wghfs6kp0) 的内容，理解卷积和池化操作，解决图片识别问题。
-
-* [ [VIDEO]() ] 1-13-加载 MNIST 手写数据集
-* [ [VIDEO]() ] 1-14-理解卷积网络的卷积操作
-* [ [VIDEO]() ] 1-15-理解卷积网络的池化操作
-* [ [VIDEO]() ] 1-16-手写卷积网络的训练过程
-
-**第 06 天：循环神经网络**
-
-讲述 [8.1 小节 - 循环神经网络入门](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?tab=t.0#heading=h.jkz5isqopbs9) 的内容，处理时序样本，对文本内容进行好与坏的分类。
-
-* 1-46-介绍
-* 1-47-如何实现
-* 1-48-问题
-* 1-49-计划
-* 1-50-预处理
-* 1-51-前向传播
-* 1-52-反向传播
-* 1-53-完整训练过程
-
-**第 07 天：注意力机制**
-
-讲述 [9.3 小节 - Transformer 分解](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?tab=t.0#heading=h.pxwhv6bfacd4) 的内容，详细介绍注意力机制，理解 Transformer 架构。
-
-* 1-54-定义数据集
-* 1-55-单词编码
-* 1-56-计算嵌入
-* 1-57-位置编码
-* 1-58-嵌入连接
-* 1-59-多头注意力
-* 1-60-加法和标准化
-* 1-61-解码器部分
-* 1-62-掩码多头注意力
-* 1-63-预测单词
-* 1-64-总结
-
-这 7 天的学习涵盖了深度学习的核心内容，从数据处理到模型构建，以及最流行的注意力机制，层层递进，为深入理解人工智能技术奠定了坚实基础。
+* 面试真题
 
 ---
 
-## 📖 [深度学习综合指南](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?usp=sharing)
 
-[ [在线文档](https://docs.google.com/document/d/18V6H_600l-drkXd99pjNtSJtA7rIWWnER-KxIrB-lQY/edit?usp=sharing) ]  [ [英文版](https://docs.google.com/document/d/16bXNMj1Wslx6jSskyvsovPVzUt9eKmuOMAUktYHHa3s/edit?usp=sharing) ]   
+## 📖 [深度学习综合指南](https://artinte.github.io/machine-learning-series/deep_learning/index.html)
+
 
 这是一本面向初学者的深度学习综合指南。编写过程中借鉴了大量的经典教材、论文、文章，包括使用 AI 生成许多代码片段。教程主要分为四个阶段： 
 
@@ -352,14 +291,3 @@
 
 `nanoGPT` 是最简单、最快的中型 GPT 训练/微调存储库，优先考虑实用性而非教育性。介绍 Llama 开源模型，包括如何访问模型、托管、操作方法和集成指南。
 
----
-
-## 📖 [Python 语言 12 天速成](https://docs.google.com/document/d/13dJIhnj4FbxFApRbaxyYz436vsRMAK9FhqPyuqBMY9Q/edit?usp=sharing)
-
-[ [在线文档](https://docs.google.com/document/d/13dJIhnj4FbxFApRbaxyYz436vsRMAK9FhqPyuqBMY9Q/edit?usp=sharing) ] [ [YouTube 视频](https://www.youtube.com/@machine-learning-series) ]
-
----
-
-## 参考教材
-
-* [An Introduction to Bayesian Thinking](https://statswithr.github.io/book/)
