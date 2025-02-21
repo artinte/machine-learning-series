@@ -9,4 +9,5 @@ def bubble_sort(nums: list[int]):
                 nums[j], nums[j + 1] = nums[j + 1], nums[j]
     return nums
 
+
 print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))

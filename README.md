@@ -1,6 +1,6 @@
 # 机器学习系列
 
-[ [视频讲解](https://www.youtube.com/@machine-learning-series/) ] [ [官方网站](https://artinte.github.io/machine-learning-series/) ]
+🚀 **[访问官方网站](https://artinte.github.io/machine-learning-series/)** 🌟
 
 《机器学习系列》是一个深入浅出地介绍机器学习各个领域的学习资源的集合，旨在帮助读者全面理解和掌握机器学习的核心技术与应用。包括以下几个部分：
 
