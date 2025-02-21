@@ -130,26 +130,45 @@
                         <li><p>5. 仅剩的一个元素必定是最大元素，无须排序，因此数组排序完成。</p></li>
                     </ul>
                     <pre><code>def selection_sort(nums: list[int]):
-        n = len(nums)
-        # 外循环：未排序区间为 [i, n-1]
-        for i in range(n - 1):
-            # 内循环：找到未排序区间内的最小元素
-            k = i
-            for j in range(i + 1, n):
-                if nums[j] < nums[k]:
-                    k = j
-            # 将该最小元素与未排序区间的首个元素交换
-            nums[i], nums[k] = nums[k], nums[i]
-        return nums
-    
-    
-    print(selection_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
+    n = len(nums)
+    # 外循环：未排序区间为 [i, n-1]
+    for i in range(n - 1):
+        # 内循环：找到未排序区间内的最小元素
+        k = i
+        for j in range(i + 1, n):
+            if nums[j] < nums[k]:
+                k = j
+        # 将该最小元素与未排序区间的首个元素交换
+        nums[i], nums[k] = nums[k], nums[i]
+    return nums
+
+
+print(selection_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
 
                     <h3 id="section4-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.2 冒泡排序</a>
                     </h3>
-                    <p><strong>冒泡排序 (Bubble Sort)</strong> 通过连续第比较与交换相邻元素实现排序。这个过程就像气泡从底部升到顶部一样，因此得名冒泡排序。</p>
+                    <p><strong>冒泡排序 (Bubble Sort)</strong> 通过连续地比较与交换相邻元素实现排序。这个过程就像气泡从底部升到顶部一样，因此得名冒泡排序。</p>
+                    <p>设数组的长度为 \(n\) ，冒泡排序的算法如下：</p>
+                    <ul>
+                        <li><p>1. 首先，对 你个元素执行“冒泡”，将数组的最大元素交换至正确位置。</p></li>
+                        <li><p>2. 接下来，对剩余 \(n - 1\) 个元素执行“冒泡”，将第二大元素交换至正确位置。</p></li>
+                        <li><p>3. 以此类推，经过 \(n - 1\) 轮“冒泡”后，前 \(n - 1\) 大的元素都被交换至正确位置。</p></li>
+                        <li><p>4. 仅剩的一个元素必定是最小元素，无须排序，因此数组排序完成。</p></li>
+                    </ul>
+                    <pre><code>def bubble_sort(nums: list[int]):
+    n = len(nums)
+    # 外循环：未排序未 [0, i]
+    for i in range(n - 1, 0, -1):
+        # 内循环：将未排序区间 [0, i] 中的最大元素交换至该区间的最右端
+        for j in range(i):
+            if nums[j] > nums[j + 1]:
+                # 交换
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
+    return nums
 
+
+print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
                     <h3 id="section4-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.3 插入排序</a>
                     </h3>
