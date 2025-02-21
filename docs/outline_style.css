@@ -132,6 +132,23 @@ img {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 -2px 6px rgba(0, 0, 0, 0.1);;
 }
+pre {
+    background: #E3F2FD;
+    color: #212121;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-size: 0.9em;
+}
+.added {
+    color: #10e6e2;
+    display: inline-block;
+    width: 100%;
+}
+code {
+    font-family: "Courier New", Courier, monospace;
+}
 
 /* 移动端样式（只在屏幕宽度 < 1024 px 时生效 */
 @media screen and (max-width: 1024px) {

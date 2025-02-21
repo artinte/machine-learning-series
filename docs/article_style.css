@@ -105,15 +105,6 @@ code {
     background-color: #f1c40f;
     font-weight: bold;
 }
-pre {
-    background: #E3F2FD;
-    color: #212121;
-    padding: 15px;
-    border-radius: 5px;
-    overflow-x: auto;
-    margin: 20px 0;
-    font-size: 0.9em;
-}
 ul {
     list-style: none;
     padding-left: 20px;
