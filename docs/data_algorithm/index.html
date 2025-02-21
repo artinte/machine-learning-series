@@ -179,6 +179,36 @@ print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
                     </h3>
                     <p><strong>快速排序 (Quick Sort)</strong> 是一种基于分治策略的排序算法，运行高效，应用广泛。</p>
                     <p>快速排序的核心操作是哨兵划分，其目标是：选择数组中的某个元素作为基准数，将所有小于基准值的元素移动到其左侧，而大于基准值的元素移动到右侧。</p>
+                    <p>哨兵划分完成后，原数组被划分成三部分：左子数组、基准数、右子数组，且满足 “左子数组任意元素 <= 基准数 <= 右子数组任意元素” 。因此，我们接下来只需对这两个子数组进行排序。</p>
+                    <p>def partition(nums: list[int], left, right) -> int:
+    # 以 nums[left] 为基准数
+    i, j = left, right
+    
+    while i < j:
+        while i < j and nums[j] >= nums[left]:
+            # 从右向左找首个小于基准数的元素
+            j -= 1
+        while i < j and nums[i] <= nums[left]:
+            # 从左向右找首个大于基准数的元素
+            i += 1
+        # 元素交换
+        nums[i], nums[j] = nums[j], nums[i]
+    # 将基准数交换到两子数组的分界线
+    nums[i], nums[left] = nums[left], nums[i]
+    # 返回基准数的索引
+    return i
+
+def quick_sort(nums: list[int], left, right):
+    if left >= right:
+        return
+    # 哨兵划分
+    pivot = partition(nums, left, right)
+    quick_sort(nums, left, pivot - 1)
+    quick_sort(nums, pivot + 1, right)
+
+nums = [6, 4, 7, 5, 1, 8, 3, 9, 2]
+quick_sort(nums, 0, len(nums) - 1)
+print(nums)</p>
                 </section>
 
                 <section id="section5" class="content-section">
@@ -191,6 +221,8 @@ print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
 
                 <section id="section6" class="content-section">
                     <h2>06 回溯</h2>
+                    <p><strong>回溯算法 (Backtracking Algorithm)</strong> 是一种通过穷举来解决问题的方法，它的核心思想是从一个初始状态出发，暴力搜索所有可能的解决方案，当遇到正确的解则将其记录，直到找到解或者尝试了所有可能的选择都无法找到解为止。</p>
+
 
                     <h3 id="section6-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">6.1 回溯算法</a>
@@ -199,6 +231,7 @@ print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
 
                 <section id="section7" class="content-section">
                     <h2>07 动态规划</h2>
+                    <p><strong>动态规划 (Dynamic Programming)</strong> 是一个重要的算法范式，它将一个问题分解为一系列更小的子问题，并通过存储子问题的解来避免重复计算，从而大幅提升时间效率。</p>
 
                     <h3 id="section7-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">7.1 初探动态规划</a>
@@ -207,10 +240,12 @@ print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
 
                 <section id="section8" class="content-section">
                     <h2>08 贪心</h2>
+                    <p><strong>贪心算法 (Greedy Algorithm)</strong> 是一种常见的解决优化问题的算法，其基本思想是在问题的每个决策阶段，都选择当前看起来最优的选择。</p>
 
                     <h3 id="section8-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">8.1 贪心算法</a>
                     </h3>
+                    <p><strong>贪心算法 (Greedy Algorithm)</strong> 是一种常见的解决优化问题的算法，其基本思想是在问题的每个决策阶段，都选择当前看起来最优的选择，即贪心地做出局部做优的决策，以期获得全局最优解。贪心算法简洁且高效，在许多实际问题中有着广泛的应用。</p>
                 </section>
             </main>
 
