@@ -312,7 +312,9 @@ print([node.val for node in result])</code></pre>
                 <section id="section14" class="content-section">
                     <h2>14 动态规划</h2>
                     <p><strong>动态规划 (Dynamic Programming)</strong> 是一个重要的算法范式，它将一个问题分解为一系列更小的子问题，并通过存储子问题的解来避免重复计算，从而大幅提升时间效率。</p>
-
+                    <p>在本节中，我们从一个经典例题入手，先给出它的暴力回溯解法，观察其中包含的重叠子问题，再逐步导出更高效的动态规划解法。</p>
+                    <p>给定一个共有 n 阶的楼梯，我们每步可以上 1 阶或者 2 阶，请问有多少种方案可以爬到楼顶？</p>
+                    <p>本题的目标是求解方案的数量，我们可以考虑通过回溯来穷举所有的可能性。具体来说，将爬楼梯想象为一个多轮选择的过程：从地面出发，美伦选择上 1 阶或 2 阶，每当到达楼梯顶部时就将方案数量加 1，当越过楼梯顶部时就将其剪枝。</p>
                     <h3 id="section14-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">14.1 初探动态规划</a>
                     </h3>
