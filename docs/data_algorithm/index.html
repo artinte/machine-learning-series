@@ -15,57 +15,76 @@
             <!-- 左侧目录 -->
             <nav class="col-md-2 bg-light sidebar">
                 <h5 class="p-3"><a href="../index.html">主页</a></h5>
+                <p>以 <a href="https://www.hello-algo.com/">Hello 算法</a> 为蓝本，快速复习数据结构和算法的知识！</p>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01 数组与链表</a>
+                        <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01 初识算法</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02 复杂度分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section3" onclick="toggleChildChapters(event, 'chapter3')">03 数据结构</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section4" onclick="toggleChildChapters(event, 'chapter1')">04 数组与链表</a>
                         <ul id="chapter1" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section1-sub1">1.1 数组</a></li>
-                            <li><a class="nav-link" href="#section1-sub2">1.2 链表</a></li>
-                            <li><a class="nav-link" href="#section1-sub3">1.3 列表</a></li>
+                            <li><a class="nav-link" href="#section4-sub1">4.1 数组</a></li>
+                            <li><a class="nav-link" href="#section4-sub2">4.2 链表</a></li>
+                            <li><a class="nav-link" href="#section4-sub3">4.3 列表</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02 栈与队列</a>
-                        <ul id="chapter2" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section2-sub1">2.1 栈</a></li>
-                            <li><a class="nav-link" href="#section2-sub2">2.2 队列</a></li>
-                            <li><a class="nav-link" href="#section2-sub2">2.2 双向队列</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#section3" onclick="toggleChildChapters(event, 'chapter3')">03 树</a>
-                        <ul id="chapter3" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section3-sub1">3.1 二叉树</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#section4" onclick="toggleChildChapters(event, 'chapter4')">04 排序</a>
-                        <ul id="chapter4" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section4-sub1">3.1 二叉树</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#section5" onclick="toggleChildChapters(event, 'chapter5')">05 分治与递归</a>
+                        <a class="nav-link" href="#section5" onclick="toggleChildChapters(event, 'chapter5')">05 栈与队列</a>
                         <ul id="chapter5" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section5-sub1">5.1 分治算法</a></li>
+                            <li><a class="nav-link" href="#section5-sub1">5.1 栈</a></li>
+                            <li><a class="nav-link" href="#section5-sub2">5.2 队列</a></li>
+                            <li><a class="nav-link" href="#section5-sub2">5.3 双向队列</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section6" onclick="toggleChildChapters(event, 'chapter6')">06 回溯</a>
-                        <ul id="chapter6" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section6-sub1">6.1 回溯算法</a></li>
-                        </ul>
+                        <a class="nav-link" href="#section6" onclick="toggleChildChapters(event, 'chapter6')">06 哈希表</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section7" onclick="toggleChildChapters(event, 'chapter7')">07 动态规划</a>
+                        <a class="nav-link" href="#section7" onclick="toggleChildChapters(event, 'chapter7')">07 树</a>
                         <ul id="chapter7" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section7-sub1">7.1 初探动态规划</a></li>
+                            <li><a class="nav-link" href="#section7-sub1">3.1 二叉树</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section8" onclick="toggleChildChapters(event, 'chapter8')">08 贪心</a>
-                        <ul id="chapter8" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section8-sub1">8.1 贪心算法</a></li>
+                        <a class="nav-link" href="#section8" onclick="toggleChildChapters(event, 'chapter8')">08 堆</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section9" onclick="toggleChildChapters(event, 'chapter9')">09 图</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section10" onclick="toggleChildChapters(event, 'chapter10')">10 搜索</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section11" onclick="toggleChildChapters(event, 'chapter11')">10 排序</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section12" onclick="toggleChildChapters(event, 'chapter12')">12 分治</a>
+                        <ul id="chapter12" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section12-sub1">12.1 分治算法</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section13" onclick="toggleChildChapters(event, 'chapter13')">13 回溯</a>
+                        <ul id="chapter13" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section13-sub1">13.1 回溯算法</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section14" onclick="toggleChildChapters(event, 'chapter14')">14 动态规划</a>
+                        <ul id="chapter14" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section14-sub1">14.1 初探动态规划</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section15" onclick="toggleChildChapters(event, 'chapter15')">15 贪心</a>
+                        <ul id="chapter15" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section15-sub1">15.1 贪心算法</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -75,50 +94,75 @@
             <main class="col-md-8">
                 <h1>数据结构与算法</h1>
                 <section id="section1" class="content-section">
-                    <h2>01 数组与链表</h2>
+                    <h2>01 初识算法</h2>
+                </section>
+                <section id="section2" class="content-section">
+                    <h2>02 复杂度分析</h2>
+                </section>
+                <section id="section3" class="content-section">
+                    <h2>03 数据结构</h2>
+                </section>
+                <section id="section4" class="content-section">
+                    <h2>04 数组与链表</h2>
 
-                    <h3 id="section1-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">1.1 数组</a>
+                    <h3 id="section4-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">4.1 数组</a>
                     </h3>
 
-                    <h3 id="section1-sub2" class="content-section-sub">
-                        <a href="linked_list.html" style="color: inherit;">1.2 链表</a>
+                    <h3 id="section4-sub2" class="content-section-sub">
+                        <a href="#" style="color: inherit;">4.2 链表</a>
                     </h3>
 
-                    <h3 id="section1-sub3" class="content-section-sub">
-                        <a href="#" style="color: inherit;">1.2 列表</a>
+                    <h3 id="section4-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">4.3 列表</a>
                     </h3>
                 </section>
 
-                <section id="section2" class="content-section">
-                    <h2>02 栈与队列</h2>
+                <section id="section5" class="content-section">
+                    <h2>05 栈与队列</h2>
 
-                    <h3 id="section2-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">2.1 栈</a>
+                    <h3 id="section5-sub1" class="content-section-sub">
+                        <a href="#" style="text-decoration:none; color: inherit;">5.1 栈</a>
                     </h3>
 
                     <h3 id="section2-sub2" class="content-section-sub">
-                        <a href="#" style="color: inherit;">2.2 队列</a>
+                        <a href="#" style="text-decoration:none; color: inherit;">5.2 队列</a>
                     </h3>
 
                     <h3 id="section2-sub3" class="content-section-sub">
-                        <a href="#" style="color: inherit;">2.3 双向队列</a>
+                        <a href="#" style="text-decoration:none; color: inherit;">5.3 双向队列</a>
                     </h3>
                 </section>
 
-                <section id="section3" class="content-section">
-                    <h2>03 树</h2>
+                <section id="section6" class="content-section">
+                    <h2>06 哈希表</h2>
+                </section>
 
-                    <h3 id="section3-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">3.1 二叉树</a>
+                <section id="section7" class="content-section">
+                    <h2>07 树</h2>
+
+                    <h3 id="section7-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">7.1 二叉树</a>
                     </h3>
                 </section>
 
-                <section id="section4" class="content-section">
-                    <h2>04 排序</h2>
+                <section id="section8" class="content-section">
+                    <h2>08 堆</h2>
+                </section>
 
-                    <h3 id="section4-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">4.1 选择排序</a>
+                <section id="section9" class="content-section">
+                    <h2>09 图</h2>
+                </section>
+
+                <section id="section10" class="content-section">
+                    <h2>10 搜索</h2>
+                </section>
+
+                <section id="section11" class="content-section">
+                    <h2>11 排序</h2>
+
+                    <h3 id="section11-sub1" class="content-section-sub">
+                        <a href="#" style="text-decoration: none; color: inherit;">11.1 选择排序</a>
                     </h3>
                     <p><strong>选择排序 (Selection Sort)</strong> 的工作原理非常简单：开启一个循环，每轮从未排序区间选择最小的元素，将其放到已排序区间的末尾。</p>
                     <p>设数组的长度为 \(n\) ，选择排序的算法如下：</p>
@@ -136,7 +180,7 @@
         # 内循环：找到未排序区间内的最小元素
         k = i
         for j in range(i + 1, n):
-            if nums[j] < nums[k]:
+            if nums[j] &lt; nums[k]:
                 k = j
         # 将该最小元素与未排序区间的首个元素交换
         nums[i], nums[k] = nums[k], nums[i]
@@ -145,8 +189,8 @@
 
 print(selection_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
 
-                    <h3 id="section4-sub2" class="content-section-sub">
-                        <a href="#" style="color: inherit;">4.2 冒泡排序</a>
+                    <h3 id="section11-sub2" class="content-section-sub">
+                        <a href="#" style="text-decoration: none; color: inherit;">4.2 冒泡排序</a>
                     </h3>
                     <p><strong>冒泡排序 (Bubble Sort)</strong> 通过连续地比较与交换相邻元素实现排序。这个过程就像气泡从底部升到顶部一样，因此得名冒泡排序。</p>
                     <p>设数组的长度为 \(n\) ，冒泡排序的算法如下：</p>
@@ -169,13 +213,13 @@ print(selection_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
 
 
 print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
-                    <h3 id="section4-sub2" class="content-section-sub">
-                        <a href="#" style="color: inherit;">4.3 插入排序</a>
+                    <h3 id="section11-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">11.3 插入排序</a>
                     </h3>
                     <p><strong>插入排序 (Insertion Sort)</strong> 是一种简单的排序算法，它的工作原理与手动整理一副牌的过程非常相似。</p>
 
                     <h3 id="section4-sub2" class="content-section-sub">
-                        <a href="#" style="color: inherit;">4.4 快速排序</a>
+                        <a href="#" style="color: inherit;">11.4 快速排序</a>
                     </h3>
                     <p><strong>快速排序 (Quick Sort)</strong> 是一种基于分治策略的排序算法，运行高效，应用广泛。</p>
                     <p>快速排序的核心操作是哨兵划分，其目标是：选择数组中的某个元素作为基准数，将所有小于基准值的元素移动到其左侧，而大于基准值的元素移动到右侧。</p>
@@ -184,11 +228,11 @@ print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
     # 以 nums[left] 为基准数
     i, j = left, right
     
-    while i < j:
-        while i < j and nums[j] >= nums[left]:
+    while i &lt; j:
+        while i &lt; j and nums[j] >= nums[left]:
             # 从右向左找首个小于基准数的元素
             j -= 1
-        while i < j and nums[i] <= nums[left]:
+        while i &lt; j and nums[i] &lt;= nums[left]:
             # 从左向右找首个大于基准数的元素
             i += 1
         # 元素交换
@@ -211,39 +255,39 @@ quick_sort(nums, 0, len(nums) - 1)
 print(nums)</code></pre>
                 </section>
 
-                <section id="section5" class="content-section">
-                    <h2>05 分治与递归</h2>
+                <section id="section12" class="content-section">
+                    <h2>12 分治</h2>
 
-                    <h3 id="section5-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">5.1 分治算法</a>
+                    <h3 id="section12-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">12.1 分治算法</a>
                     </h3>
                 </section>
 
-                <section id="section6" class="content-section">
-                    <h2>06 回溯</h2>
+                <section id="section13" class="content-section">
+                    <h2>13 回溯</h2>
                     <p><strong>回溯算法 (Backtracking Algorithm)</strong> 是一种通过穷举来解决问题的方法，它的核心思想是从一个初始状态出发，暴力搜索所有可能的解决方案，当遇到正确的解则将其记录，直到找到解或者尝试了所有可能的选择都无法找到解为止。</p>
 
 
-                    <h3 id="section6-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">6.1 回溯算法</a>
+                    <h3 id="section13-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">13.1 回溯算法</a>
                     </h3>
                 </section>
 
-                <section id="section7" class="content-section">
-                    <h2>07 动态规划</h2>
+                <section id="section14" class="content-section">
+                    <h2>14 动态规划</h2>
                     <p><strong>动态规划 (Dynamic Programming)</strong> 是一个重要的算法范式，它将一个问题分解为一系列更小的子问题，并通过存储子问题的解来避免重复计算，从而大幅提升时间效率。</p>
 
-                    <h3 id="section7-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">7.1 初探动态规划</a>
+                    <h3 id="section14-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">14.1 初探动态规划</a>
                     </h3>
                 </section>
 
-                <section id="section8" class="content-section">
-                    <h2>08 贪心</h2>
+                <section id="section15" class="content-section">
+                    <h2>15 贪心</h2>
                     <p><strong>贪心算法 (Greedy Algorithm)</strong> 是一种常见的解决优化问题的算法，其基本思想是在问题的每个决策阶段，都选择当前看起来最优的选择。</p>
 
                     <h3 id="section8-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">8.1 贪心算法</a>
+                        <a href="#" style="color: inherit;">15.1 贪心算法</a>
                     </h3>
                     <p><strong>贪心算法 (Greedy Algorithm)</strong> 是一种常见的解决优化问题的算法，其基本思想是在问题的每个决策阶段，都选择当前看起来最优的选择，即贪心地做出局部做优的决策，以期获得全局最优解。贪心算法简洁且高效，在许多实际问题中有着广泛的应用。</p>
                     <p>我们先通过例题“零钱兑换”了解贪心算法的工作原理。</p>
