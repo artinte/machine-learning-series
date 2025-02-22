@@ -265,12 +265,48 @@ print(nums)</code></pre>
 
                 <section id="section13" class="content-section">
                     <h2>13 回溯</h2>
-                    <p><strong>回溯算法 (Backtracking Algorithm)</strong> 是一种通过穷举来解决问题的方法，它的核心思想是从一个初始状态出发，暴力搜索所有可能的解决方案，当遇到正确的解则将其记录，直到找到解或者尝试了所有可能的选择都无法找到解为止。</p>
-
-
                     <h3 id="section13-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">13.1 回溯算法</a>
+                        <a href="https://www.hello-algo.com/chapter_backtracking/backtracking_algorithm/" style="color: inherit;">13.1 回溯算法</a>
                     </h3>
+                    <p><strong>回溯算法 (Backtracking Algorithm)</strong> 是一种通过穷举来解决问题的方法，它的核心思想是从一个初始状态出发，暴力搜索所有可能的解决方案，当遇到正确的解则将其记录，直到找到解或者尝试了所有可能的选择都无法找到解为止。</p>
+                    <p>回溯算法通常采用“深度优先搜索”来遍历解空间，接下来我们利用前序遍历构造一个回溯问题，逐步了解回溯算法的工作原理。</p>
+                    <p>给定一个二叉树，搜索并记录所有值为 7 的节点，请返回节点列表。</p>
+                    <pre><code>class TreeNode:
+    def __init__(self, val=0):
+        self.val = val
+        self.left: TreeNode | None = None
+        self.right: TreeNode | None = None
+
+
+def list_to_tree_dfs(arr: list[int], i: int) -> TreeNode | None:
+    # 使用递归将列表反序列化为二叉树
+    # 如果索引超出数组长度，或者对应的元素为 None ，则返回 None
+    if i &lt; 0 or i >= len(arr) or arr[i] is None:
+        return None
+    root = TreeNode(arr[i])
+    # 递归构建左右子树
+    root.left = list_to_tree_dfs(arr, 2 * i + 1)
+    root.right = list_to_tree_dfs(arr, 2 * i + 2)
+    return root
+
+
+result = list[TreeNode]()
+
+
+def pre_order(root: TreeNode):
+    if root is None:
+        return
+    if root.val == 7:
+        result.append(root)
+    pre_order(root.left)
+    pre_order(root.right)
+
+
+root = list_to_tree_dfs([1, 7, 3, 4, 5, 6, 7], 0)
+pre_order(root)
+print([node.val for node in result])</code></pre>
+                    <p>之所以称为回溯算法，是因为该算法在搜索解空间时会采用<strong>尝试</strong>与<strong>回退</strong>的策略。当算法在搜索过程中遇到某个状态无法继续前进或无法得到满足条件的解时，它会撤销上一步的选择，退回到之前的状态，并尝试其它可能的选择。</p>
+                    <p>在上述代码中，访问每个节点都代表一次尝试，而越过叶节点或返回父节点的 <code>return</code> 则表示回退。</p>
                 </section>
 
                 <section id="section14" class="content-section">
