@@ -792,9 +792,17 @@ print(hmap)</code></pre>
                 <section id="section7" class="content-section">
                     <h2>07 树</h2>
 
-                    <h3 id="section7-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">7.1 二叉树</a>
-                    </h3>
+                    <h3 id="section7-sub1">7.1 二叉树</h3>
+                    <p><strong>二叉树 (Binary Tree)</strong> 是一种非线性数据结构，代表“祖先”与“后代”之间的派生关系，体现了“一分为二”的分治逻辑。与链表类似，二叉树的基本单元是节点，每个节点包含值、左子节点引用和右子节点引用。</p>
+                    <pre><code>class TreeNode:
+    def __init__(self, value=0, left=None, right=None) -> None:
+        self.value = value
+        self.left = left
+        self.right = right</code></pre>
+
+                    <h3 id="section7-sub2">7.2 二叉树的遍历</h3>
+                    <p><strong>层序遍历 (Level-Order Traversal)</strong> 从顶部到底部逐层遍历二叉树，并在每一层按照从左到右的顺序访问节点。</p>
+                    <p>层序遍历本质上属于 <strong>广度优先遍历 (Breadth-first Traversal)</strong> ，它体现了一种“一圈一圈向外扩展”的逐层遍历方式。</p>
                 </section>
 
                 <section id="section8" class="content-section">

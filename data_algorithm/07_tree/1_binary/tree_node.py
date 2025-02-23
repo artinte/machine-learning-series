@@ -15,7 +15,9 @@ def build_tree():
             nodes[i].right = nodes[right_index]
     return nodes[0]
 
+
 root = build_tree()
+
 
 def print_tree(node):
     if node is not None:
@@ -25,5 +27,6 @@ def print_tree(node):
                 print_tree(node.left)
             if node.right:
                 print_tree(node.right)
+
 
 print_tree(root)
