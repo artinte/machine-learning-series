@@ -460,7 +460,7 @@ class MyLinkedList(object):
 
         node = LinkedNode(val)
         cur = self.head
-        if index &le; 0:
+        if index &lt;= 0:
             node.next = self.head
             self.head = node
         else:
@@ -625,26 +625,25 @@ class LinkedListStack:
     '''
     基于数组实现的栈
     '''
-
     def __init__(self):
-        self._stack = []
+        self._stack: list[int] = []
 
     def size(self):
         return len(self._stack)
 
-    def is_empty(self):
-        return self.size == 0
+    def empty(self):
+        return self.size() == 0
 
     def push(self, item):
         self._stack.append(item)
 
     def pop(self):
-        if self.is_empty():
+        if self.empty():
             raise IndexError('Index error')
         return self._stack.pop()
 
     def peek(self):
-        if self.is_empty():
+        if self.empty():
             raise IndexError('Stack is empty')
         return self._stack[-1]
 
@@ -666,7 +665,7 @@ class MinStack(object):
         :type val: int
         :rtype: None
         """
-        if val &le; self.min:
+        if val &lt;= self.min:
             self.arr.append(self.min)
             self.min = val
 
@@ -693,7 +692,6 @@ class MinStack(object):
         :rtype: int
         """
         return self.min
-        
 
 
 # Your MinStack object will be instantiated and called as such:
@@ -705,6 +703,56 @@ class MinStack(object):
                     <h3 id="section2-sub2" class="content-section-sub">
                         <a href="#" style="text-decoration:none; color: inherit;">5.2 队列</a>
                     </h3>
+
+                    <p>队列是一种遵循先入先出规则的线性数据结构。顾名思义，队列模拟了排队现象，即新来的人不断加入队列尾部，而位于队列头部的人逐个离开。</p> 
+                    <p>LeetCode <a href="https://leetcode.cn/problems/implement-queue-using-stacks/description/">232. 用栈实现队列</a></p>
+                    <p>解题思路：一个栈放置输入，一个栈放置输出，等到输出为空时，将输入全部放置到输出。</p>
+                    <pre><code>class MyQueue(object):
+
+    def __init__(self):
+        self.input = ArrayStack()
+        self.output = ArrayStack()
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: None
+        """
+        self.input.push(x)
+        
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        temp = self.peek()
+        self.output.pop()
+        return temp
+
+    def peek(self):
+        """
+        :rtype: int
+        """
+        if self.output.empty():
+            while not self.input.empty():
+                self.output.push(self.input.peek())
+                self.input.pop()
+        return self.output.peek()
+
+    def empty(self):
+        """
+        :rtype: bool
+        """
+        return self.input.empty() and self.output.empty()
+        
+
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()</code></pre>
 
                     <h3 id="section2-sub3" class="content-section-sub">
                         <a href="#" style="text-decoration:none; color: inherit;">5.3 双向队列</a>
