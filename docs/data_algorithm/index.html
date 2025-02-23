@@ -192,8 +192,12 @@ assert sum(100) == 5050</code></pre>
 assert recur(100) == 5050</code></pre>
                     <p>使用递归求解斐波那契数列，规则如下：</p>
                     <ul>
-                        <li><p>数列的前两个数字为 <code>f(1) = 0</code> 和 <code>f(2) = 1</code> 。</p></li>
-                        <li><p>数列中的每个数字是前两个数字之和，即 <code>f(n) = f(n - 1) + f(n - 2)</code> 。</p></li>
+                        <li>
+                            <p>数列的前两个数字为 <code>f(1) = 0</code> 和 <code>f(2) = 1</code> 。</p>
+                        </li>
+                        <li>
+                            <p>数列中的每个数字是前两个数字之和，即 <code>f(n) = f(n - 1) + f(n - 2)</code> 。</p>
+                        </li>
                     </ul>
                     <pre><code>def fib(n):
     if n == 1 or n == 2:
@@ -205,8 +209,13 @@ assert recur(100) == 5050</code></pre>
 assert fib(5) == 3</code></pre>
                     <p>虽然从计算角度看，迭代与递归可以得到相同的结果，但它们代表了两种完全不同的思考和解决问题的范式。</p>
                     <ul>
-                        <li><p>迭代：“自下而上”地解决问题。从最基础的步骤开始，然后不断重复或累加这些步骤，直到任务完成。</p></li>
-                        <li><p>递归：“自上而下”地解决问题。将原问题分解为更小的子问题，这些子问题和原问题具有相同的形式。接下来将子问题继续分解为更小的子问题，直到基本情况时停止（基本情况的解是已知的）。</p></li>
+                        <li>
+                            <p>迭代：“自下而上”地解决问题。从最基础的步骤开始，然后不断重复或累加这些步骤，直到任务完成。</p>
+                        </li>
+                        <li>
+                            <p>递归：“自上而下”地解决问题。将原问题分解为更小的子问题，这些子问题和原问题具有相同的形式。接下来将子问题继续分解为更小的子问题，直到基本情况时停止（基本情况的解是已知的）。
+                            </p>
+                        </li>
                     </ul>
                     <h3>2.3 时间复杂度</h3>
                     <p>时间复杂度分析统计的不是算法运行时间，而是算法运行时间随着数据量变大时的增长趋势。</p>
@@ -217,6 +226,56 @@ assert fib(5) == 3</code></pre>
                     <p>常数阶的操作数量与输入数据大小 \(n\) 无关，即不随着 \(n\) 的变化而变化。</p>
                     <pre><code>arr = [10, 20, 30, 40]
 assert arr[2] == 30  # O(1)</code></pre>
+                    <p>线性阶的操作数量相对于输入数据大小 \(n\) 以线性级别增长。线性阶通常出现在单循环中：</p>
+                    <pre><code>def linear(n):
+    count = 0
+    for _ in range(n):
+        count += 1
+    return count
+
+
+assert linear(10) == 10</code></pre>
+                    <p>平方阶通常出现在嵌套循环中，外层循环和内层循环的时间复杂度都为 \(O(n)\) ，因此总体的时间复杂度为 \(O(n^2)\) ：</p>
+                    <pre><code>def find_duplicates(arr):
+    n = len(arr)
+    duplicates = set()
+    for i in range(n):
+        for j in range(i + 1, n):
+            if arr[i] == arr[j]:
+                duplicates.add(arr[i])
+    return list(duplicates)
+
+
+assert find_duplicates([1, 2, 3, 2, 4, 1, 5]) == [1, 2]</code></pre>
+                    <p>指数阶的时间复杂度为 \(O(2^n)\) ，如下是生成列表的所有子集：</p>
+                    <pre><code>def generate_subsets(arr, index=0, subset=[]):
+    if index == len(arr):
+        print(subset)
+        return
+    # 不选当前元素
+    generate_subsets(arr, index + 1, subset)
+    # 选当前元素
+    generate_subsets(arr, index + 1, subset + [arr[index]])
+
+
+generate_subsets([1, 2, 3])</code></pre>
+                    <pre><samp>[]
+[3]
+[2]
+[2, 3]
+[1]
+[1, 3]
+[1, 2]
+[1, 2, 3]</samp></pre>
+                    <p>对数阶 \(O(log(n))\) 通常意味着每次操作都会减少问题的规模，如下是求最大公约数：</p>
+                    <pre><code>def gcd(a, b):
+    # 使用欧几里得算法求最大公约数
+    while b:
+        a, b = b, a % b
+    return a
+
+
+assert (gcd(48, 18)) == 6</code></pre>
                 </section>
                 <section id="section3" class="content-section">
                     <h2>03 数据结构</h2>
