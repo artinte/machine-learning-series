@@ -39,6 +39,7 @@ print_list(n0)
 
 
 def remove(node: SinglyListNode):
+    # 删除链表的节点 node 之后的首个节点
     if not node.next:
         return
     node.next = node.next.next
