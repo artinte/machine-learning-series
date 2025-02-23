@@ -651,6 +651,57 @@ class LinkedListStack:
     def to_list(self):
         return self._stack</code></pre>
 
+                    <p>LeetCode <a href="https://leetcode.cn/problems/min-stack/description/">155. 最小栈</a></p>
+                    <p>解题思路：用一个栈记录最小值，可能 <code>push</code> 或者 <code>pop</code> 两次。</p>
+                    <pre><code>import sys
+
+class MinStack(object):
+
+    def __init__(self):
+        self.arr = []
+        self.min = sys.maxsize
+
+    def push(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        if val &le; self.min:
+            self.arr.append(self.min)
+            self.min = val
+
+        self.arr.append(val)
+        
+
+    def pop(self):
+        """
+        :rtype: None
+        """
+        if self.top() == self.min:
+            self.arr.pop()
+            self.min = self.top() 
+        self.arr.pop()
+
+    def top(self):
+        """
+        :rtype: int
+        """
+        return self.arr[-1]
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+        return self.min
+        
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(val)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()</code></pre>
                     <h3 id="section2-sub2" class="content-section-sub">
                         <a href="#" style="text-decoration:none; color: inherit;">5.2 队列</a>
                     </h3>
