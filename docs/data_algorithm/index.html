@@ -192,7 +192,7 @@ assert sum(100) == 5050</code></pre>
 assert recur(100) == 5050</code></pre>
                     <p>使用递归求解斐波那契数列，规则如下：</p>
                     <ul>
-                        <li><p>数列的前两个数字为 <code>f(1) = 0</code> 和 <code>f(2) = 1</code></p> 。</li>
+                        <li><p>数列的前两个数字为 <code>f(1) = 0</code> 和 <code>f(2) = 1</code> 。</p></li>
                         <li><p>数列中的每个数字是前两个数字之和，即 <code>f(n) = f(n - 1) + f(n - 2)</code> 。</p></li>
                     </ul>
                     <pre><code>def fib(n):
@@ -208,6 +208,15 @@ assert fib(5) == 3</code></pre>
                         <li><p>迭代：“自下而上”地解决问题。从最基础的步骤开始，然后不断重复或累加这些步骤，直到任务完成。</p></li>
                         <li><p>递归：“自上而下”地解决问题。将原问题分解为更小的子问题，这些子问题和原问题具有相同的形式。接下来将子问题继续分解为更小的子问题，直到基本情况时停止（基本情况的解是已知的）。</p></li>
                     </ul>
+                    <h3>2.3 时间复杂度</h3>
+                    <p>时间复杂度分析统计的不是算法运行时间，而是算法运行时间随着数据量变大时的增长趋势。</p>
+                    <p>设输入数据大小为 \(n\) ，常见的时间复杂度类型如下所示：</p>
+                    <div class="highlight-math" style="text-align: center;">
+                        \(O(1) &lt; O(logn) &lt; O(n) &lt; O(nlogn) &lt; O(n^2) &lt; O(2^2) &lt; O(n!)\)
+                    </div>
+                    <p>常数阶的操作数量与输入数据大小 \(n\) 无关，即不随着 \(n\) 的变化而变化。</p>
+                    <pre><code>arr = [10, 20, 30, 40]
+assert arr[2] == 30  # O(1)</code></pre>
                 </section>
                 <section id="section3" class="content-section">
                     <h2>03 数据结构</h2>

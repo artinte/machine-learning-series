@@ -149,6 +149,11 @@ pre {
 code {
     font-family: "Courier New", Courier, monospace;
 }
+.highlight-math {
+    background-color: #FFCC99;
+    padding: 5px;
+    border-radius: 5px;
+}
 
 /* 移动端样式（只在屏幕宽度 < 1024 px 时生效 */
 @media screen and (max-width: 1024px) {
