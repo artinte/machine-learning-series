@@ -570,6 +570,86 @@ class MyLinkedList(object):
                     <h3 id="section5-sub1" class="content-section-sub">
                         <a href="#" style="text-decoration:none; color: inherit;">5.1 栈</a>
                     </h3>
+                    <p><strong>栈 (Stack)</strong> 是一种遵循先入后出逻辑的线性数据结构。</p>
+                    <p>为了深入了解栈的运行机制，我们来尝试自己实现一个栈类，可以基于数组或者链表进行实现。</p>
+                    <p>基于链表的实现：</p>
+                    <pre><code>class ListNode:
+    def __init__(self, val):
+        self.val = val
+        self.next: ListNode | None = None
+
+
+class LinkedListStack:
+    def __init__(self):
+        self._peek: ListNode | None = None
+        self._size = 0
+
+    def size(self):
+        return self._size
+
+    def is_empty(self):
+        return self._size == 0
+
+    def push(self, val):
+        node = ListNode(val)
+        node.next = self._peek
+        self._peek = node
+        self._size += 1
+
+    def peek(self):
+        if self.is_empty():
+            raise IndexError('Index Error')
+        if self._peek:
+            return self._peek.val
+        else:
+            raise IndexError('Index Error')
+
+    def pop(self):
+        num = self.peek()
+        if self._peek:
+            self._peek = self._peek.next
+        else:
+            raise IndexError('Index Error')
+        self._size -= 1
+        return num
+
+    def to_list(self):
+        arr = []
+        node = self._peek
+        while node:
+            arr.append(node.val)
+        arr.reverse()
+        return arr</code></pre>
+                    <p>基于数组的实现：</p>
+                    <pre><code>class ArrayStack:
+    '''
+    基于数组实现的栈
+    '''
+
+    def __init__(self):
+        self._stack = []
+
+    def size(self):
+        return len(self._stack)
+
+    def is_empty(self):
+        return self.size == 0
+
+    def push(self, item):
+        self._stack.append(item)
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError('Index error')
+        return self._stack.pop()
+
+    def peek(self):
+        if self.is_empty():
+            raise IndexError('Stack is empty')
+        return self._stack[-1]
+
+    def to_list(self):
+        return self._stack</code></pre>
 
                     <h3 id="section2-sub2" class="content-section-sub">
                         <a href="#" style="text-decoration:none; color: inherit;">5.2 队列</a>
