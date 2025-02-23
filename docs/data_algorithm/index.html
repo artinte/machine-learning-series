@@ -500,6 +500,68 @@ class MyLinkedList(object):
                     <h3 id="section4-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.3 列表</a>
                     </h3>
+                    <p><strong>列表 (List)</strong> 是一个抽象的数据结构概念，它表示元素的有序集合，支持元素访问、修改、添加、删除和遍历等操作，无须使用者考虑容量限制的问题。列表可以基于链表或数组实现。</p>
+                    <p>为了加深对列表工作原理的理解，我们尝试实现一个简易版列表：</p>
+                    <pre><code>class MyList:
+    def __init__(self):
+        # 受保护属性
+        self._capacity = 10
+        self._arr = [0] * self._capacity
+        self._size = 0
+        self._extend_ratio = 2
+
+    def size(self):
+        return self._size
+
+    def capacity(self):
+        return self._capacity
+
+    def get(self, index):
+        if index &lt; 0 or index >= self._size:
+            raise IndexError('Index error')
+        return self._arr[index]
+
+    def set(self, num: int, index: int):
+        if index &lt; 0 or index >= self._size:
+            raise IndexError('Index error')
+        self._arr[index] = num
+
+    def add(self, num: int):
+        # 元素数量超出容量时，触发扩容机制
+        if self.size() == self.capacity():
+            self.extend_capacity()
+        self._arr[self._size] = num
+        self._size += 1
+
+    def insert(self, num: int, index: int):
+        if index &lt; 0 or index >= self._size:
+            raise IndexError('Index error')
+        if self._size == self.capacity():
+            self.extend_capacity()
+        # 将索引 index 以及以后的元素都向后移动一位
+        for j in range(self._size - 1, index - 1, -1):
+            self._arr[j+1] = self._arr[j]
+        self._arr[index] = num
+        self._size += 1
+
+    def remove(self, index):
+        if index &lt; 0 or index >= self._size:
+            raise IndexError('Index Error')
+        num = self._arr[index]
+        # 将索引 index 之后的元素都向前移动一位
+        for j in range(index, self._size - 1):
+            self._arr[j] = self._arr[j+1]
+        # 更新元素数量
+        self._size -= 1
+        # 返回被删除的元素
+        return num
+
+    def extend_capacity(self):
+        self._arr = self._arr + [0] * \
+            self.capacity() * (self._extend_ratio - 1)
+
+    def to_array(self):
+        return self._arr[: self._size]</code></pre>
                 </section>
 
                 <section id="section5" class="content-section">

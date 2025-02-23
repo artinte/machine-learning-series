@@ -1,4 +1,3 @@
-
 class MyList:
     def __init__(self):
         # 受保护属性
@@ -6,23 +5,23 @@ class MyList:
         self._arr = [0] * self._capacity
         self._size = 0
         self._extend_ratio = 2
-    
+
     def size(self):
         return self._size
-    
+
     def capacity(self):
         return self._capacity
-    
+
     def get(self, index):
         if index < 0 or index >= self._size:
             raise IndexError('Index error')
         return self._arr[index]
-    
+
     def set(self, num: int, index: int):
         if index < 0 or index >= self._size:
             raise IndexError('Index error')
         self._arr[index] = num
-    
+
     def add(self, num: int):
         # 元素数量超出容量时，触发扩容机制
         if self.size() == self.capacity():
@@ -52,9 +51,10 @@ class MyList:
         self._size -= 1
         # 返回被删除的元素
         return num
-    
+
     def extend_capacity(self):
-        self._arr = self._arr + [0] * self.capacity() * (self._extend_ratio - 1)
-    
+        self._arr = self._arr + [0] * \
+            self.capacity() * (self._extend_ratio - 1)
+
     def to_array(self):
         return self._arr[: self._size]
