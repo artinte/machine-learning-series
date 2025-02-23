@@ -375,7 +375,7 @@ assert nums == [1, 3, 6, 2, 5]</code></pre>
         return
     node.next = node.next.next</code></pre>
 
-                    <p>LeetCode <a href="https://leetcode.com/problems/reverse-linked-list/">206. Reverse Linked List</a></p>
+                    <p>LeetCode <a href="https://leetcode.com/problems/reverse-linked-list/">206. 反转链表</a></p>
                     <pre><code># Definition for singly-linked list.
 class ListNode(object):
     def __init__(self, val=0, next=None):
@@ -395,6 +395,95 @@ class Solution(object):
             result = current
             current = temp
         return result</code></pre>
+
+                    <p>LeetCode <a href="https://leetcode.cn/problems/design-linked-list/description/">707. 设计链表</a></p>
+                    <p>重点解题思路：是有一个 size 记录链表的大小。</p>
+                    <pre><code>class LinkedNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class MyLinkedList(object):
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    def get(self, index):
+        """
+        :type index: int
+        :rtype: int
+        """
+        if index &lt; 0 or index >= self.size:
+            return -1
+        
+        node = self.head
+        for _ in range(0, index):
+            node = node.next
+
+        return node.val
+
+    def addAtHead(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        self.addAtIndex(0, val)  
+
+    def addAtTail(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        self.addAtIndex(self.size, val)
+
+    def addAtIndex(self, index, val):
+        """
+        :type index: int
+        :type val: int
+        :rtype: None
+        """
+        if index > self.size:
+            return
+
+        node = LinkedNode(val)
+        cur = self.head
+        if index &le; 0:
+            node.next = self.head
+            self.head = node
+        else:
+            for _ in range(index - 1):
+                cur = cur.next
+            node.next = cur.next
+            cur.next = node
+
+        self.size += 1    
+
+    def deleteAtIndex(self, index):
+        """
+        :type index: int
+        :rtype: None
+        """
+        if index &lt; 0 or index >= self.size:
+            return
+
+        cur = self.head
+        if index == 0:
+            self.head = self.head.next
+        else:
+            for _ in range(index - 1):
+                cur = cur.next
+            cur.next = cur.next.next
+        
+        self.size -= 1
+
+
+# Your MyLinkedList object will be instantiated and called as such:
+# obj = MyLinkedList()
+# param_1 = obj.get(index)
+# obj.addAtHead(val)
+# obj.addAtTail(val)
+# obj.addAtIndex(index,val)
+# obj.deleteAtIndex(index)</code></pre>
                     <h3 id="section4-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.3 列表</a>
                     </h3>
