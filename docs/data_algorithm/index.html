@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../outline_style.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -17,16 +19,20 @@
                 <h5 class="p-3"><a href="../index.html">主页</a></h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01 初识算法</a>
+                        <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01
+                            初识算法</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02 复杂度分析</a>
+                        <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02
+                            复杂度分析</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section3" onclick="toggleChildChapters(event, 'chapter3')">03 数据结构</a>
+                        <a class="nav-link" href="#section3" onclick="toggleChildChapters(event, 'chapter3')">03
+                            数据结构</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section4" onclick="toggleChildChapters(event, 'chapter1')">04 数组与链表</a>
+                        <a class="nav-link" href="#section4" onclick="toggleChildChapters(event, 'chapter1')">04
+                            数组与链表</a>
                         <ul id="chapter1" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section4-sub1">4.1 数组</a></li>
                             <li><a class="nav-link" href="#section4-sub2">4.2 链表</a></li>
@@ -34,7 +40,8 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section5" onclick="toggleChildChapters(event, 'chapter5')">05 栈与队列</a>
+                        <a class="nav-link" href="#section5" onclick="toggleChildChapters(event, 'chapter5')">05
+                            栈与队列</a>
                         <ul id="chapter5" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section5-sub1">5.1 栈</a></li>
                             <li><a class="nav-link" href="#section5-sub2">5.2 队列</a></li>
@@ -57,31 +64,37 @@
                         <a class="nav-link" href="#section9" onclick="toggleChildChapters(event, 'chapter9')">09 图</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section10" onclick="toggleChildChapters(event, 'chapter10')">10 搜索</a>
+                        <a class="nav-link" href="#section10" onclick="toggleChildChapters(event, 'chapter10')">10
+                            搜索</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section11" onclick="toggleChildChapters(event, 'chapter11')">10 排序</a>
+                        <a class="nav-link" href="#section11" onclick="toggleChildChapters(event, 'chapter11')">10
+                            排序</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section12" onclick="toggleChildChapters(event, 'chapter12')">12 分治</a>
+                        <a class="nav-link" href="#section12" onclick="toggleChildChapters(event, 'chapter12')">12
+                            分治</a>
                         <ul id="chapter12" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section12-sub1">12.1 分治算法</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section13" onclick="toggleChildChapters(event, 'chapter13')">13 回溯</a>
+                        <a class="nav-link" href="#section13" onclick="toggleChildChapters(event, 'chapter13')">13
+                            回溯</a>
                         <ul id="chapter13" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section13-sub1">13.1 回溯算法</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section14" onclick="toggleChildChapters(event, 'chapter14')">14 动态规划</a>
+                        <a class="nav-link" href="#section14" onclick="toggleChildChapters(event, 'chapter14')">14
+                            动态规划</a>
                         <ul id="chapter14" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section14-sub1">14.1 初探动态规划</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section15" onclick="toggleChildChapters(event, 'chapter15')">15 贪心</a>
+                        <a class="nav-link" href="#section15" onclick="toggleChildChapters(event, 'chapter15')">15
+                            贪心</a>
                         <ul id="chapter15" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section15-sub1">15.1 贪心算法</a></li>
                         </ul>
@@ -101,15 +114,27 @@
                     <h3>1.2 算法是什么</h3>
                     <p><strong>数据结构 (Data Structure)</strong> 是组织和存储数据的方式，涵盖数据内容、数据之间关系和数据操作方法，它具有以下设计目标：</p>
                     <ul>
-                        <li><p>1. 空间占用尽量少，以节省计算机内存。</p></li>
-                        <li><p>2. 数据操作尽可能快速，涵盖数据访问、添加、删除、更新等。</p></li>
-                        <li><p>3. 提供简洁的数据表示和逻辑信息，以便算法高效运行。</p></li>
+                        <li>
+                            <p>1. 空间占用尽量少，以节省计算机内存。</p>
+                        </li>
+                        <li>
+                            <p>2. 数据操作尽可能快速，涵盖数据访问、添加、删除、更新等。</p>
+                        </li>
+                        <li>
+                            <p>3. 提供简洁的数据表示和逻辑信息，以便算法高效运行。</p>
+                        </li>
                     </ul>
                     <p><strong>算法 (Algorithm)</strong> 是在有限时间内解决特定问题的一组指令或操作步骤，它具有以下特性：</p>
                     <ul>
-                        <li><p>1. 问题是明确的，包括清晰的输入和输出定义。</p></li>
-                        <li><p>2. 具有可行性，能够在有限步骤、时间和内存空间下完成。</p></li>
-                        <li><p>3. 各步骤都有明确的含义，在相同的输入和运行条件下，输出始终相同。</p></li>
+                        <li>
+                            <p>1. 问题是明确的，包括清晰的输入和输出定义。</p>
+                        </li>
+                        <li>
+                            <p>2. 具有可行性，能够在有限步骤、时间和内存空间下完成。</p>
+                        </li>
+                        <li>
+                            <p>3. 各步骤都有明确的含义，在相同的输入和运行条件下，输出始终相同。</p>
+                        </li>
                     </ul>
                 </section>
                 <section id="section2" class="content-section">
@@ -117,18 +142,72 @@
                     <h3>2.1 算法效率评估</h3>
                     <p>在算法设计中，我们先后追求以下两个层面的目标：</p>
                     <ul>
-                        <li><p>1. 找到问题解法：算法需要在规定的输入范围内可靠地求得问题的正确解。</p></li>
-                        <li><p>2. 寻求最优解法：同一个问题可能存在多种解法，我们希望找到尽可能高效的算法。</p></li>
+                        <li>
+                            <p>1. 找到问题解法：算法需要在规定的输入范围内可靠地求得问题的正确解。</p>
+                        </li>
+                        <li>
+                            <p>2. 寻求最优解法：同一个问题可能存在多种解法，我们希望找到尽可能高效的算法。</p>
+                        </li>
                     </ul>
                     <p>也就是说，在能够解决问题的前提下，算法效率已成为衡量算法优劣的主要评价指标，它包括以下两个维度：</p>
                     <ul>
-                        <li><p>1. 时间效率：算法运行时间的长短。</p></li>
-                        <li><p>2. 空间效率：算法占用内存空间的大小。</p></li>
+                        <li>
+                            <p>1. 时间效率：算法运行时间的长短。</p>
+                        </li>
+                        <li>
+                            <p>2. 空间效率：算法占用内存空间的大小。</p>
+                        </li>
                     </ul>
                     <p>简而言之，我们的目标是设计“既快又省”的数据结构和算法。</p>
 
                     <h3>2.2 迭代与递归</h3>
-                    <p></p>
+                    <p><strong>迭代 (Iteration) </strong> 是一种重复执行某个任务的控制结构。在迭代中，程序会在满足一定的条件下重复执行某段代码，直到这个条件不再满足。</p>
+                    <p>以下函数基于 <code>for</code> 循环实现了求和 \(1 + 2 + ... + n\) ：</p>
+                    <pre><code>def sum(n):
+    result = 0
+    # 循环求和 1, 2, ... , n-1, n
+    for i in range(1, n+1):
+        result += i
+    return result
+
+
+assert sum(100) == 5050</code></pre>
+
+                    <p><strong>递归 (Recursion) </strong> 是一种算法策略，通过函数调用自身来解决问题。它主要包含两个阶段：</p>
+                    <ul>
+                        <li>
+                            <p>1. 递：程序不断深入地调用自身，通常传入更小或更简化的参数，直到达到“终止条件”。</p>
+                        </li>
+                        <li>
+                            <p>2. 归：触发“终止条件”后，程序从最深层的递归函数开始逐层返回，汇聚每一层的结果。</p>
+                        </li>
+                    </ul>
+                    <p>使用 <code>recur</code> 函数完成 \(1 + 2 + ... + n\) 的计算：</p>
+                    <pre><code>def recur(n):
+    if n == 1:
+        return 1
+    return n + recur(n-1)
+
+
+assert recur(100) == 5050</code></pre>
+                    <p>使用递归求解斐波那契数列，规则如下：</p>
+                    <ul>
+                        <li><p>数列的前两个数字为 <code>f(1) = 0</code> 和 <code>f(2) = 1</code></p> 。</li>
+                        <li><p>数列中的每个数字是前两个数字之和，即 <code>f(n) = f(n - 1) + f(n - 2)</code> 。</p></li>
+                    </ul>
+                    <pre><code>def fib(n):
+    if n == 1 or n == 2:
+        return n - 1
+
+    return fib(n-1) + fib(n-2)
+
+
+assert fib(5) == 3</code></pre>
+                    <p>虽然从计算角度看，迭代与递归可以得到相同的结果，但它们代表了两种完全不同的思考和解决问题的范式。</p>
+                    <ul>
+                        <li><p>迭代：“自下而上”地解决问题。从最基础的步骤开始，然后不断重复或累加这些步骤，直到任务完成。</p></li>
+                        <li><p>递归：“自上而下”地解决问题。将原问题分解为更小的子问题，这些子问题和原问题具有相同的形式。接下来将子问题继续分解为更小的子问题，直到基本情况时停止（基本情况的解是已知的）。</p></li>
+                    </ul>
                 </section>
                 <section id="section3" class="content-section">
                     <h2>03 数据结构</h2>
@@ -140,7 +219,8 @@
                         <a href="#" style="color: inherit;">4.1 数组</a>
                     </h3>
 
-                    <p><strong>数组 (Array)</strong> 是一种线性数据结构，其将相同类型的元素存储在连续的内存空间中。我们将元素在数组中的位置称为该元素的 <strong> 索引 (Index)</strong> 。</p>
+                    <p><strong>数组 (Array)</strong> 是一种线性数据结构，其将相同类型的元素存储在连续的内存空间中。我们将元素在数组中的位置称为该元素的 <strong> 索引
+                            (Index)</strong> 。</p>
 
                     <h3 id="section4-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.2 链表</a>
@@ -171,7 +251,8 @@
                     <h2>06 哈希表</h2>
 
                     <h3>6.1 哈希表</h3>
-                    <p><strong>哈希表 (Hash Tabel)</strong> 又称散列表，它通过建立键 <code>key</code> 与值 <code>value</code> 之间的映射，实现高效的元素查询。具体而言，我们向哈希表中输入一个键 <code>key</code> ，则可以在 \(O(1)\) 时间内获取对应的值 \(value\) 。</p>
+                    <p><strong>哈希表 (Hash Tabel)</strong> 又称散列表，它通过建立键 <code>key</code> 与值 <code>value</code>
+                        之间的映射，实现高效的元素查询。具体而言，我们向哈希表中输入一个键 <code>key</code> ，则可以在 \(O(1)\) 时间内获取对应的值 \(value\) 。</p>
                     <p>哈希表的常见操作包括：初始化、查询操作、添加键值对和删除键值对等。</p>
 
                 </section>
@@ -205,11 +286,21 @@
                     <p><strong>选择排序 (Selection Sort)</strong> 的工作原理非常简单：开启一个循环，每轮从未排序区间选择最小的元素，将其放到已排序区间的末尾。</p>
                     <p>设数组的长度为 \(n\) ，选择排序的算法如下：</p>
                     <ul>
-                        <li><p>1. 初始状态下，所有元素未排序，即未排序（索引）区间为 \([0, n - 1]\) 。</p></li>
-                        <li><p>2. 选取区间 \([0, n - 1]\) 中的最小元素，将其与索引 0 处的元素交换。完成后，数组前 1 个元素已排序。</p></li>
-                        <li><p>3. 选取区间 \([1, n - 1]\) 中的最小元素，将其与索引 1 处的元素交换。完成后，数组前 2 个元素已排序。</p></li>
-                        <li><p>4. 以此类推。经过 \(n - 1\) 轮选择与交换后，数组前 \(n - 1\) 个元素已排序。</p></li>
-                        <li><p>5. 仅剩的一个元素必定是最大元素，无须排序，因此数组排序完成。</p></li>
+                        <li>
+                            <p>1. 初始状态下，所有元素未排序，即未排序（索引）区间为 \([0, n - 1]\) 。</p>
+                        </li>
+                        <li>
+                            <p>2. 选取区间 \([0, n - 1]\) 中的最小元素，将其与索引 0 处的元素交换。完成后，数组前 1 个元素已排序。</p>
+                        </li>
+                        <li>
+                            <p>3. 选取区间 \([1, n - 1]\) 中的最小元素，将其与索引 1 处的元素交换。完成后，数组前 2 个元素已排序。</p>
+                        </li>
+                        <li>
+                            <p>4. 以此类推。经过 \(n - 1\) 轮选择与交换后，数组前 \(n - 1\) 个元素已排序。</p>
+                        </li>
+                        <li>
+                            <p>5. 仅剩的一个元素必定是最大元素，无须排序，因此数组排序完成。</p>
+                        </li>
                     </ul>
                     <pre><code>def selection_sort(nums: list[int]):
     n = len(nums)
@@ -233,10 +324,18 @@ print(selection_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
                     <p><strong>冒泡排序 (Bubble Sort)</strong> 通过连续地比较与交换相邻元素实现排序。这个过程就像气泡从底部升到顶部一样，因此得名冒泡排序。</p>
                     <p>设数组的长度为 \(n\) ，冒泡排序的算法如下：</p>
                     <ul>
-                        <li><p>1. 首先，对 你个元素执行“冒泡”，将数组的最大元素交换至正确位置。</p></li>
-                        <li><p>2. 接下来，对剩余 \(n - 1\) 个元素执行“冒泡”，将第二大元素交换至正确位置。</p></li>
-                        <li><p>3. 以此类推，经过 \(n - 1\) 轮“冒泡”后，前 \(n - 1\) 大的元素都被交换至正确位置。</p></li>
-                        <li><p>4. 仅剩的一个元素必定是最小元素，无须排序，因此数组排序完成。</p></li>
+                        <li>
+                            <p>1. 首先，对 你个元素执行“冒泡”，将数组的最大元素交换至正确位置。</p>
+                        </li>
+                        <li>
+                            <p>2. 接下来，对剩余 \(n - 1\) 个元素执行“冒泡”，将第二大元素交换至正确位置。</p>
+                        </li>
+                        <li>
+                            <p>3. 以此类推，经过 \(n - 1\) 轮“冒泡”后，前 \(n - 1\) 大的元素都被交换至正确位置。</p>
+                        </li>
+                        <li>
+                            <p>4. 仅剩的一个元素必定是最小元素，无须排序，因此数组排序完成。</p>
+                        </li>
                     </ul>
                     <pre><code>def bubble_sort(nums: list[int]):
     n = len(nums)
@@ -261,8 +360,8 @@ print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
                     </h3>
                     <p><strong>快速排序 (Quick Sort)</strong> 是一种基于分治策略的排序算法，运行高效，应用广泛。</p>
                     <p>快速排序的核心操作是哨兵划分，其目标是：选择数组中的某个元素作为基准数，将所有小于基准值的元素移动到其左侧，而大于基准值的元素移动到右侧。</p>
-                    <p>哨兵划分完成后，原数组被划分成三部分：左子数组、基准数、右子数组，且满足 “左子数组任意元素 <= 基准数 <= 右子数组任意元素” 。因此，我们接下来只需对这两个子数组进行排序。</p>
-                    <pre><code>def partition(nums: list[int], left, right) -> int:
+                    <p>哨兵划分完成后，原数组被划分成三部分：左子数组、基准数、右子数组，且满足 “左子数组任意元素 <= 基准数 <=右子数组任意元素” 。因此，我们接下来只需对这两个子数组进行排序。</p>
+                            <pre><code>def partition(nums: list[int], left, right) -> int:
     # 以 nums[left] 为基准数
     i, j = left, right
     
@@ -304,9 +403,11 @@ print(nums)</code></pre>
                 <section id="section13" class="content-section">
                     <h2>13 回溯</h2>
                     <h3 id="section13-sub1" class="content-section-sub">
-                        <a href="https://www.hello-algo.com/chapter_backtracking/backtracking_algorithm/" style="color: inherit;">13.1 回溯算法</a>
+                        <a href="https://www.hello-algo.com/chapter_backtracking/backtracking_algorithm/"
+                            style="color: inherit;">13.1 回溯算法</a>
                     </h3>
-                    <p><strong>回溯算法 (Backtracking Algorithm)</strong> 是一种通过穷举来解决问题的方法，它的核心思想是从一个初始状态出发，暴力搜索所有可能的解决方案，当遇到正确的解则将其记录，直到找到解或者尝试了所有可能的选择都无法找到解为止。</p>
+                    <p><strong>回溯算法 (Backtracking Algorithm)</strong>
+                        是一种通过穷举来解决问题的方法，它的核心思想是从一个初始状态出发，暴力搜索所有可能的解决方案，当遇到正确的解则将其记录，直到找到解或者尝试了所有可能的选择都无法找到解为止。</p>
                     <p>回溯算法通常采用“深度优先搜索”来遍历解空间，接下来我们利用前序遍历构造一个回溯问题，逐步了解回溯算法的工作原理。</p>
                     <p>给定一个二叉树，搜索并记录所有值为 7 的节点，请返回节点列表。</p>
                     <pre><code>class TreeNode:
@@ -343,16 +444,19 @@ def pre_order(root: TreeNode):
 root = list_to_tree_dfs([1, 7, 3, 4, 5, 6, 7], 0)
 pre_order(root)
 print([node.val for node in result])</code></pre>
-                    <p>之所以称为回溯算法，是因为该算法在搜索解空间时会采用<strong>尝试</strong>与<strong>回退</strong>的策略。当算法在搜索过程中遇到某个状态无法继续前进或无法得到满足条件的解时，它会撤销上一步的选择，退回到之前的状态，并尝试其它可能的选择。</p>
+                    <p>之所以称为回溯算法，是因为该算法在搜索解空间时会采用<strong>尝试</strong>与<strong>回退</strong>的策略。当算法在搜索过程中遇到某个状态无法继续前进或无法得到满足条件的解时，它会撤销上一步的选择，退回到之前的状态，并尝试其它可能的选择。
+                    </p>
                     <p>在上述代码中，访问每个节点都代表一次尝试，而越过叶节点或返回父节点的 <code>return</code> 则表示回退。</p>
                 </section>
 
                 <section id="section14" class="content-section">
                     <h2>14 动态规划</h2>
-                    <p><strong>动态规划 (Dynamic Programming)</strong> 是一个重要的算法范式，它将一个问题分解为一系列更小的子问题，并通过存储子问题的解来避免重复计算，从而大幅提升时间效率。</p>
+                    <p><strong>动态规划 (Dynamic Programming)</strong>
+                        是一个重要的算法范式，它将一个问题分解为一系列更小的子问题，并通过存储子问题的解来避免重复计算，从而大幅提升时间效率。</p>
                     <p>在本节中，我们从一个经典例题入手，先给出它的暴力回溯解法，观察其中包含的重叠子问题，再逐步导出更高效的动态规划解法。</p>
                     <p>给定一个共有 n 阶的楼梯，我们每步可以上 1 阶或者 2 阶，请问有多少种方案可以爬到楼顶？</p>
-                    <p>本题的目标是求解方案的数量，我们可以考虑通过回溯来穷举所有的可能性。具体来说，将爬楼梯想象为一个多轮选择的过程：从地面出发，美伦选择上 1 阶或 2 阶，每当到达楼梯顶部时就将方案数量加 1，当越过楼梯顶部时就将其剪枝。</p>
+                    <p>本题的目标是求解方案的数量，我们可以考虑通过回溯来穷举所有的可能性。具体来说，将爬楼梯想象为一个多轮选择的过程：从地面出发，美伦选择上 1 阶或 2 阶，每当到达楼梯顶部时就将方案数量加
+                        1，当越过楼梯顶部时就将其剪枝。</p>
                     <h3 id="section14-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">14.1 初探动态规划</a>
                     </h3>
@@ -365,9 +469,12 @@ print([node.val for node in result])</code></pre>
                     <h3 id="section8-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">15.1 贪心算法</a>
                     </h3>
-                    <p><strong>贪心算法 (Greedy Algorithm)</strong> 是一种常见的解决优化问题的算法，其基本思想是在问题的每个决策阶段，都选择当前看起来最优的选择，即贪心地做出局部做优的决策，以期获得全局最优解。贪心算法简洁且高效，在许多实际问题中有着广泛的应用。</p>
+                    <p><strong>贪心算法 (Greedy Algorithm)</strong>
+                        是一种常见的解决优化问题的算法，其基本思想是在问题的每个决策阶段，都选择当前看起来最优的选择，即贪心地做出局部做优的决策，以期获得全局最优解。贪心算法简洁且高效，在许多实际问题中有着广泛的应用。
+                    </p>
                     <p>我们先通过例题“零钱兑换”了解贪心算法的工作原理。</p>
-                    <p>给定 n 种硬币，第 i 种硬币的面值为 <code>coins[i - 1]</code> ，目标金额为 <code>amt</code> ，每种硬币可以重复选取，问能够凑出目标金额的最少硬币数量。如果无法凑出目标金额，则返回 -1 。</p>
+                    <p>给定 n 种硬币，第 i 种硬币的面值为 <code>coins[i - 1]</code> ，目标金额为 <code>amt</code>
+                        ，每种硬币可以重复选取，问能够凑出目标金额的最少硬币数量。如果无法凑出目标金额，则返回 -1 。</p>
                     <pre><code>def coin_change_greedy(coins: list[int], amt) -> int:
     i = len(coins) - 1
     count = 0
@@ -390,7 +497,7 @@ print(coin_change_greedy(coins, 137))</code></pre>
             <aside class="col-md-2 right-sidebar">
                 <!-- <h5>标题</h5>
                 <ul id="dynamic-sidebar" class="nav flex-column"> -->
-                    <!-- 动态内容 -->
+                <!-- 动态内容 -->
                 <!-- </ul> -->
             </aside>
         </div>
@@ -399,9 +506,9 @@ print(coin_change_greedy(coins, 137))</code></pre>
     <!-- 引入 Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script type="text/javascript" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-    </script>
+    <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <script src="../outline_script.js"></script>
 </body>
+
 </html>
