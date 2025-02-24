@@ -139,6 +139,46 @@ class Solution:
                                 nums2[j] if j < len_b else sys.maxsize)
                 # 偶数个数
                 return (max_left + min_right) / 2.0</code></pre>
+
+                <h3><a href="https://leetcode.cn/problems/longest-palindromic-substring/description/">5. 最长回文子串</a></h3>
+                <p>解题思路：构建一个二维数组 dp，其中 dp[i][j] 表示从字符串 s 的第 i 个字符到第 j 个字符的子串是否是回文。</p>
+                <p>基本状态：</p>
+                <ul class="with-bullets">
+                    <li>dp[i][i] = True，每个单独的字符都是回文。</li>
+                    <li>dp[i][i+1] = True 如果 s[i] == s[i+1]，即两个连续字符相等时，它们是回文子串。</li>
+                </ul>
+                <p>状态转移（长度逐步增加）：对于任意 i 和 j，如果 s[i] == s[j] 且 dp[i+1][j-1] == True，那么 dp[i][j] 也应该为 True，即 s[i...j] 是回文子串。</p>
+<pre><code>class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        length = len(s)
+        dp = [[False] * length for _ in range(length)]
+        max_len = 1
+        # 记录最长回文起始位置
+        start = 0
+
+        for i in range(length):
+            # 单个字符都是回文
+            dp[i][i] = True
+
+        for  i in range(length - 1):
+            # 判断所有长度为 2 的子字符串
+            if s[i] == s[i + 1]:
+                dp[i][i + 1] = True
+                start = i
+                max_len = 2
+        
+        for sub_len in range(3, length + 1):
+            # 子字符串的长度从 3 到 n
+            # i 和 j 表示字符串的起点到终点下标
+            for i in range(length - sub_len + 1):
+                j = i + sub_len - 1
+                if s[i] == s[j] and dp[i + 1][j - 1]:
+                    dp[i][j] = True
+                    if sub_len > max_len:
+                        max_len = sub_len
+                        start = i
+
+        return s[start:start + max_len]</code></pre>
             <!-- <div class="navigation">
                 <a href="https://www.tensorflow.org/install">上一节：1.0 环境配置</a>
                 <a href="quickstart_expert.html">下一节：1.2 专家速览</a>
