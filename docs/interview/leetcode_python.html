@@ -179,6 +179,34 @@ class Solution:
                         start = i
 
         return s[start:start + max_len]</code></pre>
+
+                <h3><a href="https://leetcode.cn/problems/zigzag-conversion/description/">6. Z 字形变换</a></h3>
+                <p>解题思路：使用一个变量 <code>direction</code> 记录当前的走动的方向。</p>
+                <pre><code>class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1 or numRows > len(s):
+            return s
+        
+        # 记录每一行的信息
+        rows = [""] * numRows
+        direction = 1
+        # 记录当前行
+        index = 0
+
+        for c in s:
+            rows[index] += c
+
+            # 方向变化：到底部转向上，到顶部转向下
+            if index == 0:
+                # 向下
+                direction = 1
+            elif index == numRows - 1:
+                direction = -1
+    
+            index += direction
+
+        return "".join(rows)</code></pre>
+
             <!-- <div class="navigation">
                 <a href="https://www.tensorflow.org/install">上一节：1.0 环境配置</a>
                 <a href="quickstart_expert.html">下一节：1.2 专家速览</a>
