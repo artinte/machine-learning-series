@@ -85,9 +85,9 @@
                     max_length = len(temp_list)
         return max_length</code></pre>
                     <p>滑动窗口是一种 双指针技巧，它用两个变量 <code>left</code> 和 <code>right</code> 来 动态调整窗口大小，确保窗口内的字符是不重复的：</p>
-                    <ul>
-                        <li><p><code>right</code> 指针右移扩展窗口（向右加入新字符）。</p></li>
-                        <li><p>如果 <code>s[right]</code> 已经在窗口内（重复出现），则移动 <code>left</code> 指针缩小窗口，直到 <code>s[right]</code> 不再重复。</p></li>
+                    <ul class="with-bullets">
+                        <li><code>right</code> 指针右移扩展窗口（向右加入新字符）。</li>
+                        <li>如果 <code>s[right]</code> 已经在窗口内（重复出现），则移动 <code>left</code> 指针缩小窗口，直到 <code>s[right]</code> 不再重复。</li>
                     </ul>
                     <pre><code>class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
@@ -103,7 +103,42 @@
             char_set.add(s[right])
             max_length = max(max_length, right - left + 1)
         return max_length</code></pre>
+                        <h3><a href="https://leetcode.cn/problems/median-of-two-sorted-arrays/description/">4. 寻找两个正序数组的中位数</a></h3>
+                        <p>解题思路：假设选择数组 <code>nums1</code> 的一个分割点 <code>i</code> ，将其分为两个部分。数组 <code>nums2</code> 必须有一个分割点 <code>j</code> ，使得左边部分的总元素个数等于右边部分的总元素个数，即 \(i + j = (len(nums1) + len(nums2) + 1) / 2\) 。</p>
+                        <pre><code>import sys
 
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        if len(nums1) > len(nums2):
+            # 确保 nums1 是较短的数组
+            nums1, nums2 = nums2, nums1
+
+        len_a, len_b = len(nums1), len(nums2)
+        # 对 nums1 进行二分查找
+        left, right = 0, len_a
+        while left <= right:
+            # 对 nums1 进行中位分割
+            i = (left + right) // 2
+            # 对 nums2 进行中位分割
+            # i + j = (len_a + len_b + 1) / 2
+            j = (len_a + len_b + 1) // 2 - i
+            if i < len_a and nums2[j - 1] > nums1[i]:
+                # nums1 太小
+                left = i + 1
+            elif i > 0 and nums1[i - 1] > nums2[j]:
+                # nums1 太大
+                right = i - 1
+            else:
+                max_left = max(nums1[i - 1] if i > 0 else -sys.maxsize,
+                                nums2[j - 1] if j > 0 else -sys.maxsize)
+                if (len_a + len_b) % 2 == 1:
+                    # 奇数个数
+                    return max_left
+                
+                min_right = min(nums1[i] if i < len_a else sys.maxsize,
+                                nums2[j] if j < len_b else sys.maxsize)
+                # 偶数个数
+                return (max_left + min_right) / 2.0</code></pre>
             <!-- <div class="navigation">
                 <a href="https://www.tensorflow.org/install">上一节：1.0 环境配置</a>
                 <a href="quickstart_expert.html">下一节：1.2 专家速览</a>
