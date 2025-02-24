@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../laptop_coding_48.png" type="image/png">
-    <title>面试真题</title>
+    <title>PyTorch 详解</title>
     <!-- 引入 Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../outline_style.css" rel="stylesheet">
@@ -17,21 +17,19 @@
                 <h5 class="p-3"><a href="../index.html">主页</a></h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01 LeetCode 习题</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02 华为 OD</a>
+                        <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01</a>
+                        <ul id="chapter1" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section1-sub1">1.1</a></li>
+                            <li><a class="nav-link" href="#section1-sub2">1.2</a></li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
 
             <!-- 中间内容 -->
             <main class="col-md-8">
-                <h1>LeetCode 算法</h1>
+                <h1>PyTorch 详解</h1>
 
-                <h3 id="section1" class="content-section">
-                    <a href="leetcode_1.html" style="color: inherit;">LeetCode 1 - 50 </a>
-                </h3>
             </main>
 
             <!-- 右侧小标题导航 -->
@@ -46,7 +44,9 @@
 
     <!-- 引入 Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <script src="../outline_script.js"></script>
 </body>
 </html>
