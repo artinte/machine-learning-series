@@ -67,6 +67,43 @@
             dummy = dummy.next
         return result.next</code></pre>
 
+                    <h3><a href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/">3. 无重复字符的最长子串</a></h3>
+                    <p>解题思路：使用暴力解法，复杂度是 \(O(n^3)\) ，容易超时。</p>
+                    <pre><code>class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        length = len(s)
+        max_length = 0
+        for i in range(0, length):
+            for j in range(i + 1, length + 1):
+                temp_list = []
+                for k in range(i, j):
+                    if s[k] in temp_list:
+                        break
+                    else:
+                        temp_list.append(s[k])
+                if len(temp_list) > max_length:
+                    max_length = len(temp_list)
+        return max_length</code></pre>
+                    <p>滑动窗口是一种 双指针技巧，它用两个变量 <code>left</code> 和 <code>right</code> 来 动态调整窗口大小，确保窗口内的字符是不重复的：</p>
+                    <ul>
+                        <li><p><code>right</code> 指针右移扩展窗口（向右加入新字符）。</p></li>
+                        <li><p>如果 <code>s[right]</code> 已经在窗口内（重复出现），则移动 <code>left</code> 指针缩小窗口，直到 <code>s[right]</code> 不再重复。</p></li>
+                    </ul>
+                    <pre><code>class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # 存储当前窗口内的字符
+        char_set = set()
+        max_length = 0
+        # 左指针
+        left = 0 
+        for right in range(len(s)):
+            while s[right] in char_set:
+                char_set.remove(s[left])
+                left += 1
+            char_set.add(s[right])
+            max_length = max(max_length, right - left + 1)
+        return max_length</code></pre>
+
             <!-- <div class="navigation">
                 <a href="https://www.tensorflow.org/install">上一节：1.0 环境配置</a>
                 <a href="quickstart_expert.html">下一节：1.2 专家速览</a>
