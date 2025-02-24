@@ -46,6 +46,27 @@
                 # Number is not found, put it in the dict.
                 temp_dict[nums[i]] = i</code></pre>
 
+                <h3><a href="https://leetcode.cn/problems/add-two-numbers/description/">2. 两数相加</a></h3>
+                <p>解题思路：遍历链表，保留 <strong>进位 (Carry)</strong> ，下一个节点相加的时候需要。另外需要注意两个链表的长度不一致。</p>
+                <pre><code>class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        result = dummy
+        carry = 0
+        while l1 or l2 or carry:
+            num = carry
+            if l1:
+                num += l1.val
+                l1 = l1.next
+            if l2:
+                num += l2.val
+                l2 = l2.next
+            
+            carry = num // 10
+            dummy.next = ListNode(num % 10)
+            dummy = dummy.next
+        return result.next</code></pre>
+
             <!-- <div class="navigation">
                 <a href="https://www.tensorflow.org/install">上一节：1.0 环境配置</a>
                 <a href="quickstart_expert.html">下一节：1.2 专家速览</a>
