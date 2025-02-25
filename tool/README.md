@@ -12,3 +12,7 @@ python get_image_from_pdf.py input.pdf
 ```
 ffmpeg input.png output.png
 ```
+
+3. ffmpeg 视频分割工具
+
+
