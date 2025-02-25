@@ -3,6 +3,10 @@ class Vertex:
         self.val = val
 
 
+def vals_to_sets(vals):
+    return [Vertex(val) for val in vals]
+
+
 class GraphAdjList:
     def __init__(self, edges: list[list[Vertex]]):
         # 邻接表，key: 顶点，value: 该顶点的所有邻接顶点
@@ -50,3 +54,26 @@ class GraphAdjList:
         for vertex in self.adj_list:
             tmp = [v.val for v in self.adj_list[vertex]]
             print(f"{vertex.val}: {tmp}")
+
+
+v = vals_to_sets([1, 3, 2, 5, 4])
+edges = [
+    [v[0], v[1]],
+    [v[0], v[3]],
+    [v[1], v[2]],
+    [v[2], v[3]],
+    [v[2], v[4]],
+    [v[3], v[4]],
+]
+
+graph = GraphAdjList(edges)
+
+# 添加边
+graph.add_edge(v[0], v[2])
+# 删除边
+graph.remove_edge(v[0], v[1])
+# 添加顶点
+v5 = Vertex(6)
+graph.add_vertex(v5)
+# 删除顶点
+graph.remove_vertex(v[1])
