@@ -24,3 +24,18 @@ python ffmpeg_video_split.py video.mp4 00:00:00 00:01:00
 ```
 ffmpeg -i video.mp4 -vf "subtitles=subtitle.srt" -c:a copy output.mp4
 ```
+
+5. 语音转带时间戳的文本
+
+```
+whisper_timeline.py
+```
+
+6. MP3 裁剪
+
+```
+# 剪掉开头
+ffmpeg -i input.mp3 -ss 00:00:02 -acodec copy output.mp3
+# 剪掉结尾
+ffmpeg -i input.mp3 -t 00:03:22 -acodec copy output.mp3
+```
