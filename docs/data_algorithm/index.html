@@ -989,13 +989,13 @@ v5 = Vertex(6)
 graph.add_vertex(v5)
 # 删除顶点
 graph.remove_vertex(v[1])</code></pre>
-                        <h3>9.3 图的遍历</h3>
+                        <h3 id="section9-sub3">9.3 图的遍历</h3>
                         <p>图的遍历方式可分为两种：广度优先遍历和深度优先遍历。</p>
                         <p>BFS 通常借助队列来实现，代码如下所示。队列具有“先入先出”的性质，这与 BFS 的“由近及远”的思想异曲同工。</p>
                         <ul>
-                            <li>1. 将遍历起始顶点加入队列，并开启循环。</li>
-                            <li>2. 在循环的每轮迭代中，弹出队首顶点并记录访问，然后将该顶点的所有邻接顶点加入到队列结尾。</li>
-                            <li>3. 循环 2 步骤，直到所有顶点被访问完毕后结束。</li>
+                            <li><p>1. 将遍历起始顶点加入队列，并开启循环。</p></li>
+                            <li><p>2. 在循环的每轮迭代中，弹出队首顶点并记录访问，然后将该顶点的所有邻接顶点加入到队列结尾。</p></li>
+                            <li><p>3. 循环 2 步骤，直到所有顶点被访问完毕后结束。</p></li>
                         </ul>
                         <p>为了防止重复遍历顶点，我们需要借助一个哈希集合 visited 来记录哪些节点已被访问。</p>
                         <pre><code>def graph_bfs(graph: GraphAdjList, start_vet: Vertex):
@@ -1073,6 +1073,26 @@ for vet in result:
 
                 <section id="section10" class="content-section">
                     <h2>10 搜索</h2>
+
+                    <h3 id="section10-sub1">10.1 二分查找</h3>
+                    <p>二分查找（binary search）是一种基于分治策略的高效搜索算法。它利用数据的有序性，每轮缩小一半搜索范围，直至找到目标元素或搜索区间为空为止。</p>
+                    <p>给定一个长度为 n 的数组 nums ，元素按从小到大的顺序排列且不重复。请查找并返回元素 target 在该数组中的索引。若数组不包含该元素，则返回 -1 。</p>
+                    <pre><code>def binary_search(nums, target):
+    i, j = 0, len(nums) - 1
+    while i <= j:
+        m = (i + j) // 2
+        if nums[m] < target:
+            i = m + 1
+        elif nums[m] > target:
+            j = m - 1
+        else:
+            return m
+    return -1
+
+
+target = 6
+nums = [1, 3, 6, 8, 12, 15, 23, 26, 31, 35]
+assert binary_search(nums, target)</code></pre>
                 </section>
 
                 <section id="section11" class="content-section">
