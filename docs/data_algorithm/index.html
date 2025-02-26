@@ -232,7 +232,7 @@ assert fib(5) == 3</code></pre>
                     <h3>2.3 时间复杂度</h3>
                     <p>时间复杂度分析统计的不是算法运行时间，而是算法运行时间随着数据量变大时的增长趋势。</p>
                     <p>设输入数据大小为 \(n\) ，常见的时间复杂度类型如下所示：</p>
-                    <div class="highlight-math" style="text-align: center;">
+                    <div class="highlight-math scroll-container" style="text-align: center;">
                         \(O(1) &lt; O(logn) &lt; O(n) &lt; O(nlogn) &lt; O(n^2) &lt; O(2^2) &lt; O(n!)\)
                     </div>
                     <p>常数阶的操作数量与输入数据大小 \(n\) 无关，即不随着 \(n\) 的变化而变化。</p>
@@ -997,6 +997,78 @@ graph.remove_vertex(v[1])</code></pre>
                             <li>2. 在循环的每轮迭代中，弹出队首顶点并记录访问，然后将该顶点的所有邻接顶点加入到队列结尾。</li>
                             <li>3. 循环 2 步骤，直到所有顶点被访问完毕后结束。</li>
                         </ul>
+                        <p>为了防止重复遍历顶点，我们需要借助一个哈希集合 visited 来记录哪些节点已被访问。</p>
+                        <pre><code>def graph_bfs(graph: GraphAdjList, start_vet: Vertex):
+    """
+    广度优先遍历
+    使用邻接表来表示图，以便获取指定顶点的所有邻接顶点
+    """
+    result = []
+    visited = set[Vertex]([start_vet])
+    queue = collections.deque([start_vet])
+    # 以 start_vet 为起点，循环直至访问完所有顶点
+    while len(queue) > 0:
+        vet = queue.popleft()
+        result.append(vet)
+        # 遍历该顶点的所有邻接顶点
+        for adj_vet in graph.adj_list[vet]:
+            if adj_vet in visited:
+                continue
+            queue.append(adj_vet)
+            visited.add(adj_vet)
+    return result
+
+
+v = vals_to_sets([1, 3, 2, 5, 4])
+edges = [
+    [v[0], v[1]],
+    [v[0], v[3]],
+    [v[1], v[2]],
+    [v[2], v[3]],
+    [v[2], v[4]],
+    [v[3], v[4]],
+]
+
+graph = GraphAdjList(edges)
+result = graph_bfs(graph, v[0])
+for vet in result:
+    print(vet.val)</code></pre>
+                    <p>深度优先遍历是一种优先走到底、无路可走再回头的遍历方式。</p>
+<pre><code>def dfs(graph, visited, result, vet):
+    result.append(vet)
+    visited.add(vet)
+    for adjVet in graph.adj_list[vet]:
+        if adjVet in visited:
+            continue
+        # 递归访问邻接顶点
+        dfs(graph, visited, result, adjVet)
+
+
+def graph_dfs(graph: GraphAdjList, start_vet: Vertex):
+    """
+    深度优先遍历
+    使用邻接表来表示图，以便获取指定顶点的所有邻接顶点
+    """
+    result = []
+    visited = set[Vertex]()
+    dfs(graph, visited, result, start_vet)
+    return result
+
+
+v = vals_to_sets([1, 3, 2, 5, 4])
+edges = [
+    [v[0], v[1]],
+    [v[0], v[3]],
+    [v[1], v[2]],
+    [v[2], v[3]],
+    [v[2], v[4]],
+    [v[3], v[4]],
+]
+
+graph = GraphAdjList(edges)
+result = graph_dfs(graph, v[0])
+for vet in result:
+    print(vet.val)</code></pre>
                 </section>
 
                 <section id="section10" class="content-section">

@@ -28,7 +28,9 @@
 
 * [数据结构与算法](https://artinte.github.io/machine-learning-series/data_algorithm/index.html)
 
-* 面试真题
+* LeetCode
+
+* 视频翻译
 
 ---
 

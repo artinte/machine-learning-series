@@ -28,7 +28,7 @@ ffmpeg -i video.mp4 -vf "subtitles=subtitle.srt" -c:a copy output.mp4
 5. 语音转带时间戳的文本
 
 ```
-whisper_timeline.py
+whisper_timeline_srt.py
 ```
 
 6. MP3 裁剪
@@ -38,4 +38,10 @@ whisper_timeline.py
 ffmpeg -i input.mp3 -ss 00:00:02 -acodec copy output.mp3
 # 剪掉结尾
 ffmpeg -i input.mp3 -t 00:03:22 -acodec copy output.mp3
+```
+
+7. 文本转语音
+
+```
+text_to_tts.py
 ```
