@@ -45,3 +45,9 @@ ffmpeg -i input.mp3 -t 00:03:22 -acodec copy output.mp3
 ```
 text_to_tts.py
 ```
+
+8. 给视频添加字幕
+
+```
+add_video_subtitle.py
+```
