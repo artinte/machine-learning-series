@@ -207,6 +207,145 @@ class Solution:
 
         return "".join(rows)</code></pre>
 
+                <h3><a href="https://leetcode.cn/problems/reverse-integer/">7. 整数反转</a></h3>
+                <p>思路：重点解决如何防止数据溢出。</p>
+                <pre><code>class Solution:
+    def reverse(self, x: int) -> int:
+        result = 0
+        negative = x < 0
+        x = x if x > 0 else -x
+
+        int32_max = 2**31 - 1
+        while x != 0:
+            tail = x % 10
+            # 数据溢出
+            if (int32_max - tail) / 10 < result:
+                return 0
+            result = result * 10 + tail
+            x = x // 10
+        
+        return -result if negative else result </code></pre>
+
+                <h3><a href="https://leetcode.com/problems/string-to-integer-atoi/description/">8. 字符串转换整数 (atoi)</a></h3>
+                <p>思路：注意数据如果过大需要截断。</p>
+                <pre><code>class Solution:
+    def myAtoi(self, s: str) -> int:
+        s = s.lstrip()
+        if len(s) == 0:
+            return 0
+        postive = True
+        if s[0] == '-':
+            postive = False
+            s = s[1:]
+        elif s[0] == '+':
+            s = s[1:]
+        
+        pos_max = 2**31 - 1
+        neg_max = -2**31
+
+        temp = ''
+        check_zero = True
+        for c in s:
+            if check_zero:
+                if c == '0':
+                    continue
+                else:
+                    check_zero = False
+
+            if c >= '0' and c <= '9':
+                if len(temp) > 0 and int(temp) > (pos_max - int(c)) // 10:
+                    return pos_max if postive else neg_max
+                temp += c
+            else:
+                break
+        if len(temp) ==0:
+            return 0
+        else:
+            return int(temp) if postive else -int(temp)</code></pre>
+
+            <h3><a href="https://leetcode.cn/problems/palindrome-number/description/">9. 回文数</a></h3>
+            <p>思路：将整数转化为字符串直接比较。</p>
+            <pre><code>class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        if x &lt; 0:
+            return False
+
+        s = str(x)
+        for i in range(len(s) // 2):
+            if s[i] != s[-1 - i]:
+                return False
+        return True</code></pre>
+            
+            <h3><a href="https://leetcode.cn/problems/regular-expression-matching/description/">10. 正则表达式匹配</a></h3>
+            <p>题目看起来简单，但是实际上要困难很多，常规方法（条件判断）很难写清楚，采用动态规划的方案，从最小的答案逐渐扩大找到解决方案。</p>
+            <pre><code>class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        dp = [[False] * (len(p) + 1) for _ in range(len(s) + 1)]
+        dp[0][0] = True
+
+        # Deals with patterns like a* or a*b* or a*b*c*.
+        for i in range(2, len(p) + 1):
+            if p[i - 1] == '*':
+                dp[0][i] = dp[0][i - 2]
+
+        for i in range(1, len(s) + 1):
+            for j in range(1, len(p) + 1):
+                if p[j - 1] == '.' or p[j - 1] == s[i - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+                elif p[j - 1] == '*':
+                    if p[j - 2] == s[i - 1] or p[j - 2] == '.':
+                        dp[i][j] = dp[i][j - 2] or dp[i][j - 1] or dp[i - 1][j]
+                    else:
+                        dp[i][j] = dp[i][j - 2]
+                else:
+                    dp[i][j] = False
+        return dp[len(s)][len(p)]</code></pre>
+
+
+            <h3><a href="https://leetcode.com/problems/container-with-most-water/description/">11. 盛最多水的容器</a></h3>
+            <p>思路：暴力解法会超时。</p>
+            <pre><code>class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        volume_max = 0
+        for i in range(0, len(height)):
+            for j in range(i + 1, len(height)):
+                volume = (j - i) * min(height[i], height[j])
+                if volume_max &lt; volume:
+                    volume_max = volume
+        return volume_max</code></pre>
+            <p>采用双指针记录左右木板的位置，左边模板短就往右移，右边模板短就左移。</p>
+            <pre><code>class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        volume_max = 0
+        left = 0
+        right = len(height) - 1
+        while left &lt; right:
+            volume = (right - left) * min(height[left], height[right])
+            if volume > volume_max:
+                volume_max = volume
+            if height[left] &lt; height[right]:
+                left += 1
+            else:
+                right -= 1
+        return volume_max</code></pre>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+            <h3><a href=""></a></h3>
+
             <!-- <div class="navigation">
                 <a href="https://www.tensorflow.org/install">上一节：1.0 环境配置</a>
                 <a href="quickstart_expert.html">下一节：1.2 专家速览</a>
