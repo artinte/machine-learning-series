@@ -51,3 +51,9 @@ text_to_tts.py
 ```
 add_video_subtitle.py
 ```
+
+9. Window 安装 FFmepg
+
+```
+winget install ffmpeg
+```

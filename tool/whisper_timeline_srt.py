@@ -31,7 +31,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # tiny/base/small/medium/large/turbo
-    model = whisper.load_model('base')
+    model = whisper.load_model('small')
     result = model.transcribe(args.audio_file, word_timestamps=True)
     with open(args.output_srt, 'w', encoding='utf-8') as srt_file:
         for idx, segment in enumerate(result['segments']):
