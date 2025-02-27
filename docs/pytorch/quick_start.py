@@ -30,6 +30,7 @@ for X, y in test_dataloader:
     break
 
 device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else 'cpu'
+print(f"Using {device} device")
 
 class NeuralNetwork(torch.nn.Module):
     def __init__(self):
