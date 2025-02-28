@@ -17,11 +17,21 @@
                 <h5 class="p-3"><a href="../index.html">主页</a></h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
+                        
                         <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01 张量和梯度基础</a>
-                        <ul id="chapter1" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section1-sub1">1.1</a></li>
-                            <li><a class="nav-link" href="#section1-sub2">1.2</a></li>
-                        </ul>
+                        <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02 全连接网络</a>
+                        <a class="nav-link" href="#section3" onclick="toggleChildChapters(event, 'chapter3')">03 卷积网络</a>
+                        <a class="nav-link" href="#section4" onclick="toggleChildChapters(event, 'chapter4')">04 循环网络</a>
+                        <a class="nav-link" href="#section5" onclick="toggleChildChapters(event, 'chapter5')">05 Transformer</a>
+                        <a class="nav-link" href="#section6" onclick="toggleChildChapters(event, 'chapter6')">06 扩散模型</a>
+                        <a class="nav-link" href="#section7" onclick="toggleChildChapters(event, 'chapter7')">07 文本</a>
+                        <a class="nav-link" href="#section8" onclick="toggleChildChapters(event, 'chapter8')">08 语音</a>
+                        <a class="nav-link" href="#section9" onclick="toggleChildChapters(event, 'chapter9')">09 图片与视频</a>
+                        <a class="nav-link" href="#section10" onclick="toggleChildChapters(event, 'chapter10')">10 强化学习</a>
+                        <a class="nav-link" href="#section11" onclick="toggleChildChapters(event, 'chapter11')">11 PyTorch 拓展</a>
+                        <a class="nav-link" href="#section12" onclick="toggleChildChapters(event, 'chapter12')">12 模型优化</a>
+                        <a class="nav-link" href="#section13" onclick="toggleChildChapters(event, 'chapter13')">13 分布式训练</a>
+                        <a class="nav-link" href="#section14" onclick="toggleChildChapters(event, 'chapter14')">14 图神经网络</a>
                     </li>
                 </ul>
             </nav>
@@ -35,6 +45,60 @@
 
                 <section id="section1" class="content-section">
                     <h2>01 张量和梯度基础</h2>
+                </section>
+
+                <section id="section8" class="content-section">
+                    <h2>08 语音</h2>
+
+                    <h3 id="section8-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">8.1 语音特征提取</a>
+                    </h3>
+                    <p>介绍 Mel 频谱、MFCC 特征等音频数据处理方式。</p>
+                    <ul>
+                        <li><p>1. 详细介绍梅尔频谱（Mel Spectrogram）、MFCC 等语音特征的提取方法。</p></li>
+                        <li><p>2. 讲解如何使用 Librosa 等库提取语音特征。</p></li>
+                        <li><p>3. 介绍语音数据增强的方法。</p></li>
+                        <li><p>4. 介绍语音编码。</p></li>
+                        <li><p>5. 介绍波形数据处理。</p></li>
+                    </ul>
+                    <h3 id="section8-sub2" class="content-section-sub">
+                        <a href="#" style="color: inherit;">8.2 ASR（自动语音识别）</a>
+                    </h3>
+                    <p>讲解 Wav2Vec2.0、DeepSpeech 语音识别模型。</p>
+                    <ul>
+                        <li><p>1. 讲解语音识别的基本原理和实现方法。</p></li>
+                        <li><p>2. 介绍如何构建基于循环神经网络和Transformer的语音识别模型。</p></li>
+                        <li><p>3. 讲解CTC（Connectionist Temporal Classification）算法。</p></li>
+                        <li><p>4. 介绍如何评估语音识别模型的性能。</p></li>
+                    </ul>
+                    <h3 id="section8-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">8.3 TTS（文本转语音）</a>
+                    </h3>
+                    <p>介绍 Tacotron、WaveNet、FastSpeech。</p>
+                    <ul>
+                        <li><p>1. 讲解语音合成的基本原理和实现方法。</p></li>
+                        <li><p>2. 介绍Tacotron、WaveNet等语音合成模型的原理和实现。</p></li>
+                        <li><p>3. 介绍如何评估语音合成模型的性能。</p></li>
+                    </ul>
+                    <h3 id="section8-sub4" class="content-section-sub">
+                        <a href="#" style="color: inherit;">8.4 语音增强与分离</a>
+                    </h3>
+                    <p>介绍降噪、语音分离、回声消除等技术。</p>
+                    <ul>
+                        <li><p>1. 降低背景噪声，提高语音信号的清晰度。</p></li>
+                        <li><p>2. 从混合语音信号中分离出单个说话人的语音。</p></li>
+                        <li><p>3. 消除扬声器播放的声音通过麦克风采集产生的回声。</p></li>
+                    </ul>
+                    <h3 id="section8-sub5" class="content-section-sub">
+                        <a href="#" style="color: inherit;">8.5 语音合成与风格迁移</a>
+                    </h3>
+                    <p>讲解语音克隆、声音转换等应用。</p>
+                    <ul>
+                        <li><p>1. 利用少量目标说话人的语音数据，复制其独特的音色和说话方式。</p></li>
+                        <li><p>2. 将一个人的语音特征转换为另一个人的语音特征，实现声音的“风格迁移”。</p></li>
+                        <li><p>3. 使用一种语言的文本，合成另一种语言的语音，同时保留说话人的音色。</p></li>
+                        <li><p>4. 合成带有特定情感色彩的语音，如喜悦、悲伤、愤怒等。</p></li>
+                    </ul>
                 </section>
 
             </main>
