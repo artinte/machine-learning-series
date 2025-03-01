@@ -1269,22 +1269,129 @@ print([node.val for node in result])</code></pre>
 
                 <section id="section14" class="content-section">
                     <h2>14 动态规划</h2>
-                    <p><strong>动态规划 (Dynamic Programming)</strong>
-                        是一个重要的算法范式，它将一个问题分解为一系列更小的子问题，并通过存储子问题的解来避免重复计算，从而大幅提升时间效率。</p>
+                    <p>小溪汇入河流，江河汇入大海。</p>
+                    <p>动态规划将小问题的解汇集成大问题的答案，一步步引领我们走向解决问题的彼岸。</p>
+                    
+                    <h3 id="section14-sub1" class="content-section-sub">
+                        <a href="#" style="text-decoration: none; color: inherit;">14.1 初探动态规划</a>
+                    </h3>
+                    <p><strong>动态规划 (Dynamic Programming)</strong> 是一个重要的算法范式，它将一个问题分解为一系列更小的子问题，并通过存储子问题的解来避免重复计算，从而大幅提升时间效率。</p>
                     <p>在本节中，我们从一个经典例题入手，先给出它的暴力回溯解法，观察其中包含的重叠子问题，再逐步导出更高效的动态规划解法。</p>
                     <p>给定一个共有 n 阶的楼梯，我们每步可以上 1 阶或者 2 阶，请问有多少种方案可以爬到楼顶？</p>
-                    <p>本题的目标是求解方案的数量，我们可以考虑通过回溯来穷举所有的可能性。具体来说，将爬楼梯想象为一个多轮选择的过程：从地面出发，美伦选择上 1 阶或 2 阶，每当到达楼梯顶部时就将方案数量加
-                        1，当越过楼梯顶部时就将其剪枝。</p>
-                    <h3 id="section14-sub1" class="content-section-sub">
-                        <a href="#" style="color: inherit;">14.1 初探动态规划</a>
+                    <p>本题的目标是求解方案的数量，我们可以考虑通过回溯来穷举所有的可能性。具体来说，将爬楼梯想象为一个多轮选择的过程：从地面出发，每轮选择上 1 阶或 2 阶，每当到达楼梯顶部时就将方案数量加 1 ，当越过楼梯顶部时就将其剪枝。</p>
+                    <pre><code>def backtrack(choices: list[int], state, total, result):
+    # 回溯
+    # 当爬到第 n 阶时，方案数量加 1
+    if state == total:
+        result[0] += 1
+    # 遍历所有选择
+    for choice in choices:
+        # 剪枝：不允许越过第 top 阶
+        if state + choice > total:
+            continue
+        # 尝试：做出选择，更新状态
+        backtrack(choices, state + choice, total, result)
+        # 回退
+
+
+def climbing_stairs_backtrack(total):
+    # 可选择向上爬 1 阶或者 2 阶
+    choices = [1, 2]
+    # 从第 0 阶开始爬
+    state = 0
+    # 记录方案数量
+    result = [0]
+    backtrack(choices, state, total, result)
+    return result[0]
+
+
+assert climbing_stairs_backtrack(20) == 10946</code></pre>
+                    <p>重要推论：爬到第 \(i - 1\) 阶的方案加上爬到第 \(i - 2\) 阶的方案数就等于爬到第 i 阶的方案数。公式如下：</p>
+                    <div class="highlight-math scroll-container" style="text-align: center;">
+                        \(dp[i] = dp[i - 1] + dp[i - 2]\)
+                    </div>
+                    <p>这意味着在爬楼梯问题中，各个子问题之间存在递推关系，原问题的解可以由子问题的解构建得来。</p>
+                    <p>我们可以以 \(dp[n]\) 为起点，递归地将一个较大问题拆解为两个较小问题的和，直至到达最小子问题 \(dp[1]\) 和 \(dp[2]\) 时返回。其中，最小子问题的解是已知的，即 \(dp[1] = 1\) 和 \(dp[2] = 2\) ，表示爬到第 1 和 2 阶分别有 1 和 2 两种方案。</p>
+                    <pre><code>def climb_stairs_dfs(n):
+    if n == 1 or n == 2:
+        return n
+    count = climb_stairs_dfs(n - 1) + climb_stairs_dfs(n - 2)
+    return count
+
+
+assert climb_stairs_dfs(20) == 10946</code></pre>
+                    <p>暴力搜索形成的递归树，对于问题 \(dp[n]\) ，其递归树的深度为 n ，时间复杂度为 \(O(2^n)\) 。</p>
+                    <p>指数阶的时间复杂度是重叠子问题导致的，例如 \(dp[9]\) 被分解为 \(dp[8]\) 和 \(dp[7]\) ，\(dp[8]\) 被分解为 \(dp[7]\) 和 \(dp[6]\) ，两者都包含子问题 \(dp[7]\) 。</p>
+                    <p>为了提升算法效率，我们希望所有的重叠子问题都只被计算一次。为此，我们声明一个数组 <code>mem</code> 来记录每个子问题的解。</p>
+                    <pre><code>def climb_stairs_dfs_mem(n, mem):
+    if n == 1 or n == 2:
+        return n
+    if mem[n] != -1:
+        return mem[n]
+    count = climb_stairs_dfs_mem(n - 1, mem) + climb_stairs_dfs_mem(n - 2, mem)
+    mem[n] = count
+    return count
+
+
+n = 20
+# mem[i] 记录爬到第 i 阶的方案总数，-1 代表无记录
+mem = [-1] * (n + 1)
+assert climb_stairs_dfs_mem(n, mem) == 10946</code></pre>
+                    <p>记忆化搜索是一种“从顶至底”的方法：我们从原问题（根节点）开始，递归地将较大子问题分解为较小子问题，直至解已知的最小子问题（叶节点）。之后，通过回溯逐层收集子问题的解，构建出原问题的解。</p>
+                    <p>与之相反，动态规划是一种“从底至顶”的方法：从最小子问题的解开始，迭代地构建更大子问题的解，直至得到原问题的解。</p>
+                    <p>由于动态规划不包含回溯过程，因此只需使用循环迭代实现，无须使用递归。</p>
+                    <pre><code>def climb_stairs_dp(n):
+    if n == 1 or n == 2:
+        return n
+    # 初始化 dp 表，用于存储子问题的解
+    dp = [0] * (n + 1)
+    # 初始状态：预设最小子问题的解
+    dp[1], dp[2] = 1, 2
+    # 状态转移：从较小子问题逐步求解较大子问题
+    for i in range(3, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+    return dp[n]
+
+
+assert climb_stairs_dp(20) == 10946</code></pre>
+                    <p>我们可以总结动态规划的常用术语：</p>
+                    <ul>
+                        <li><p>1. 将数组 <code>dp</code> 称为 dp 表，\(dp[i]\) 表示状态 i 对应子问题的解。</p></li>
+                        <li><p>2. 将最小子问题对应的状态（第 1 阶和第 2 阶楼梯）称为初始状态。</p></li>
+                        <li><p>3. 将递推公式 \(dp[i] = dp[i - 1] + dp[i - 2]\) 称为状态转移方程。</p></li>
+                    </ul>
+                    <p>由于 \(dp[i]\) 只与 \(dp[i - 1]\) 和 \(dp[i - 2]\) 有关，因此我们无须使用一个数组来存储所有子问题的解，而只需要两个变量滚动前进即可。</p>
+                    <pre><code>def climb_stairs_dp_comp(n):
+    if n == 1 or n == 2:
+        return n
+    a, b = 1, 2
+    for _ in range(3, n + 1):
+        a, b = b, a + b
+    return b
+
+
+assert climb_stairs_dp_comp(20) == 10946</code></pre>
+
+                    <h3 id="section14-sub2" class="content-section-sub">
+                        <a href="#" style="text-decoration: none; color: inherit;">14.2 DP 问题特性</a>
                     </h3>
+                    <h3 id="section14-sub3" class="content-section-sub">
+                        <a href="#" style="text-decoration: none; color: inherit;">14.3 DP 解题思路</a>
+                    </h3>
+                    <h3 id="section14-sub4" class="content-section-sub">
+                        <a href="#" style="text-decoration: none; color: inherit;">14.4 0-1 背包问题</a>
+                    </h3>
+                    <p>背包问题是一个非常好的动态规划入门题目，是动态规划中最常见的问题形式。其具有很多变种，例如 0-1 背包问题、完全背包问题、多重背包问题等。在本节中，我们先来求解最常见的 0-1 背包问题。</p>
+                    <p>给定 n 个物品，第 i 个物品的重量为 wgt[i - 1] ，价值为 val[i - 1] ，和一个容量为 cap 的背包。每个物品只能选择一次，问在限定背包容量下能放入物品的最大价值。</p>
+                    <p>我们可以将 0-1 背包问题看作一个由 n 轮决策组成的过程，对于每个物体都有不放入和放入两种决策，因此该问题满足决策树模型。</p>
+                
                 </section>
 
                 <section id="section15" class="content-section">
                     <h2>15 贪心</h2>
                     <p><strong>贪心算法 (Greedy Algorithm)</strong> 是一种常见的解决优化问题的算法，其基本思想是在问题的每个决策阶段，都选择当前看起来最优的选择。</p>
 
-                    <h3 id="section8-sub1" class="content-section-sub">
+                    <h3 id="section15-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">15.1 贪心算法</a>
                     </h3>
                     <p><strong>贪心算法 (Greedy Algorithm)</strong>

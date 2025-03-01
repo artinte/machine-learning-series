@@ -5,4 +5,4 @@ def climb_stairs_dfs(n):
     return count
 
 
-print(climb_stairs_dfs(20))
+assert climb_stairs_dfs(20) == 10946

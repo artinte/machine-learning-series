@@ -1,4 +1,5 @@
 def backtrack(choices: list[int], state, total, result):
+    # 回溯
     # 当爬到第 n 阶时，方案数量加 1
     if state == total:
         result[0] += 1
@@ -9,6 +10,7 @@ def backtrack(choices: list[int], state, total, result):
             continue
         # 尝试：做出选择，更新状态
         backtrack(choices, state + choice, total, result)
+        # 回退
 
 
 def climbing_stairs_backtrack(total):
@@ -22,4 +24,4 @@ def climbing_stairs_backtrack(total):
     return result[0]
 
 
-print(climbing_stairs_backtrack(20))
+assert climbing_stairs_backtrack(20) == 10946

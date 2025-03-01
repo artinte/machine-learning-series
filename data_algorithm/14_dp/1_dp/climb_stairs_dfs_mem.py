@@ -9,6 +9,6 @@ def climb_stairs_dfs_mem(n, mem):
 
 
 n = 20
-# mem[i] 记录爬到第 i阶的方案总数，-1 代表无记录
+# mem[i] 记录爬到第 i 阶的方案总数，-1 代表无记录
 mem = [-1] * (n + 1)
-print(climb_stairs_dfs_mem(n, mem))
+assert climb_stairs_dfs_mem(n, mem) == 10946

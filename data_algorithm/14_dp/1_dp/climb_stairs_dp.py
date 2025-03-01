@@ -11,4 +11,4 @@ def climb_stairs_dp(n):
     return dp[n]
 
 
-print(climb_stairs_dp(20))
+assert climb_stairs_dp(20) == 10946
