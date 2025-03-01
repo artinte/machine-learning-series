@@ -103,6 +103,10 @@
                         <a class="nav-link" href="#section14" onclick="toggleChildChapters(event, 'chapter14')">14 动态规划</a>
                         <ul id="chapter14" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section14-sub1">14.1 初探动态规划</a></li>
+                            <li><a class="nav-link" href="#section14-sub2">14.2 DP 问题特性</a></li>
+                            <li><a class="nav-link" href="#section14-sub3">14.3 DP 解题思路</a></li>
+                            <li><a class="nav-link" href="#section14-sub4">14.4 0-1 背包问题</a></li>
+                            <li><a class="nav-link" href="#section14-sub5">14.5 完全背包问题</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -817,11 +821,57 @@ tree = [1, 2, 3, 4, None, 6, 7, 8, 9, None, None, 12, None, None, 15]</code></pr
                         <li><p>给定某节点，获取它的值、左（右）子节点、父节点。</p></li>
                         <li><p>获取前序遍历、中序遍历、后序遍历、层序遍历序列。</p></li>
                     </ul>
+                    <h3 id="section7-sub4">7.4 二叉搜索树</h3>
+                    <h3 id="section7-sub5">7.5 AVL 树</h3>
+                    <h3 id="section7-sub6">7.6 字典树</h3>
+                    <p><strong>字典树 (Trie)</strong> 每个节点代表一个字符，并且需要：</p>
+                    <ul>
+                        <li><p>1. <code>children</code> ：用 dict 存储子节点，键是字符，值是 TrieNode 。</p></li>
+                        <li><p>2. <code>is_end</code> ：一个布尔值表示是否达到某个完整单词的结尾。</p></li>
+                    </ul>
+                    <pre><code>class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Trie:
+
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word: str) -> None:
+        node = self.root
+        for c in word:
+            if c not in node.children:
+                node.children[c] = TrieNode()
+            # 沿着前缀树向下遍历
+            node = node.children[c]
+        node.is_end = True
+
+    def search(self, word: str) -> bool:
+        node = self._find_node(word)
+        return node is not None and node.is_end
+
+    def startsWith(self, prefix: str) -> bool:
+        return self._find_node(prefix) is not None
+        
+    def _find_node(self, prefix):
+        node = self.root
+        for c in prefix:
+            if c not in node.children:
+                return None
+            node = node.children[c]
+        return node</code></pre>
                 </section>
 
                 <section id="section8" class="content-section">
                     <h2>08 堆</h2>
-                    <p><strong>堆 (Heap)</strong> 堆（heap）是一种满足特定条件的完全二叉树，主要可分为两种类型。</p>
+                    <h3 id="section8sub1">8.1 堆</h3>
+                    <p><strong>堆 (Heap)</strong> 堆（heap）是一种满足特定条件的完全二叉树，主要可分为两种类型：</p>
+                    <ul>
+                        <li><p>1. <strong>小顶堆 (Min Heap)</strong> ：任意节点的值 \(&le;\) 其子节点的值。</p></li>
+                        <li><p>2. <strong>大顶堆 (Max Heap)</strong> ：任意节点的值 \(&ge;\) 其子节点的值。</p></li>
+                    </ul>
                 </section>
 
                 <section id="section9" class="content-section">
@@ -1137,7 +1187,7 @@ assert binary_search(nums, target)</code></pre>
 print(selection_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
 
                     <h3 id="section11-sub2" class="content-section-sub">
-                        <a href="#" style="text-decoration: none; color: inherit;">4.2 冒泡排序</a>
+                        <a href="#" style="text-decoration: none; color: inherit;">11.2 冒泡排序</a>
                     </h3>
                     <p><strong>冒泡排序 (Bubble Sort)</strong> 通过连续地比较与交换相邻元素实现排序。这个过程就像气泡从底部升到顶部一样，因此得名冒泡排序。</p>
                     <p>设数组的长度为 \(n\) ，冒泡排序的算法如下：</p>
@@ -1411,6 +1461,52 @@ values = [50, 120, 150, 210, 240]
 capacity = 50
 num = len(weights)
 assert knapsack_dfs(weights, values, num, capacity) == 270</code></pre>
+                    <p>由于每个物品都会产生不选和选两条搜索分支，因此时间复杂度为 \(O(2^n)\) 。</p>
+                    <p>为了保证重叠子问题只被计算一次，我们借助记忆列表 mem 来记录子问题的解，其中 mem[i][c] 对应 dp[i, c] 。</p>
+                    <p>引入记忆化之后，时间复杂度取决于子问题数量，也就是 \(O(n \times cap)\) 。实现代码如下：</p>
+                    <pre><code>def knapsack_dfs_mem(weights, values, mem, i, cap):
+    if i == 0 or cap == 0:
+        return 0
+    if mem[i][cap] != -1:
+        return mem[i][cap]
+    
+    if cap - weights[i - 1] &lt; 0:
+        result = knapsack_dfs_mem(weights, values, mem, i - 1, cap)
+        mem[i][cap] = result
+        return result
+    
+    no = knapsack_dfs_mem(weights, values, mem, i - 1, cap)
+    yes = knapsack_dfs_mem(weights, values, mem,  i - 1, cap - weights[i - 1]) + values[i - 1]
+    result = max(no, yes)
+    mem[i][cap] = result
+    return result
+
+
+weights = [10, 20, 30, 40, 50]
+values = [50, 120, 150, 210, 240]
+capacity = 50
+num = len(weights)
+mem = [[-1] * (capacity + 1) for _ in range(num + 1)]
+assert knapsack_dfs_mem(weights, values, mem, num, capacity) == 270</code></pre>
+                    <p>动态规划实质上就是在状态转移中填充 \(dp\) 表的过程，代码如下所示：</p>
+                    <pre><code>def knapsack_dfs_dp(weights, values, cap):
+    n = len(weights)
+    dp = [[0] * (cap + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        for j in range(1, cap + 1):
+            if weights[i - 1] > j:
+                dp[i][j] = dp[i - 1][j]
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weights[i - 1]] + values[i - 1])
+    return dp[n][cap]
+
+
+weights = [10, 20, 30, 40, 50]
+values = [50, 120, 150, 210, 240]
+capacity = 50
+num = len(weights)
+assert knapsack_dfs_dp(weights, values, capacity) == 270</code></pre>
                 </section>
 
                 <section id="section15" class="content-section">
