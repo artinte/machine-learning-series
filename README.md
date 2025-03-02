@@ -4,33 +4,33 @@
 
 《机器学习系列》是一个深入浅出地介绍机器学习各个领域的学习资源的集合，旨在帮助读者全面理解和掌握机器学习的核心技术与应用。包括以下几个部分：
 
-* Python 语言入门
+* Python 语言入门：专为机器学习写的入门教材
 
-* 深度学习 7 天速成
+* 深度学习 30 天速成：快速理解深度学习原理
 
-* [深度学习综合指南](https://artinte.github.io/machine-learning-series/deep_learning/index.html)  
+* [深度学习综合指南](https://artinte.github.io/machine-learning-series/deep_learning/index.html)：全面介绍深度学习的基础概念
 
-* TensorFlow 详解
+* TensorFlow 详解：翻译 TensorFlow 官方文档
 
-* PyTorch 详解
+* [PyTorch 详解](https://artinte.github.io/machine-learning-series/pytorch/index.html)：深入浅出讲解 PyTorch 使用
 
-* 微型数据集
+* 微型数据集：学习过程中使用的微型数据集
 
-* 经典论文
+* 经典论文：机器学习方面的经典论文翻译版本
 
-* 预科微积分
+* 预科微积分：免费的基础数学教科书
 
-* 微积分
+* 微积分：免费的微积分教科书
 
-* 统计学介绍
+* 统计学介绍：免费的统计学教科书
 
-* 线性代数
+* 线性代数：免费的线性代数教科书
 
-* [数据结构与算法](https://artinte.github.io/machine-learning-series/data_algorithm/index.html)
+* [数据结构与算法](https://artinte.github.io/machine-learning-series/data_algorithm/index.html)：教程 Hello 算法的扩充版本
 
-* LeetCode
+* LeetCode：使用 Python 解决 LeetCode 习题
 
-* 视频翻译
+* 视频翻译：翻译外网上的热门机器学习视频
 
 ---
 
