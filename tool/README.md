@@ -57,3 +57,9 @@ add_video_subtitle.py
 ```
 winget install ffmpeg
 ```
+
+10. 提取 pdf 图片
+
+```
+pdfimages -all input.pdf prefix_
+```

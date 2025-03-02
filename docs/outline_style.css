@@ -162,6 +162,10 @@ code {
     scrollbar-width: none;
 }
 
+.no-indent {
+    text-indent: 0;
+}
+
 /* 移动端样式（只在屏幕宽度 < 1024 px 时生效 */
 @media screen and (max-width: 1024px) {
     .sidebar, .right-sidebar {
