@@ -35,7 +35,7 @@ if __name__ == '__main__':
     print(sorted([3, 1, 2, 7, 9, 8]))
     # Return a reverse iterator.
     print(list(reversed([1, 2, 3, 4, 5, 6, 7])))
-    # With one argument, return the type of an object. 
+    # With one argument, return the type of object.
     print(type(42)) 
     # Return True if the object argument is an instance.
     print('42 is instance of int:', isinstance(42, int))
