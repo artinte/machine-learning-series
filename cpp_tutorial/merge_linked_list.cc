@@ -4,7 +4,7 @@
 struct ListNode {
     int val;
     ListNode* next;
-    ListNode(int x) : val(x), next(nullptr) {}
+    explicit ListNode(int x) : val(x), next(nullptr) {}
 };
 
 // convert a vector to a singly linked list
@@ -12,7 +12,7 @@ ListNode* vectorToLinkedList(const std::vector<int>& nums) {
     if (nums.empty())
         return nullptr;
     
-    ListNode* head = new ListNode(nums[0]);
+    auto* head = new ListNode(nums[0]);
     ListNode* current = head;
 
     for (size_t i = 1; i < nums.size(); i++) {
@@ -50,7 +50,7 @@ ListNode* mergeTwoList(ListNode* l1, ListNode* l2) {
     return dummy.next;
 }
 
-void printList(ListNode* head) {
+void printList(const ListNode* head) {
     while (head) {
         std::cout << head->val << " -> ";
         head = head->next;
@@ -58,17 +58,17 @@ void printList(ListNode* head) {
     std::cout << "nullptr" << std::endl;
 }
 
-void deleteList(ListNode* head) {
+void deleteList(const ListNode* head) {
     while (head) {
-        ListNode* temp = head;
+        const ListNode* temp = head;
         head = head->next;
         delete temp;
     }
 }
 
 int main() {
-    std::vector<int> nums1 = {1, 3, 5, 8, 9};
-    std::vector<int> nums2 = {2, 4, 6,};
+    const std::vector<int> nums1 = {1, 3, 5, 8, 9};
+    const std::vector<int> nums2 = {2, 4, 6,};
 
     ListNode* l1 = vectorToLinkedList(nums1);
     ListNode* l2 = vectorToLinkedList(nums2);

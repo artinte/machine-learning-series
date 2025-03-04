@@ -7,3 +7,5 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(binary-tree-reverse binary_tree_reverse.cc)
+add_executable(merge-linked-list merge_linked_list.cc)
+add_executable(class-person class-person.cc)
