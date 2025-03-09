@@ -1225,7 +1225,7 @@ print(bubble_sort([6, 4, 7, 5, 1, 8, 3, 9, 2]))</code></pre>
                     <p><strong>插入排序 (Insertion Sort)</strong> 是一种简单的排序算法，它的工作原理与手动整理一副牌的过程非常相似。</p>
 
                     <h3 id="section4-sub2" class="content-section-sub">
-                        <a href="#" style="color: inherit;">11.4 快速排序</a>
+                        <a href="#" style="text-decoration: none; color: inherit;">11.4 快速排序</a>
                     </h3>
                     <p><strong>快速排序 (Quick Sort)</strong> 是一种基于分治策略的排序算法，运行高效，应用广泛。</p>
                     <p>快速排序的核心操作是哨兵划分，其目标是：选择数组中的某个元素作为基准数，将所有小于基准值的元素移动到其左侧，而大于基准值的元素移动到右侧。</p>
@@ -1272,11 +1272,9 @@ print(nums)</code></pre>
                 <section id="section13" class="content-section">
                     <h2>13 回溯</h2>
                     <h3 id="section13-sub1" class="content-section-sub">
-                        <a href="https://www.hello-algo.com/chapter_backtracking/backtracking_algorithm/"
-                            style="color: inherit;">13.1 回溯算法</a>
+                        <a href="#" style="text-decoration: none; color: inherit;">13.1 回溯算法</a>
                     </h3>
-                    <p><strong>回溯算法 (Backtracking Algorithm)</strong>
-                        是一种通过穷举来解决问题的方法，它的核心思想是从一个初始状态出发，暴力搜索所有可能的解决方案，当遇到正确的解则将其记录，直到找到解或者尝试了所有可能的选择都无法找到解为止。</p>
+                    <p><strong>回溯算法 (Backtracking Algorithm)</strong> 是一种通过穷举来解决问题的方法，它的核心思想是从一个初始状态出发，暴力搜索所有可能的解决方案，当遇到正确的解则将其记录，直到找到解或者尝试了所有可能的选择都无法找到解为止。</p>
                     <p>回溯算法通常采用“深度优先搜索”来遍历解空间，接下来我们利用前序遍历构造一个回溯问题，逐步了解回溯算法的工作原理。</p>
                     <p>给定一个二叉树，搜索并记录所有值为 7 的节点，请返回节点列表。</p>
                     <pre><code>class TreeNode:
@@ -1313,9 +1311,12 @@ def pre_order(root: TreeNode):
 root = list_to_tree_dfs([1, 7, 3, 4, 5, 6, 7], 0)
 pre_order(root)
 print([node.val for node in result])</code></pre>
-                    <p>之所以称为回溯算法，是因为该算法在搜索解空间时会采用<strong>尝试</strong>与<strong>回退</strong>的策略。当算法在搜索过程中遇到某个状态无法继续前进或无法得到满足条件的解时，它会撤销上一步的选择，退回到之前的状态，并尝试其它可能的选择。
-                    </p>
-                    <p>在上述代码中，访问每个节点都代表一次尝试，而越过叶节点或返回父节点的 <code>return</code> 则表示回退。</p>
+                    <p>之所以称为回溯算法，是因为该算法在搜索解空间时会采用<strong>“尝试”</strong>与<strong>“回退”</strong>的策略。当算法在搜索过程中遇到某个状态无法继续前进或无法得到满足条件的解时，它会撤销上一步的选择，退回到之前的状态，并尝试其它可能的选择。</p>
+                    
+                    <h3 id="section13-sub2" class="content-section-sub">
+                        <a href="#" style="text-decoration: none; color: inherit;">13.2 全排列问题</a>
+                    </h3>
+                    <p>全排列问题是回溯算法的一个典型应用。它的定义是在给定一个集合（如一个数组或字符串）的情况下，找出其中元素的所有可能的排列。</p>
                 </section>
 
                 <section id="section14" class="content-section">
