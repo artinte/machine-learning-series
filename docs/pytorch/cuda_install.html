@@ -60,10 +60,23 @@ GPU Device 0: "Ada" with compute capability 8.9
             <p>进入 <a href="https://pytorch.org/get-started/locally/">官方页面</a> ，安装带有 CUDA 版本的 torch 程序：</p>
             <pre><code>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126</code></pre>
 
-            <h3>1.1.4 验证</h3>
+            <h3>1.1.4 确认</h3>
+            <p>为了确保 PyTorch 已正确安装，我们可以通过运行实例代码来验证安装。在这里构建一个随机初始化的张量：</p>
+            <pre><code>import torch
+
+x = torch.rand(5, 3)
+print(x)</code></pre>
+            <p>输出类似于以下内容：</p>
+            <pre><samp>tensor([[0.6853, 0.2405, 0.5365],
+    [0.8243, 0.7536, 0.9059],
+    [0.2503, 0.2276, 0.4458],
+    [0.4820, 0.8708, 0.9114],
+    [0.7133, 0.1347, 0.5230]])</samp></pre>
+            <p>此外，需要检查 GPU 驱动程序和 CUDA 是否已启用并可供 PyTorch 访问，运行以下命令来返回 CUDA 驱动程序是否已启用：</p>
+            <pre><code>print(torch.cuda.is_available())</code></pre>
 
             <div class="navigation">
-                <a href="#">上一节：1.0 #</a>
+                <a href="https://pytorch.org/">上一节：1.0 PyTorch 官网</a>
                 <a href="#">下一节：1.2 #</a>
             </div>
         </main>
