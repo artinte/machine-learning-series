@@ -23,7 +23,19 @@
             <p class="title-subtext">安装 CUDA 以及 PyTorch 相关库!</p>
             <p style="color: #a0a0a0;">创建日期: 2025-03-08</p>
 
+            <p>主要包括 CUDA 安装 和 PyTorch 相关库的安装，以及验证工作。</p>
+
+            <h3>1.1.1 CUDA 安装</h3>
+            <p><a href="https://developer.nvidia.com/cuda-toolkit">NVIDIA® CUDA® 工具包</a> 提供了一个用于创建高性能 GPU 加速应用的开发环境。借助它，我们可以再 GPU 加速嵌入式系统、桌面工作站、企业数据中心、基于云的平台和超级计算机上开发、优化和部署应用程序。该工具包包括 GPU 加速库、调试和优化工具、C/C++ 编译器和运行时库。</p>
             <p>英伟达 CUDA 下载地址：<a href="https://developer.nvidia.com/cuda-downloads">https://developer.nvidia.com/cuda-downloads</a></p>
+            <p>CUDA 下面页面提供诸多选项，例如 <em>Windows 11 x86_64</em> ，Windows 用于按照流程操作完成之后，可以在终端输入 <em>nvidia-smi</em> ：</p>
+            <pre><samp> NVIDIA-SMI 572.70                 Driver Version: 572.70         CUDA Version: 12.8</samp></pre>
+            <p>可以看到 CUDA 为 12.8 版本，也可以输入 <em>nvcc --version</em> 查看编译工具的情况：</p>
+            <pre><samp>nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:42:46_Pacific_Standard_Time_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0</samp></pre>
 
             <p>安装带有 CUDA 版本的 torch 程序：</p>
             <pre><code>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124</code></pre>
