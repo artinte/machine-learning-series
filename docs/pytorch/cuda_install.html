@@ -23,23 +23,44 @@
             <p class="title-subtext">安装 CUDA 以及 PyTorch 相关库!</p>
             <p style="color: #a0a0a0;">创建日期: 2025-03-08</p>
 
-            <p>主要包括 CUDA 安装 和 PyTorch 相关库的安装，以及验证工作。</p>
+            <p>主要包括 CUDA 和 PyTorch 相关库的安装以及验证工作。对于新手来说，可以先跳过 GPU 安装部分，先用 PyTorch 的 CPU 版本进行学习。安装指令如下：</p>
+            <pre><samp>pip3 install torch torchvision torchaudio</samp></pre>
 
             <h3>1.1.1 CUDA 安装</h3>
-            <p><a href="https://developer.nvidia.com/cuda-toolkit">NVIDIA® CUDA® 工具包</a> 提供了一个用于创建高性能 GPU 加速应用的开发环境。借助它，我们可以再 GPU 加速嵌入式系统、桌面工作站、企业数据中心、基于云的平台和超级计算机上开发、优化和部署应用程序。该工具包包括 GPU 加速库、调试和优化工具、C/C++ 编译器和运行时库。</p>
+            <p><a href="https://developer.nvidia.com/cuda-toolkit">NVIDIA® CUDA® 工具包</a> 提供了一个用于创建高性能 GPU 加速应用的开发环境。借助它，我们可以加速在嵌入式系统、桌面工作站、企业数据中心、基于云的平台和超级计算机上开发、优化和部署应用程序。该工具包包括 GPU 加速库、调试和优化工具、C/C++ 编译器和运行时库。</p>
             <p>英伟达 CUDA 下载地址：<a href="https://developer.nvidia.com/cuda-downloads">https://developer.nvidia.com/cuda-downloads</a></p>
-            <p>CUDA 下面页面提供诸多选项，例如 <em>Windows 11 x86_64</em> ，Windows 用于按照流程操作完成之后，可以在终端输入 <em>nvidia-smi</em> ：</p>
+            <p>CUDA 下载页面提供诸多选项，例如 <em>Windows 11 x86_64</em> 。Windows 用户按照流程操作完成之后，在终端输入 <em>nvidia-smi</em> 指令：</p>
             <pre><samp> NVIDIA-SMI 572.70                 Driver Version: 572.70         CUDA Version: 12.8</samp></pre>
-            <p>可以看到 CUDA 为 12.8 版本，也可以输入 <em>nvcc --version</em> 查看编译工具的情况：</p>
+            <p>显示 CUDA 为 12.8 版本，也可以输入 <em>nvcc --version</em> 查看编译工具的情况：</p>
             <pre><samp>nvcc: NVIDIA (R) Cuda compiler driver
 Copyright (c) 2005-2025 NVIDIA Corporation
 Built on Fri_Feb_21_20:42:46_Pacific_Standard_Time_2025
 Cuda compilation tools, release 12.8, V12.8.93
 Build cuda_12.8.r12.8/compiler.35583870_0</samp></pre>
 
-            <p>安装带有 CUDA 版本的 torch 程序：</p>
-            <pre><code>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124</code></pre>
+            <h3>1.1.2 nbody 运行</h3>
+            <p>在 CUDA 的 <a href="https://docs.nvidia.com/cuda/cuda-quick-start-guide/">快速预览</a> 中会运行一个 nbody 程序，如下所示：</p>
+            <img src="res/nbody.png" alt="nbody" width="600">
+            <p>主要操作步骤如下：</p>
+            <ol>
+                <li><p>下载 <a href="https://github.com/NVIDIA/cuda-samples/">cuda-samples</a> 源代码，进入 <em>Samples/5_Domain_Specific/nbody/</em> 目录；</p></li>
+                <li><p>Windows 用户需要 <em>freeglut.dll</em> 和 <em>glew64.dll</em> 两个库，freeglut.dll 需要下载源码，使用 <em>Visual Studio</em> 进行编译；</p></li>
+                <li><p>使用代码编辑器打开 <em>nbody</em> 工程，点击运行。</p></li>
+            </ol>
+            <p>终端输出提示：</p>
+            <pre><samp>&gt; Windowed mode
+&gt; Simulation data stored in video memory
+&gt; Single precision floating point simulation
+&gt; 1 Devices used for simulation
+GPU Device 0: "Ada" with compute capability 8.9
 
+&gt; Compute 8.9 CUDA device: [NVIDIA GeForce RTX 4070 Laptop GPU]</samp></pre>
+            
+            <h3>1.1.3 安装 PyTorch</h3>
+            <p>进入 <a href="https://pytorch.org/get-started/locally/">官方页面</a> ，安装带有 CUDA 版本的 torch 程序：</p>
+            <pre><code>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126</code></pre>
+
+            <h3>1.1.4 验证</h3>
 
             <div class="navigation">
                 <a href="#">上一节：1.0 #</a>
