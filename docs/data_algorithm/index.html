@@ -808,7 +808,49 @@ print(hmap)</code></pre>
                     <h3 id="section7-sub2">7.2 二叉树的遍历</h3>
                     <p><strong>层序遍历 (Level-Order Traversal)</strong> 从顶部到底部逐层遍历二叉树，并在每一层按照从左到右的顺序访问节点。</p>
                     <p>层序遍历本质上属于 <strong>广度优先遍历 (Breadth-first Traversal)</strong> ，它体现了一种“一圈一圈向外扩展”的逐层遍历方式。</p>
+                    <pre><code>def level_order(root):
+    # 广度优先遍历 (Breadth-first Traversal)
+    queue = deque()
+    queue.append(root)
+    result = []
+    while queue:
+        node = queue.popleft()
+        result.append(node.val)
+        if node.left != None:
+            queue.append(node.left)
+        if node.right != None:
+            queue.append(node.right)
+    return result</code></pre>
                     
+                    <p>相应地，前序、中序和后序遍历都属于 <strong>深度优先遍历 (Depth-first Traversal)</strong> ，它体现了一种“先走到尽头，再回溯继续”的遍历方式。</p>
+                    <pre><code>def pre_order(root):
+    # 前序遍历
+    if root is None:
+        return None
+    result.append(root.val)
+    # 访问优先级：根节点 - 左子树 - 右子树
+    pre_order(root.left)
+    pre_order(root.right)
+
+
+def in_order(root):
+    # 中序遍历
+    if root is None:
+        return None
+    # 访问优先级：左子树 - 根节点 - 右子树
+    in_order(root.left)
+    result.append(root.val)
+    in_order(root.right)
+
+
+def post_order(root):
+    # 后序遍历
+    if root is None:
+        return
+    # 访问优先级：左子树 - 右子树 - 根节点
+    post_order(root.left)
+    post_order(root.right)
+    result.append(root.val)</code></pre>
 
                     <h3 id="section7-sub3">7.3 二叉树数组表示</h3>
                     <p>给定一棵完美二叉树，我们将所有节点按照层序遍历的顺序存储在一个数组中，则每个节点都对应唯一的数组索引。</p>

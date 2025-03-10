@@ -26,9 +26,9 @@ def level_order(root):
     while queue:
         node = queue.popleft()
         result.append(node.val)
-        if node.left is not None:
+        if node.left != None:
             queue.append(node.left)
-        if node.right is not None:
+        if node.right != None:
             queue.append(node.right)
     return result
 
