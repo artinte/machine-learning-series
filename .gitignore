@@ -5,6 +5,7 @@ engine/CMakeUserPresets.json
 engine/cmake-build-debug/
 engine/cmake-build-release/
 .idea/
+interview/
 *.exe
 
 temp/
