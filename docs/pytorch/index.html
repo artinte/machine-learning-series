@@ -17,8 +17,16 @@
                 <h5 class="p-3"><a href="../index.html">主页</a></h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        
                         <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01 张量和梯度基础</a>
+                        <ul id="chapter1" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section1-sub1">1.1 程序安装</a></li>
+                            <li><a class="nav-link" href="#section1-sub2">1.2 张量介绍</a></li>
+                            <li><a class="nav-link" href="#section1-sub3">1.3 深度学习原理</a></li>
+                            <li><a class="nav-link" heaf="#section1-sub4">1.4 梯度</a></li>
+                            <li><a class="nav-link" heaf="#section1-sub5">1.5 线性回归</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02 全连接网络</a>
                         <a class="nav-link" href="#section3" onclick="toggleChildChapters(event, 'chapter3')">03 卷积网络</a>
                         <a class="nav-link" href="#section4" onclick="toggleChildChapters(event, 'chapter4')">04 循环网络</a>
@@ -47,6 +55,50 @@
                     <h3 id="section1-sub1" class="content-section-sub">
                         <a href="cuda_install.html" style="color: inherit;">1.1 程序安装</a>
                     </h3>
+                    <p>介绍如何安装 CUDA 和 PyTorch 库。</p>
+                    <ul>
+                        <li><p>1. 下载 CUDA 包进行安装。</p></li>
+                        <li><p>2. 使用 NVIDIA 官方提供的 <em>nbody</em> 程序验证安装。</p></li>
+                        <li><p>3. 安装 <em>torch</em> 、<em>torchaudio</em> 、<em>torchvision</em> 库。</p></li>
+                        <li><p>4. 验证 GPU 能够被 torch 访问。</p></li>
+                    </ul>
+                    <h3 id="section1-sub2" class="content-section-sub">
+                        <a href="#" style="color: inherit;">1.2 张量介绍</a>
+                    </h3>
+                    <p>PyTorch 张量介绍包含以下内容：</p>
+                    <ul>
+                        <li><p>1. 张量定义 - PyTorch 中的核心数据结构。</p></li>
+                        <li><p>2. 创建张量 - torch.tensor()、torch.zeros()、torch.ones() 等方法。</p></li>
+                        <li><p>3. 张量类型 - torch.float32、torch.int64、torch.bool 等。</p></li>
+                        <li><p>4. 张量形状 - .shape、.size()、.reshape()、.view()。</p></li>
+                        <li><p>5. 索引与切片 - 标准索引、切片、掩码索引、高维索引。</p></li>
+                        <li><p>6. 基本运算 - 加减乘除、点积、矩阵运算。</p></li>
+                        <li><p>7. 自动求导 - requires_grad=True，backward()。</p></li>
+                        <li><p>8. 设备管理 - CPU、GPU (.to(device))。</p></li>
+                        <li><p>9. 张量与 NumPy - tensor.numpy()、torch.from_numpy()。</p></li>
+                        <li><p>10. 随机初始化 - torch.randn()、torch.randint()、torch.manual_seed()。</p></li>
+                        <li><p>11. 广播机制 - 自动扩展维度匹配计算。</p></li>
+                        <li><p>12. 高级操作 - 拼接 (torch.cat)、拆分 (torch.chunk)、变换 (torch.permute)。</p></li>
+                        <li><p>13. 存储与加载 - torch.save()、torch.load()。</p></li>
+                        <li><p>14. 内存管理 - detach()、clone()、share_memory_()。</p></li>
+                    </ul>
+
+                    <h3 id="section1-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">1.3 深度学习原理</a>
+                    </h3>
+
+                    <h3 id="section1-sub4" class="content-section-sub">
+                        <a href="#" style="color: inherit;">1.4 梯度</a>
+                    </h3>
+
+                    <h3 id="section1-sub5" class="content-section-sub">
+                        <a href="#" style="color: inherit;">1.5 线性回归</a>
+                    </h3>
+                </section>
+
+                <section id="section8" class="content-section">
+                    <h2>02 全连接网络</h2>
+                    
                 </section>
 
                 <section id="section8" class="content-section">
