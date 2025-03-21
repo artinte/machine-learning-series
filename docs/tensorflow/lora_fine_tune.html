@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../laptop_coding_48.png" type="image/png">
+    <title>Lora 微调</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../article_style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 左侧小节列表 -->
+        <nav class="col-md-2 sidebar">
+
+        </nav>
+
+        <!-- 中间内容：显示具体某一个小节 -->
+        <main class="col-md-8 content">
+            <h2 class="custom-title">14.2 Lora 微调</h2>
+            <p class="title-subtext">使用 Lora 对模型进行微调。</p>
+            <p style="color: #a0a0a0;">创建日期: 2025-03-21</p>
+            <p>大语言模型 (LLM) 已被证明可有效完成各种 NLP 任务。LLM 首先以自监督的方式在大量文本上进行预训练。预训练有助于 LLM 学习通用知识，例如单词之间的统计关系。然后，LLM 可针对感兴趣的下游任务（例如情绪分析）进行微调。</p>
+            <p>然而，LLM 的规模非常大，我们不需要在微调时训练模型的所有参数，尤其是因为模型微调的数据集相对较小。换句话说，微调的参数过多，这就是 <strong>低秩自适应 (LoRA)</strong> 的作用所在；它显著减少了可训练参数的数量。这可以减少训练时间和 GPU 内存使用量，同时保持输出质量。</p>
+            <p>在这个例子中，我们将解释 LoRA 这个技术术语，展示如何将技术转化与代码。下载 KerasHub 上的 GPT-2 模型，并在下一个 token 预测任务中使用 LoRA 对其进行微调。我们将在生成文本的质量、训练时间和 GPU 内存使用情况方面将 LoRA GPT-2 与完全微调的 GPT-2 进行比较。</p>
+            
+
+            <div class="navigation">
+                <a href="#">上一节：</a>
+                <a href="#">下一节：</a>
+            </div>
+        </main>
+
+            <!-- 右侧小标题导航 -->
+            <aside class="col-md-2 right-sidebar">
+                <h5><a href="index.html#section14">部署</a></h5>
+                <ul id="dynamic-sidebar" class="nav flex-column">
+                    <!-- 动态内容 -->
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+        <!-- 引入 Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <script src="../article_script.js"></script>
+</body>
+</html>
