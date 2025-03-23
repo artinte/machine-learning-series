@@ -195,10 +195,6 @@
                                 <td>heapq</td>
                                 <td>需要维护最小/最大值的优先队列</td>
                             </tr>
-                            <tr>
-                                <td>queue.Queue</td>
-                                <td>多线程安全队列</td>
-                            </tr>
                         </tbody>
                     </table>
 
@@ -302,6 +298,23 @@ for key, value in d.items():
                 <pre><code>d = defaultdict(int)
 d['a'] = 1
 print(d)</code></pre>
+                
+                <h4>1.3.5 Deque</h4>
+                <p><code>deque</code> （双端队列）是 <code>collections</code> 模块中的高效双端队列，可以在两端进行快速插入和删除操作，适用于队列、栈、滑动窗口等应用。</p>
+                <pre><code>from collections import deque
+
+dq = deque(['a', 'b', 'c'])
+print(dq)
+
+dq.append('d')      # 从右侧添加元素
+dq.appendleft('z')  # 从左侧添加元素
+dq.pop()            # 从右侧弹出元素
+dq.popleft()        # 从左侧弹出元素
+
+# 设定队列容量
+dq = deque(maxlen=3)</code></pre>
+
+                <h4>1.3.6 Heapq</h4>
                 
 
                 </section>
