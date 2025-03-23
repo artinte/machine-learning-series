@@ -154,6 +154,20 @@ code {
     padding: 5px;
     border-radius: 5px;
 }
+table {
+    width: 50%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #f4f4f4;
+}
 .scroll-container {
     width: 100%;
     overflow-x: auto;

@@ -22,7 +22,8 @@
                         <a class="nav-link" href="#section1" onclick="toggleChildChapters(event, 'chapter1')">01 初识算法</a>
                         <ul id="chapter1" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section1-sub1">1.1 算法无处不在</a></li>
-                            <li><a class="nav-link" href="#section2-sub2">1.2 算法是什么</a></li>
+                            <li><a class="nav-link" href="#section1-sub2">1.2 算法是什么</a></li>
+                            <li><a class="nav-link" href="#section1-sub3">1.3 Python 数据结构</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -121,7 +122,7 @@
             <!-- 中间内容 -->
             <main class="col-md-8">
                 <h1>数据结构与算法</h1>
-                <p>以 <a href="https://www.hello-algo.com/">Hello 算法</a> 为蓝本，增加许多线上题型，快速系统地复习数据结构和算法的知识，通过基础技术面试！</p>
+                <p>以 <a href="https://www.hello-algo.com/">Hello 算法</a> 为蓝本，增加一些知识点，快速系统地复习数据结构和算法的知识，通过基础技术面试！</p>
                 <img src="res/hello_algo_mindmap.png" alt="知识图谱" width="800">
                 <section id="section1" class="content-section">
                     <h2>01 初识算法</h2>
@@ -152,6 +153,60 @@
                             <p>3. 各步骤都有明确的含义，在相同的输入和运行条件下，输出始终相同。</p>
                         </li>
                     </ul>
+
+                    <h3>1.3 Python 数据结构</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>数据结构</th>
+                                <th>适用场景</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>list</td>
+                                <td>有序存储，可变，适用于一般用途</td>
+                            </tr>
+                            <tr>
+                                <td>tuple</td>
+                                <td>有序但不可变，适用于不可变数据</td>
+                            </tr>
+                            <tr>
+                                <td>set</td>
+                                <td>无序，元素唯一，适用于去重</td>
+                            </tr>
+                            <tr>
+                                <td>dict</td>
+                                <td>快速查找键值对</td>
+                            </tr>
+                            <tr>
+                                <td>defaultdict</td>
+                                <td>处理缺失键时更方便</td>
+                            </tr>
+                            <tr>
+                                <td>Counter</td>
+                                <td>统计元素出现次数</td>
+                            </tr>
+                            <tr>
+                                <td>deque</td>
+                                <td>需要高效的两端操作</td>
+                            </tr>
+                            <tr>
+                                <td>heapq</td>
+                                <td>需要维护最小/最大值的优先队列</td>
+                            </tr>
+                            <tr>
+                                <td>queue.Queue</td>
+                                <td>多线程安全队列</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>1.3.1 List</h4>
+                    <p>Python 的 list 是一种可变的、有序序列，支持索引、切片、增删改查等操作。以下是 list 的常见方法和示例。</p>
+                    <h5>1. 添加元素</h5>
+                    
+
                 </section>
                 <section id="section2" class="content-section">
                     <h2>02 复杂度分析</h2>
