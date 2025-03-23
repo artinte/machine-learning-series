@@ -10,7 +10,7 @@
 
 * [深度学习综合指南](https://artinte.github.io/machine-learning-series/deep_learning/index.html)：全面介绍深度学习的基础概念
 
-* TensorFlow 详解：翻译 TensorFlow 官方文档
+* [TensorFlow 详解](https://artinte.github.io/machine-learning-series/tensorflow/index.html)：翻译 TensorFlow 官方文档
 
 * [PyTorch 详解](https://artinte.github.io/machine-learning-series/pytorch/index.html)：深入浅出讲解 PyTorch 使用
 
@@ -27,8 +27,6 @@
 * 线性代数：免费的线性代数教科书
 
 * [数据结构与算法](https://artinte.github.io/machine-learning-series/data_algorithm/index.html)：教程 Hello 算法的扩充版本
-
-* LeetCode：使用 Python 解决 LeetCode 习题
 
 * 视频翻译：翻译外网上的热门机器学习视频
 
