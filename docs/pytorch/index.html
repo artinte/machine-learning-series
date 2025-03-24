@@ -31,8 +31,20 @@
                         <a class="nav-link" href="#section3" onclick="toggleChildChapters(event, 'chapter3')">03 卷积网络</a>
                         <a class="nav-link" href="#section4" onclick="toggleChildChapters(event, 'chapter4')">04 循环网络</a>
                         <a class="nav-link" href="#section5" onclick="toggleChildChapters(event, 'chapter5')">05 Transformer</a>
+                        
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#section6" onclick="toggleChildChapters(event, 'chapter6')">06 扩散模型</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#section7" onclick="toggleChildChapters(event, 'chapter7')">07 文本</a>
+                        <ul id="chapter7" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section7-sub1">7.1 预处理</a></li>
+                            <li><a class="nav-link" href="#section7-sub2">7.2 文本识别</a></li>
+                            <li><a class="nav-link" href="#section7-sub3">7.3 nanoGPT</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#section8" onclick="toggleChildChapters(event, 'chapter8')">08 语音</a>
                         <a class="nav-link" href="#section9" onclick="toggleChildChapters(event, 'chapter9')">09 图片与视频</a>
                         <a class="nav-link" href="#section10" onclick="toggleChildChapters(event, 'chapter10')">10 强化学习</a>
@@ -149,6 +161,23 @@
                         <li><p>1. Transformer 模型架构，包括编码器和解码器。</p></li>
                         <li><p>2. 模型训练，定义每个训练步骤。</p></li>
                         <li><p>3. 真实的例子，英语到德语的翻译。</p></li>
+                    </ul>
+                </section>
+
+                <section id="section7" class="content-section">
+                    <h2>07 文本</h2>
+                    <h3 id="section7-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">7.1 预处理</a>
+                    </h3>
+                    <h3 id="section7-sub2" class="content-section-sub">
+                        <a href="#" style="color: inherit;">7.2 文本识别</a>
+                    </h3>
+                    <h3 id="section7-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">7.3 nanoGPT</a>
+                    </h3>
+                    <p>参考 <a href="https://github.com/karpathy/nanoGPT">nanoGPT</a>，最简单、最快速训练/微调中等规模大小的 GPT 库。</p>
+                    <ul>
+                        <li><p>1. 快速预览，用莎士比亚的作品训练一个字符级的 GPT。</p></li>
                     </ul>
                 </section>
 
