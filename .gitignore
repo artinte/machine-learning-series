@@ -8,6 +8,7 @@ engine/cmake-build-release/
 interview/
 *.exe
 
+*.txt
 temp/
 .idx/
 .vscode/
