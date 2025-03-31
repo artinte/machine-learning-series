@@ -25,14 +25,14 @@
 
             <p><code>torch.Tensor</code> 是包含单一数据类型元素的多维数组。在功能上类似于 NumPy 的 <code>ndarray</code> ，但它提供了更强大的 GPU 加速计算支持，并且能够与深度学习模型无缝集成。它的基本特性如下：</p>
             <ol>
-                <li><p><strong>多维数组</strong>：<code>torch.Tensor</code> 可以是标量、向量、矩阵或更高维数组。</p></li>
-                <li><p><strong>单一数据支持</strong>：所有元素的数据类型相同，默认是 <code>torch.float32</code> 。</p></li>
-                <li><p><strong>支持 GPU 加速</strong>：可以通过 <code>.to('cuda')</code> 轻松在 GPU 上进行运算。</p></li>
-                <li><p><strong>自动求导</strong>：可以通过 <code>requires_grad=True</code> 记录计算图，支持自动微分（用于梯度计算）。</p></li>
+                <li><p>多维数组：<code>torch.Tensor</code> 可以是标量、向量、矩阵或更高维数组。</p></li>
+                <li><p>单一数据支持：所有元素的数据类型相同，默认是 <code>torch.float32</code> 。</p></li>
+                <li><p>支持 GPU 加速：可以通过 <code>.to('cuda')</code> 轻松在 GPU 上进行运算。</p></li>
+                <li><p>自动求导：可以通过 <code>requires_grad=True</code> 记录计算图，支持自动微分（用于梯度计算）。</p></li>
             </ol>
 
             <h3>1.2.1 张量创建</h3>
-            <p>在 PyTorch 中，<strong>张量（Tensor）</strong> 是基本的数据结构，它类似于 NumPy 的数组，可以在 GPU 上高效地进行运算。张量是深度学习模型的核心数据结构，几乎所有操作都围绕张量展开。接下来，我们将介绍一些创建张量的常见方法。</p>
+            <p>在 PyTorch 中，<strong>张量（Tensor）</strong> 是基本的数据结构，它类似于 NumPy 的数组，可以在 GPU 上高效地进行运算。张量是深度学习模型的核心数据结构，几乎所有操作都围绕张量展开。接下来，我们将通过 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/2_tensor/tensor_create.py">tensor_create.py</a> 介绍一些创建张量的常见方法。</p>
 
             <h4>1.2.1.1 从数据中创建</h4>
             <p>PyTorch 提供了多种方式来从现有的数据结构（如列表、数组）创建张量：</p>
@@ -95,6 +95,51 @@ print(tensor_gpu)</code></pre>
             <pre><samp>tensor([1, 2, 3], device='cuda:0')</samp></pre>
 
             <h3>1.2.2 张量索引</h3>
+            <p>在 PyTorch 中，<code>torch.Tensor</code> 提供了强大的 <strong>索引 (Indexing)</strong> 功能，是我们可以高效地访问和修改张量的元素。PyTorch 的张量索引方式类似于 NumPy，支持基本索引、切片、布尔索引、高级索引等多种操作，文件 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/2_tensor/tensor_indexing.py">tensor_indexing.py</a> 展示了一些常用的索引方法。</p>
+
+            <h4>1.2.2.1 基本索引</h4>
+            <p>PyTorch 的张量索引从 0 开始，与 Python 的 list 和 NumPy 数组一致。可以使用方括号 [] 访问单个元素：</p>
+            <pre><code>tensor2d = torch.tensor([[1, 2, 3], 
+                [4, 5, 6], 
+                [7, 8, 9]])
+assert tensor2d[0, 0] == 1
+assert tensor2d[1, 2] == 6
+assert tensor2d[-1, -1] == 9</code></pre>
+
+            <h4>1.2.2.2 切片</h4>
+            <p>PyTorch 切片语法和 Python 的 <code>list</code> 、NumPy 的 <code>ndarray</code> 类似，使用 <code>start:stop:step</code> 的形式：</p>
+            <pre><code>tensor2d = torch.tensor([[1, 2, 3], 
+                         [4, 5, 6], 
+                         [7, 8, 9]])
+assert (tensor2d[0] == torch.tensor([1, 2, 3])).all()
+assert (tensor2d[:, 1] == torch.tensor([2, 5, 8])).all()
+assert (tensor2d[1:, 1:] == torch.tensor([[5, 6], [8, 9]])).all()</code></pre>
+
+            <h4>1.2.2.3 布尔索引</h4>
+            <p>PyTorch 允许使用布尔掩码（Mask）索引，提取符合条件的元素：</p>
+            <pre><code>tensor = torch.tensor([10, 20, 30, 40, 50])
+mask = tensor > 25
+assert (mask == torch.tensor([False, False, True, True, True])).all()
+assert (tensor[mask] == torch.tensor([30, 40, 50])).all()</code></pre>
+
+            <h4>1.2.2.4 高级索引</h4>
+            <p>在二维张量中按指定的行和列索引提取元素：</p>
+            <pre><code>tensor2d = torch.tensor([[1, 2, 3], 
+                [4, 5, 6], 
+                [7, 8, 9]])
+row_indices = torch.tensor([0, 1, 2])
+col_indices = torch.tensor([2, 1, 0])
+assert (tensor2d[row_indices, col_indices] == torch.tensor([3, 5, 7])).all()</code></pre>
+
+            <p>省略符号用于索引时，表示选择所有的维度，而不需要明确列出每一个维度：</p>
+            <pre><code>assert (tensor2d[..., 0] == torch.tensor([1, 4, 7])).all()</code></pre>
+
+            <p>None 是一种特殊的标记，用于在索引中插入新的维度，常用于通过增加维度来改变张量的形状：</p>
+            <pre><code>tensor1d = torch.tensor([1, 2, 3])
+print(tensor1d.shape)
+tensor2d = tensor1d[:, None]
+assert tensor2d.shape == (3, 1)</code></pre>
+            <pre><samp>torch.Size([3])</samp></pre>
 
             <h3>1.2.3 张量操作</h3>
 
