@@ -143,7 +143,24 @@ assert tensor2d.shape == (3, 1)</code></pre>
 
             <h3>1.2.3 张量操作</h3>
             <p>PyTorch 张量支持的操作非常丰富，涵盖了基本的数学运算、聚合、广播、变形等各类操作。</p>
+
             <h4>1.2.3.1 数学运算</h4>
+            <p></p>
+
+            <pre><code>a = torch.tensor([1, 2, 3])
+b = torch.tensor([4, 5, 6])
+
+assert ((a + b) == torch.tensor([5, 7, 9])).all()
+assert ((a * b) == torch.tensor([4, 10, 18])).all()
+
+a = torch.tensor([[1, 2], [3, 4]])
+b = torch.tensor([[5, 6], [7, 8]])
+print(torch.mm(a, b))
+assert (torch.mm(a, b) == a @ b).all()</code></pre>
+            
+            <pre><samp>tensor([[19, 22],
+        [43, 50]])</samp></pre>
+
             <h4>1.2.3.2 聚合操作</h4>
             <h4>1.2.3.3 广播机制</h4>
             <h4>1.2.3.4 形状变换</h4>
