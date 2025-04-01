@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../laptop_coding_48.png" type="image/png">
+    <title>梯度</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../article_style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 左侧小节列表 -->
+        <nav class="col-md-2 sidebar">
+
+        </nav>
+
+        <!-- 中间内容：显示具体某一个小节 -->
+        <main class="col-md-8 content">
+            <h2 class="custom-title">1.4 梯度</h2>
+            <p class="title-subtext">理解梯度</p>
+            <p style="color: #a0a0a0;">创建日期: 2025-04-01</p>
+            <p>当单个神经元通过相互之间的连接成为神经网络，如果对每个参数都进行前向和反向操作，就会发现，每次增加一个参数，每个输入就需要多计算 3 次。如果有上千万的参数，那么计算量是网络无法承受的。</p>
+            <p>因此就需要想一种办法，只需要一次输入计算，就能够更新所有的参数。答案就是在微积分教材中学到的导数，根据导数的正负，是可以知道当前参数的变化对于网络的影响的。</p>
+            <p>神经网络中称之为 <strong>梯度(Gradient)</strong> ，模型中的所有函数都以平滑连续的方式转换输入，例如 \(z = x + y\) ，y 的微小变化只会导致 z 发生微小变化，如果知道 y 的变化方向，则可以推断出 z 变化的方向。从数学上来讲，这些函数是可微的，如果将这些函数连接在一起，得到的更大函数仍然是可微的。</p>
+            
+            <h3>1.4.1 介绍</h3>
+            <h3>1.4.2 简单表达式</h3>
+            <h3>1.4.3 复合表达式</h3>
+            <h3>1.4.4 直观理解</h3>
+            <h3>1.4.5 Sigmoid</h3>
+            <h3>1.4.6 反向传播实践</h3>
+            <h3>1.4.7 回流模式</h3>
+            <h3>1.4.8 数组梯度</h3>
+
+            <div class="navigation">
+                <a href="principle_learn.html">上一节：1.3 深度学习原理</a>
+                <a href="#">下一节：1.5</a>
+            </div>
+        </main>
+
+            <!-- 右侧小标题导航 -->
+            <aside class="col-md-2 right-sidebar">
+                <h5><a href="index.html#section1">张量与梯度基础</a></h5>
+                <ul id="dynamic-sidebar" class="nav flex-column">
+                    <!-- 动态内容 -->
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+        <!-- 引入 Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <script src="../article_script.js"></script>
+</body>
+</html>

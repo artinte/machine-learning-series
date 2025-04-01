@@ -23,15 +23,27 @@
                             <li><a class="nav-link" href="#section1-sub2">1.2 张量介绍</a></li>
                             <li><a class="nav-link" href="#section1-sub3">1.3 深度学习原理</a></li>
                             <li><a class="nav-link" href="#section1-sub4">1.4 梯度</a></li>
-                            <li><a class="nav-link" href="#section1-sub5">1.5 线性回归</a></li>
+                            <li><a class="nav-link" href="#section1-sub5">1.5 手写神经网络</a></li>
+                            <li><a class="nav-link" href="#section1-sub6">1.6 micrograd</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#section2" onclick="toggleChildChapters(event, 'chapter2')">02 全连接网络</a>
+                        <ul id="chapter2" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section2-sub1">2.1 MNIST 数据集</a></li>
+                            <li><a class="nav-link" href="#section2-sub2">2.2 手写数字分类</a></li>
+                            <li><a class="nav-link" href="#section2-sub3">2.3 激活函数</a></li>
+                            <li><a class="nav-link" href="#section2-sub4">2.4 损失函数</a></li>
+                            <li><a class="nav-link" href="#section2-sub5">2.5 优化器</a></li>
+                            <li><a class="nav-link" href="#section2-sub6">2.6 检测糖尿病</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section3" onclick="toggleChildChapters(event, 'chapter3')">03 卷积网络</a>
+                        <ul id="chapter2" class="child-chapters" style="display: none;">
+
+                        </ul>
                     </li>
 
                     <li class="nav-item">
@@ -124,7 +136,7 @@
                     <h3 id="section1-sub3" class="content-section-sub">
                         <a href="principle_learn.html" style="color: inherit;">1.3 深度学习原理</a>
                     </h3>
-                    <p>对深度学习进行整体介绍，然后分别讲解每个子部分，建立神经网络的初步印象。</p>
+                    <p>对深度学习进行整体介绍，然后分别讲解每个子部分，建立神经网络的初步印象。本节的概念非常多，后续的学习会不断地强化该部分。</p>
                     <ul>
                         <li><p>1. 输入数据 - 接受数据，如图片、文本、音频等。</p></li>
                         <li><p>2. 输出 - 生成最终的预测结果，例如分类标签或回归数值。</p></li>
@@ -134,20 +146,26 @@
                     </ul>
 
                     <h3 id="section1-sub4" class="content-section-sub">
-                        <a href="#" style="color: inherit;">1.4 梯度</a>
+                        <a href="gradient.html" style="color: inherit;">1.4 梯度</a>
                     </h3>
-
+                    <p>在神经网络中，<strong>梯度 (Gradient)</strong> 是指损失函数对网络参数（如权重和偏置）的一阶导数，表示损失函数相对于参数的变化率。</p>
                     <ul>
-                        <li><p>1. 复习倒数基本概念，求解常规函数的导数。</p></li>
-                        <li><p>2. 理解链式法则， 以及它在神经网络的应用。</p></li>
+                        <li><p>1. 复习导数基本概念，求解常规函数的导数。</p></li>
+                        <li><p>2. 在神经网络中，梯度就是损失函数对网络参数（如权重和偏置）的导数。</p></li>
+                        <li><p>3. 链式法则是导数计算中的一个重要法则，它用于计算复合函数的导数。</p></li>
+                        <li><p>4. 反向传播通过链式法则计算每一层的梯度，并根据这些梯度更新参数。</p></li>
                     </ul>
 
                     <h3 id="section1-sub5" class="content-section-sub">
-                        <a href="#" style="color: inherit;">1.5 线性回归</a>
+                        <a href="#" style="color: inherit;">1.5 手写神经网络</a>
                     </h3>
+                    <p>翻译文章 <a href="https://dennybritz.com/posts/wildml/implementing-a-neural-network-from-scratch/">Implementing a Neural Network from Scratch in Python</a></p>
+                    <p>从头开始（仅使用 NumPy）实现一个简单的三层神经网络，不会推导所有需要的数学知识，但会尝试直观地解释正在做的事情。</p>
                     <ul>
-                        <li><p>1. 讲述线性回归的基本概念。</p></li>
-                        <li><p>2. 手写两组数据点分类，理解神经网络训练的全过程。</p></li>
+                        <li><p>1. 数据集生成：创建用于分类的合成数据集。</p></li>
+                        <li><p>2. 逻辑回归：展示了一个简单的分类器及其在非线性数据上的局限性。</p></li>
+                        <li><p>3. 神经网络架构：实现了一个包含输入、隐藏和输出层的三层神经网络。</p></li>
+                        <li><p>4. 优化：修改隐藏层的大小，查看输出情况。</p></li>
                     </ul>
 
                     <h3 id="section1-sub6" class="content-section-sub">
@@ -157,13 +175,22 @@
 
                 <section id="section2" class="content-section">
                     <h2>02 全连接网络</h2>
+
+                    <p>L1/L2 正则化 、Dropout 、Batch Normalization 、 数据增强。</p>
+                    <ul>
+                        <li><p>1. 介绍 MNIST 数据集。</p></li>
+                        <li><p>2. 使用 PyTorch 训练 MNIST 数据。</p></li>
+                        <li><p>3. 过拟合和正则化</p></li>
+                    </ul>
+                    
+                    <h3 id="section2-sub6" class="content-section-sub">
+                        <a href="#" style="color: inherit;">2.6 检测糖尿病</a>
+                    </h3>
+                    <p>翻译文章 <a href="https://machinelearningmastery.com/develop-your-first-neural-network-with-pytorch-step-by-step/">Develop Your First Neural Network with PyTorch, Step by Step</a></p>
+
+                    
                 </section>
-                <p>L1/L2 正则化 、Dropout 、Batch Normalization 、 数据增强。</p>
-                <ul>
-                    <li><p>1. 介绍 MNIST 数据集。</p></li>
-                    <li><p>2. 使用 PyTorch 训练 MNIST 数据。</p></li>
-                    <li><p>3. 过拟合和正则化</p></li>
-                </ul>
+                
 
                 
 
