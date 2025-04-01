@@ -145,8 +145,7 @@ assert tensor2d.shape == (3, 1)</code></pre>
             <p>PyTorch 张量支持的操作非常丰富，涵盖了基本的数学运算、聚合、广播、变形等各类操作。</p>
 
             <h4>1.2.3.1 数学运算</h4>
-            <p></p>
-
+            <p>PyTorch 提供了丰富的数学操作来进行各种计算，包括基本的算术运算、线性代数运算等：</p>
             <pre><code>a = torch.tensor([1, 2, 3])
 b = torch.tensor([4, 5, 6])
 
@@ -160,8 +159,24 @@ assert (torch.mm(a, b) == a @ b).all()</code></pre>
             
             <pre><samp>tensor([[19, 22],
         [43, 50]])</samp></pre>
+            <p>这里重点说明矩阵的点积，如果有两个矩阵 A 和 B ，它们的形状分别是 (m, n) 和 (n, p) ，那么矩阵乘法 A x B 的结果是一个形状为 (m, p) 的矩阵。</p>
+            <img src="res/matrix_dot_product.jpg">
+            <p>在处理高维矩阵时，点积规则遵循类似的逻辑，但需要对多个维度进行匹配。假设有两个张量 A 和 B ，它们的形状分别是 \(d_1, d_2, ... , d_n\) 和 \(d_n, d_{n+1}, ... , d_m\) ，则点积后的形状为：</p>
+            <div class="highlight-math" style="text-align: center;">\(d_1, d_2, ... , d_{n-1}, d_{n+1}, d_{n+2}, ... , d_m\)</div>
 
             <h4>1.2.3.2 聚合操作</h4>
+            <p>使用 <code>sum()</code> 对一维张量进行元素求和，计算所有元素的总和。通过 <code>sum(dim=0)</code> 对二维张量按列进行求和，聚合指定维度的数据。分别使用 <code>mean()</code> 、<code>max()</code> 和 <code>min()</code> 对张量进行统计聚合，计算均值、最大值和最小值：</p>
+            <pre><code>tensor = torch.tensor([1, 2, 3, 4])
+assert tensor.sum() == 10
+
+tensor = torch.tensor([[1, 2], [3, 4]])
+assert (tensor.sum(dim=0) == torch.tensor([4, 6])).all()
+
+tensor = torch.tensor([1.0, 2.0, 3.0, 4.0])
+assert torch.isclose(tensor.mean(), torch.tensor(2.5))
+assert torch.isclose(tensor.max(), torch.tensor(4.0))
+assert torch.isclose(tensor.min(), torch.tensor(1.0))</code></pre>
+
             <h4>1.2.3.3 广播机制</h4>
             <h4>1.2.3.4 形状变换</h4>
 
