@@ -101,11 +101,119 @@ assert df_dz == 3</code></pre>
             <div class="highlight-math" style="text-align: center;">
                 \(f(w, x) = \frac{1}{1 + e^{-(w_0x_0 + w_1x_1 + w_2)}}\)
             </div>
-            
+            <p>我们后续会看到，上述表达式描述了 2 维神经元（包括输入 \(x\) 和权重 \(w\)），它们用在 sigmoid 激活函数上。但是就此时来说，可以简单地看成一个函数，输入 \(x, w\) ，得到一个输出值。这个函数由多个门组成，除了上面描述的（加法、乘法、最大值），还是如下四个：</p>
+            <p class="highlight-math" style="text-align: center;">
+                \(f(x) = \frac{1}{x} \rightarrow \frac{df}{dx} = \frac{-1}{x^2}\)
+            </p>
+            <p class="highlight-math" style="text-align: center;">
+                \(f_{c}(x) = c + x \rightarrow \frac{df}{dx} = 1\)
+            </p>
+            <p class="highlight-math" style="text-align: center;">
+                \(f(x) = e^x \rightarrow \frac{df}{dx} = e^x\)
+            </p>
+            <p class="highlight-math" style="text-align: center;">
+                \(f_{a}(x) = ax \rightarrow \frac{df}{dx} = a\)
+            </p>
+            <p>其中函数 \(f_c\) 将输入加上常数 \(c\) ，\(f_a\) 分别将输入缩放常数 \(a\) 倍。它们只是加法和乘法的特殊例子，但是我们还是将它们看作是新的单元门，因为我们不需要对常数 \(c\) 和 \(a\) 进行梯度计算。完整的线路图如下所示：</p>
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <svg style="max-width: 799px" viewBox="0 0 799 306"><g transform="scale(0.8)"><defs><marker id="arrowhead" refX="6" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M 0,0 V 4 L6,2 Z"></path></marker></defs><line x1="50" y1="30" x2="90" y2="30" stroke="black" stroke-width="1"></line><text x="55" y="24" font-size="16" fill="green">2.00</text><text x="55" y="47" font-size="16" fill="red">-0.20</text><text x="45" y="24" font-size="16" text-anchor="end" fill="black">w0</text><line x1="50" y1="100" x2="90" y2="100" stroke="black" stroke-width="1"></line><text x="55" y="94" font-size="16" fill="green">-1.00</text><text x="55" y="117" font-size="16" fill="red">0.39</text><text x="45" y="94" font-size="16" text-anchor="end" fill="black">x0</text><line x1="50" y1="170" x2="90" y2="170" stroke="black" stroke-width="1"></line><text x="55" y="164" font-size="16" fill="green">-3.00</text><text x="55" y="187" font-size="16" fill="red">-0.39</text><text x="45" y="164" font-size="16" text-anchor="end" fill="black">w1</text><line x1="50" y1="240" x2="90" y2="240" stroke="black" stroke-width="1"></line><text x="55" y="234" font-size="16" fill="green">-2.00</text><text x="55" y="257" font-size="16" fill="red">-0.59</text><text x="45" y="234" font-size="16" text-anchor="end" fill="black">x1</text><line x1="50" y1="310" x2="90" y2="310" stroke="black" stroke-width="1"></line><text x="55" y="304" font-size="16" fill="green">-3.00</text><text x="55" y="327" font-size="16" fill="red">0.20</text><text x="45" y="304" font-size="16" text-anchor="end" fill="black">w2</text><line x1="170" y1="65" x2="210" y2="65" stroke="black" stroke-width="1"></line><text x="175" y="59" font-size="16" fill="green">-2.00</text><text x="175" y="82" font-size="16" fill="red">0.20</text><circle cx="130" cy="65" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="130" y="75" font-size="20" fill="black" text-anchor="middle">*</text><line x1="90" y1="30" x2="110" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="90" y1="100" x2="110" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="150" y1="65" x2="170" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="170" y1="205" x2="210" y2="205" stroke="black" stroke-width="1"></line><text x="175" y="199" font-size="16" fill="green">6.00</text><text x="175" y="222" font-size="16" fill="red">0.20</text><circle cx="130" cy="205" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="130" y="215" font-size="20" fill="black" text-anchor="middle">*</text><line x1="90" y1="170" x2="110" y2="205" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="90" y1="240" x2="110" y2="205" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="150" y1="205" x2="170" y2="205" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="290" y1="135" x2="330" y2="135" stroke="black" stroke-width="1"></line><text x="295" y="129" font-size="16" fill="green">4.00</text><text x="295" y="152" font-size="16" fill="red">0.20</text><circle cx="250" cy="135" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="250" y="140" font-size="20" fill="black" text-anchor="middle">+</text><line x1="210" y1="65" x2="230" y2="135" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="210" y1="205" x2="230" y2="135" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="270" y1="135" x2="290" y2="135" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="410" y1="222" x2="450" y2="222" stroke="black" stroke-width="1"></line><text x="415" y="216" font-size="16" fill="green">1.00</text><text x="415" y="239" font-size="16" fill="red">0.20</text><circle cx="370" cy="222" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="370" y="227" font-size="20" fill="black" text-anchor="middle">+</text><line x1="330" y1="135" x2="350" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="90" y1="310" x2="350" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="390" y1="222" x2="410" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="530" y1="222" x2="570" y2="222" stroke="black" stroke-width="1"></line><text x="535" y="216" font-size="16" fill="green">-1.00</text><text x="535" y="239" font-size="16" fill="red">-0.20</text><circle cx="490" cy="222" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="490" y="227" font-size="20" fill="black" text-anchor="middle">*-1</text><line x1="450" y1="222" x2="470" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="510" y1="222" x2="530" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="650" y1="222" x2="690" y2="222" stroke="black" stroke-width="1"></line><text x="655" y="216" font-size="16" fill="green">0.37</text><text x="655" y="239" font-size="16" fill="red">-0.53</text><circle cx="610" cy="222" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="610" y="227" font-size="20" fill="black" text-anchor="middle">exp</text><line x1="570" y1="222" x2="590" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="630" y1="222" x2="650" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="770" y1="222" x2="810" y2="222" stroke="black" stroke-width="1"></line><text x="775" y="216" font-size="16" fill="green">1.37</text><text x="775" y="239" font-size="16" fill="red">-0.53</text><circle cx="730" cy="222" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="730" y="227" font-size="20" fill="black" text-anchor="middle">+1</text><line x1="690" y1="222" x2="710" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="750" y1="222" x2="770" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="890" y1="222" x2="930" y2="222" stroke="black" stroke-width="1"></line><text x="895" y="216" font-size="16" fill="green">0.73</text><text x="895" y="239" font-size="16" fill="red">1.00</text><circle cx="850" cy="222" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="850" y="227" font-size="20" fill="black" text-anchor="middle">1/x</text><line x1="810" y1="222" x2="830" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="870" y1="222" x2="890" y2="222" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line></g></svg>
+            </div>
+            <p>示例线路图展示了带有 sigmoid 激活函数的 2 维神经元。输入是 \([x0, x1]\) ，神经元的可学习权重是 \([w0, w1, w2]\) 。我们后面可以看到，神经元和输入进行点积后，通过激活函数将它的输出值映射成 0 - 1 的范围。</p>
+            <p>\(w\) 和 \(x\) 进行点积之后，一长串的函数应用于该结果上，这些函数统称为 sigmoid 函数 \(\sigma(x)\) 。如果将它的输入简化，对 sigmoid 函数进行求导，就会发现导函数是非常简洁的（仅仅使用一个在分子上使用加减一的小技巧）：</p>
+            <p class="highlight-math" style="text-align: center;">
+                \(\sigma(x) = \frac{1}{1 + e^{-x}}\)
+            </p>
+            <p class="highlight-math" style="text-align: center;">
+                \(\frac{d\sigma(x)}{dx} = \frac{e^{-x}}{(1 + e^{-x})^2} = (\frac{1 + e^{-x} - 1}{1 + e^{-x}})(\frac{1}{1 + e^{-x}}) = (1 - \sigma(x))\sigma(x)\)
+            </p>
+            <p>正如我们所见，梯度变得非常简单。比如 sigmoid 函数接收一个 1.0 的输入，那么前向传递过程的输出结果是 0.73 。那么局部梯度就是 \((1 - 0.73) * 0.73 ~= 0.2\) ，就像上面的计算图那样，只不过这里使用了一个非常有效的表达式。因此，对于实际的应用程序来说，将这些操作集合成单个门是非常有用的。文件 展示了这个神经元的反向传播过程：</p>
+            <pre><code>w = [2, -3, -3] # assume some random weights and data
+x = [-1, -2]
 
-            <h3>1.4.6 反向传播实践</h3>
+# forward pass
+dot = w[0] * x[0] + w[1] * x[1] + w[2]
+f = 1.0 / (1 + math.exp(-dot))
+
+# backward pass through the neuron (backpropagation)
+ddot = (1 - f) * f  # gradient on dot variable, using the sigmoid gradient derivation
+dx = [w[0] * ddot, w[1] * ddot] # backprop into x
+dw = [x[0] * ddot, x[1] * ddot, 1.0 * ddot]
+
+print([round(x, 2) for x in dx])
+print([round(w, 2) for w in dw])</code></pre>
+
+            <pre><samp>[0.39, -0.59]
+[-0.2, -0.39, 0.2]</samp></pre>
+ 
+            <p><strong>实现提示：分阶段反向传播。</strong>如上面代码所示，在实践中，将前向传播分解为易为反向传播的阶段总是有帮助的。例如，我们创建了一个 <code>dot</code> 中间变量，它保存 \(w\) 和 \(x\) 之间的点积运算结果。在反向传播过程中，我们依次计算（以相反的顺序）相应的变量（例如 <code>ddot</code> ），它们保存了中间梯度，最终能够使用它计算出 <code>dw</code> 和 <code>dx</code> 的值。</p>
+            <p>本小节的重点是如何计算反向传播，以及为了方便，将多个操作整合成门。了解表达式的哪些部分具有简单的局部梯度很有帮助，这样就可以用最少的代码和精力将它们串联在一起。</p>
+
+            <h3>1.4.6 分阶段计算</h3>
+            <p>让我们用另一个例子来看一下，假设我们有一个如下形式的函数：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(f(x, y) = \frac{x + \sigma(y)}{\sigma(x) + (x + y)^2}\)
+            </div>
+            <p>需要清楚的是，这个函数完全没用，除了能够很好地展示反向传播过程中的梯度计算。需要强调的是，如果我们对 \(x\) 或者 \(y\) 进行微分，将会得到一个复杂的表达式。然后完全没有必要这样做，因为我们不需要写下整个函数来进行梯度计算，只需要知道如何计算它。以下是我们如何构造这种表达式的前向传递：</p>
+            <pre><code>x = 3 # example values
+y = -4
+
+# forward pass
+sigy = 1.0 / (1 + math.exp(-y)) # sigmoid in numerator
+num = x + sigy  # numerator
+sigx = 1.0 / (1 + math.exp(-x)) # sigmoid in denominator
+xpy = x + y
+xpysqr = xpy**2
+den = sigx + xpysqr # denominator
+invden = 1.0 / den
+f = num * invden # done!
+assert round(f, 2) == 1.55</code></pre>
+
+            <p>在表达式的末尾，我们已经计算出了前向传递。请注意，以这样的方式构建代码，它包含多个中间变量，每个变量都只是简单的表达式，我们已经知道它们的局部梯度。因此，计算反向传播很容易：沿着前向传播的参数 (<code>sigy, num, sigx, xpy, xpysqr, den, invden</code>) 计算每一个的梯度。我们有相同的变量，只是每个变量前增加字母 <code>d</code> ，它存储的是变量的反向传播过程的梯度值。</p>
+            <p>此外，请注意，反向传播中的每个部分都涉及计算局部梯度，并通过乘法将其与其它梯度链接起来。如下所示：</p>
+            <pre><code># backprop f = num * invden
+dnum = invden   # gradient on numerator
+dinvden = num
+# backprop invden = 1.0 / den
+dden = (-1.0 / (den**2)) * dinvden
+# backprop den = sigx + xpysqr
+dsigx = (1) * dden
+dxpysqr = (1) * dden
+# backprop xpysqr = xpy**2
+dxpy = (2 * xpy) * dxpysqr
+# backprop xpy = x + y
+dx = (1) * dxpy
+dy = (1) * dxpy
+# backprop sigx = 1.0 / (1 + math.exp(-x))
+dx += ((1 - sigx) * sigx) * dsigx # Notice += !! See notes below
+# backprop num = x + sigy
+dx += (1) * dnum
+dsigy = (1) * dnum
+# backprop sigy = 1.0 / (1 + math.exp(-y))
+dy += ((1 - sigy) * sigy) * dsigy
+
+assert round(dx, 2) == 2.06
+assert round(dy, 2) == 1.59</code></pre>
+            
+            <p>注意有几点：</p>
+            <p><strong>缓存前向传递的变量</strong>。要计算后向传递，拥有前向传递中使用的一些变量非常有帮助。实际上，我们需要缓存这些变量，并在反向传播期间使用它们。如果这太困难，可以重新计算它们。</p>
+            <p><strong>梯度在分叉处累加</strong>。正向表达式涉及变量 \(x, y\) 多次，因此在进行反向传播时，需要使用 \(+=\) 而不是 \(=\) 去雷杰这些变量的梯度。这遵循微积分中的多变量链式法则，该法则指出，如果一个变量分支到电路的不同部分，那么流回它的梯度将相加。</p>
+
             <h3>1.4.7 回流模式</h3>
+
+            <p>值得注意的是，在许多情况下，反向流动梯度可以在直观层面上进行解释。例如，神经网络中最常用的三个门 <em>(add, mul, max)</em> 在反向传播过程中的行为都有非常简单的解释。考虑下面这个示例线路：</p>
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <svg style="max-width: 460px" viewBox="0 0 460 290"><g transform="scale(1)"><defs><marker id="arrowhead" refX="6" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M 0,0 V 4 L6,2 Z"></path></marker></defs><line x1="50" y1="30" x2="90" y2="30" stroke="black" stroke-width="1"></line><text x="55" y="24" font-size="16" fill="green">3.00</text><text x="55" y="47" font-size="16" fill="red">-8.00</text><text x="45" y="24" font-size="16" text-anchor="end" fill="black">x</text><line x1="50" y1="100" x2="90" y2="100" stroke="black" stroke-width="1"></line><text x="55" y="94" font-size="16" fill="green">-4.00</text><text x="55" y="117" font-size="16" fill="red">6.00</text><text x="45" y="94" font-size="16" text-anchor="end" fill="black">y</text><line x1="50" y1="170" x2="90" y2="170" stroke="black" stroke-width="1"></line><text x="55" y="164" font-size="16" fill="green">2.00</text><text x="55" y="187" font-size="16" fill="red">2.00</text><text x="45" y="164" font-size="16" text-anchor="end" fill="black">z</text><line x1="50" y1="240" x2="90" y2="240" stroke="black" stroke-width="1"></line><text x="55" y="234" font-size="16" fill="green">-1.00</text><text x="55" y="257" font-size="16" fill="red">0.00</text><text x="45" y="234" font-size="16" text-anchor="end" fill="black">w</text><line x1="170" y1="65" x2="210" y2="65" stroke="black" stroke-width="1"></line><text x="175" y="59" font-size="16" fill="green">-12.00</text><text x="175" y="82" font-size="16" fill="red">2.00</text><circle cx="130" cy="65" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="130" y="75" font-size="20" fill="black" text-anchor="middle">*</text><line x1="90" y1="30" x2="110" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="90" y1="100" x2="110" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="150" y1="65" x2="170" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="170" y1="205" x2="210" y2="205" stroke="black" stroke-width="1"></line><text x="175" y="199" font-size="16" fill="green">2.00</text><text x="175" y="222" font-size="16" fill="red">2.00</text><circle cx="130" cy="205" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="130" y="210" font-size="20" fill="black" text-anchor="middle">max</text><line x1="90" y1="170" x2="110" y2="205" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="90" y1="240" x2="110" y2="205" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="150" y1="205" x2="170" y2="205" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="290" y1="135" x2="330" y2="135" stroke="black" stroke-width="1"></line><text x="295" y="129" font-size="16" fill="green">-10.00</text><text x="295" y="152" font-size="16" fill="red">2.00</text><circle cx="250" cy="135" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="250" y="140" font-size="20" fill="black" text-anchor="middle">+</text><line x1="210" y1="65" x2="230" y2="135" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="210" y1="205" x2="230" y2="135" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="270" y1="135" x2="290" y2="135" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="410" y1="135" x2="450" y2="135" stroke="black" stroke-width="1"></line><text x="415" y="129" font-size="16" fill="green">-20.00</text><text x="415" y="152" font-size="16" fill="red">1.00</text><circle cx="370" cy="135" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="370" y="140" font-size="20" fill="black" text-anchor="middle">*2</text><line x1="330" y1="135" x2="350" y2="135" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="390" y1="135" x2="410" y2="135" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line></g></svg>
+            </div>
+            <p>以上图为例，我们可以看到：</p>
+            <p>加法门始终会获取其输出上的梯度并将其均匀分配给其所有输入，而不管它们的值在前向传递期间是多少。这是因为加法运算的局部梯度只是 +1.0，因此所有输入上的梯度将完全等于输出上的梯度，因为它将乘以 x1.0（并且保持不变）。在上面的示例电路中，请注意 + 门将 2.00 的梯度均匀且不变地路由到其两个输入。</p>
+            <p>最大门路由梯度。与将梯度不变地分布到其所有输入的加法门不同，最大门将梯度（不变）分布到其输入之一（前向传递期间具有最高值的输入）。这是因为最大门的局部梯度对于最高值是 1.0，对于所有其他值是 0.0。在上面的示例电路中，最大操作将梯度 2.00 路由到z变量，该变量的值高于w ，而w上的梯度保持为零。</p>
+            <p>乘法门不太容易解释。它的局部梯度是输入值（切换值除外），并在链式法则期间将其乘以其输出上的梯度。在上面的例子中，x上的梯度是 -8.00，即 -4.00 x 2.00。</p>
+            <p>请注意，如果乘法门的一个输入非常小，而另一个输入非常大，那么乘法门将做一些稍微不直观的事情：它将为小输入分配一个相对较大的梯度，为大输入分配一个微小的梯度。记住在线性分类器中，点积运算是 \(w^Tx_i\) ，这意味着对输入数据进行缩放会影响最终的梯度值。</p>
+            <p>比如将所有的输入样本 \(x_i\) 在预处理的时候乘以 1000 ，那么权重的梯度也会乘以 1000 倍，反过来导致需要更小的学习率。这就是为什么预处理非常重要，有时甚至以微妙的方式！直观地了解梯度如何流动可以帮助您调试其中一些情况。</p>
+
             <h3>1.4.8 数组梯度</h3>
+            <p>以上都是涉及的单个变量，但所有概念都可以直接延伸到矩阵和向量运算。然而，必须更加关注维度和转置运算。</p>
+            <p>可能最棘手的运算之一是矩阵与矩阵乘法：</p>
 
             <div class="navigation">
                 <a href="principle_learn.html">上一节：1.3 深度学习原理</a>

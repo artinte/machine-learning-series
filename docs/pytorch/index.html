@@ -54,10 +54,25 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section4" onclick="toggleChildChapters(event, 'chapter4')">04 循环网络</a>
+                        <ul id="chapter4" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section4-sub1">4.1 简单实现</a></li>
+                            <li><a class="nav-link" href="#section4-sub2">4.2 长短期记忆</a></li>
+                            <li><a class="nav-link" href="#section4-sub3">4.3 GRU</a></li>
+                            <li><a class="nav-link" href="#section4-sub4">4.4 Seq2Seq</a></li>
+                            <li><a class="nav-link" href="#section4-sub5">4.5 词嵌入</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section5" onclick="toggleChildChapters(event, 'chapter5')">05 Transformer</a>
+                        <ul id="chapter5" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section5-sub1">5.1 注意力</a></li>
+                            <li><a class="nav-link" href="#section5-sub2">5.2 Transformer 论文</a></li>
+                            <li><a class="nav-link" href="#section5-sub3">5.3 Transformer 注释</a></li>
+                            <li><a class="nav-link" href="#section5-sub4">5.4 nanoGPT</a></li>
+                            <li><a class="nav-link" href="#section5-sub5">5.5 BERT</a></li>
+                            <li><a class="nav-link" href="#section5-sub6">5.7 ViT</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
@@ -68,7 +83,6 @@
                         <ul id="chapter7" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section7-sub1">7.1 预处理</a></li>
                             <li><a class="nav-link" href="#section7-sub2">7.2 文本识别</a></li>
-                            <li><a class="nav-link" href="#section7-sub3">7.3 nanoGPT</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -173,7 +187,7 @@
                     </ul>
 
                     <h3 id="section1-sub5" class="content-section-sub">
-                        <a href="#" style="color: inherit;">1.5 手写神经网络</a>
+                        <a href="network_scratch.html" style="color: inherit;">1.5 手写神经网络</a>
                     </h3>
                     <p>翻译文章 <a href="https://dennybritz.com/posts/wildml/implementing-a-neural-network-from-scratch/">Implementing a Neural Network from Scratch in Python</a></p>
                     <p>从头开始（仅使用 NumPy）实现一个简单的三层神经网络，不会推导所有需要的数学知识，但会尝试直观地解释正在做的事情。</p>
@@ -185,9 +199,10 @@
                     </ul>
 
                     <h3 id="section1-sub6" class="content-section-sub">
-                        <a href="#" style="color: inherit;">1.6 micrograd</a>
+                        <a href="micrograd.html" style="color: inherit;">1.6 micrograd</a>
                     </h3>
-                    <p>参考 <a href="https://github.com/EurekaLabsAI/micrograd">micrograd</a> ，一个自动梯度引擎。它是构建神经网络训练的核心，使我们能够更新神经网络的参数。</p>
+                    <p>参考 <a href="https://github.com/EurekaLabsAI/micrograd">micrograd: The Autograd Engine</a></p>
+                    <p>一个自动梯度引擎。它是构建神经网络训练的核心，使我们能够更新神经网络的参数。</p>
                     <ul>
                         <li><p>1. 自动梯度引擎 (micrograd) 。</p></li>
                         <li><p>2. 在此基础上构建具有一个隐藏层的神经网络。</p></li>
@@ -230,6 +245,8 @@
                     <h3 id="section3-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">3.1 基础介绍</a>
                     </h3>
+                    <p>翻译文章 <a href="https://victorzhou.com/blog/intro-to-cnns-part-1/">CNNs, Part 1: An Introduction to Convolutional Neural Networks</a></p>
+                    <a href="https://victorzhou.com/blog/intro-to-cnns-part-2/">CNNs, Part 2: Training a Convolutional Neural Network</a>
 
                     <ul>
                         <li><p>1. 卷积神经网络概述，包括卷积层、池化层和全连接层。</p></li>
@@ -242,10 +259,21 @@
                     <h3 id="section3-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">3.2 AlexNet</a>
                     </h3>
+                    <p>来自论文 <a href="https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">ImageNet Classification with Deep Convolutional Neural Networks</a></p>
+                    <p>AlexNet 是一种深度卷积神经网络（CNN）架构，由 Alex Krizhevsky、Ilya Sutskever 和 Geoffrey Hinton 设计，并且在 2012 年的 ImageNet 大规模视觉识别挑战赛（ILSVRC） 中获胜，极大推动了深度学习在计算机视觉领域的应用和发展。架构如下：</p>
+                    <ul>
+                        <li><p>1. 输入层：输入为 224x224 像素的 RGB 彩色图像。</p></li>
+                        <li><p>2. 卷积层：AlexNet 包含 5 个卷积层，每个卷积层后都有 ReLU 激活函数。</p></li>
+                        <li><p>3. 最大池化层：在某些卷积层后使用最大池化层来减少特征图的空间维度。</p></li>
+                        <li><p>4. 全连接层：卷积层后接 3 个全连接层，用于进行分类预测。最后的输出层有 1000 个神经元，对应 ImageNet 数据集中的 1000 类。</p></li>
+                        <li><p>5. 归一化层：AlexNet 使用了 局部响应归一化（LRN），尽管现代网络架构通常使用批量归一化（Batch Normalization）来代替。</p></li>
+                    </ul>
 
                     <h3 id="section3-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">3.3 ResNet</a>
                     </h3>
+                    <p>ResNet（残差网络） 是由 Kaiming He 等人在 2015 年提出的一种深度卷积神经网络（CNN）架构，最初用于解决 ImageNet 的图像分类任务，并且在 ILSVRC 2015 大赛中取得了显著的成绩。</p>
+                    <p>ResNet 的核心创新是引入了 残差连接（Residual Connections），有效地解决了深层网络训练中的梯度消失和梯度爆炸问题，使得网络能够更深、更高效地进行训练。</p>
 
                     <h3 id="section3-sub4" class="content-section-sub">
                         <a href="#" style="color: inherit;">3.4 U-net</a>
