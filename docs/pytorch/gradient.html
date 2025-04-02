@@ -59,7 +59,7 @@
 
             <h3>1.4.3 复合表达式</h3>
             <p>现在让我们开始考虑涉及多个组合函数的更复杂的表达式，例如 \(f(x, y, z) = (x + y)z\) 。这个表达式足够简单，可以直接计算，但我们将采用一个特殊的方法，这将有助于理解反向传播背后的知识。特别注意的是，这个表达式可以分解为两个表达式：\(q = x + y\) 和 \(f = qz\) 。</p>
-            <p>此外，我们知道如何分别计算两个表达式的导数，如上一个小节所示。\(f\) 只是 \(q\) 和 \(z\) 进行相乘，因此 \(\frac{\partial f}{\partial q} = z\) 以及 \frac{\partial f}{\partial z} = q 。同时 \(q\) 是 \(x\) 和 \(y\) 进行相加，因此 \frac{\partial q}{\partial x} = 1 以及 \frac{\partial q}{\partial y} = 1 。</p>
+            <p>此外，我们知道如何分别计算两个表达式的导数，如上一个小节所示。\(f\) 只是 \(q\) 和 \(z\) 进行相乘，因此 \(\frac{\partial f}{\partial q} = z\) 以及 \(\frac{\partial f}{\partial z} = q\) 。同时 \(q\) 是 \(x\) 和 \(y\) 进行相加，因此 \(\frac{\partial q}{\partial x} = 1\) 以及 \(\frac{\partial q}{\partial y} = 1\) 。</p>
             <p>然而，我们并不关心中间值 \(q\) 的梯度 ，\(\frac{\partial f}{\partial q}\) 是没有作用的。相反，我们最终感兴趣的是函数 \(f\) 相对于输入 \(x, y, z\) 的梯度。<strong>链式法则 (Chain Rule)</strong> 告诉我们，将这些梯度表达式“链接”在一起的正确方法是通过乘法。例如 \(\frac{\partial f}{\partial x} = \frac{\partial f}{\partial q} \frac{\partial q}{\partial x}\) 。实际上，这只是保存有两个梯度的数值相乘。让我们看一个具体的例子：</p>
             <pre><code># set some inputs
 x = -2; y = 5; z = -4
@@ -82,9 +82,27 @@ df_dy = df_dq * dq_dy
 assert df_dx == -4
 assert df_dy == -4
 assert df_dz == 3</code></pre>
+            <p>在变量 <code>[df_dx, df_dy, df_dz]</code> 中的梯度，告诉我们变量 \(x, y, z\) 在 \(f\) 函数上的敏感度！这是反向传播最简单的示例，接下来我们将省略前缀 <code>df</code>，让标记看起来更简洁。比如写成 <code>dq</code> 而不是 <code>df_dq</code> ，并且始终假设梯度是在最终输出上计算的。</p>
+            <p>这个计算也可以用线路图很好地形象化：</p>
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <svg style="max-width: 420px" viewBox="0 0 420 220"><defs><marker id="arrowhead" refX="6" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M 0,0 V 4 L6,2 Z"></path></marker></defs><line x1="40" y1="30" x2="110" y2="30" stroke="black" stroke-width="1"></line><text x="45" y="24" font-size="16" fill="green">-2</text><text x="45" y="47" font-size="16" fill="red">-4</text><text x="35" y="24" font-size="16" text-anchor="end" fill="black">x</text><line x1="40" y1="100" x2="110" y2="100" stroke="black" stroke-width="1"></line><text x="45" y="94" font-size="16" fill="green">5</text><text x="45" y="117" font-size="16" fill="red">-4</text><text x="35" y="94" font-size="16" text-anchor="end" fill="black">y</text><line x1="40" y1="170" x2="110" y2="170" stroke="black" stroke-width="1"></line><text x="45" y="164" font-size="16" fill="green">-4</text><text x="45" y="187" font-size="16" fill="red">3</text><text x="35" y="164" font-size="16" text-anchor="end" fill="black">z</text><line x1="210" y1="65" x2="280" y2="65" stroke="black" stroke-width="1"></line><text x="215" y="59" font-size="16" fill="green">3</text><text x="215" y="82" font-size="16" fill="red">-4</text><text x="205" y="59" font-size="16" text-anchor="end" fill="black">q</text><circle cx="170" cy="65" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="170" y="70" font-size="20" fill="black" text-anchor="middle">+</text><line x1="110" y1="30" x2="150" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="110" y1="100" x2="150" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="190" y1="65" x2="210" y2="65" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="380" y1="117" x2="450" y2="117" stroke="black" stroke-width="1"></line><text x="385" y="111" font-size="16" fill="green">-12</text><text x="385" y="134" font-size="16" fill="red">1</text><text x="375" y="111" font-size="16" text-anchor="end" fill="black">f</text><circle cx="340" cy="117" fill="white" stroke="black" stroke-width="1" r="20"></circle><text x="340" y="127" font-size="20" fill="black" text-anchor="middle">*</text><line x1="280" y1="65" x2="320" y2="117" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="110" y1="170" x2="320" y2="117" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line><line x1="360" y1="117" x2="380" y2="117" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"></line></svg>
+            </div>
+            <p>上面的线路图是计算的视觉表示。正向传递计算从输入到输出的值（以绿色显示）。然后，反向传递执行反向传播，从末尾开始并递归地应用链式法则来计算梯度（以红色显示），一直到线路图的输入。梯度可以倍认为是通过线路向后传递。</p>
 
             <h3>1.4.4 直观理解</h3>
+            <p>请注意，反向传播是一个非常局部的过程。线路图中的每个门都会获得一些输入，并且可以立即计算出两件事：1. 其输出值；2. 其输出相对于其输入的局部梯度。请注意，门可以完全独立地执行此操作，而无需了解它们所嵌入的完整电路的任何细节。但是，一旦前向传递结束，在反向传播过程中，门需要知道它的输出相对于整个线路输出的梯度。链式法则表示，门应该采用那个梯度，然后为它的所有输入计算每个梯度。</p>
+            <p class="comment">由于链式法则而产生的这种额外的乘法（对于每个输入）可以将一个相对无用的门变成复杂线路（例如整个神经网络）中的一个齿轮。</p>
+            <p>让我们再次参考示例来直观地了解其工作原理。加法门接收输入 \([-2, 5]\) 并计算输出 3 。由于门是进行加法运算，因此其两个输入的局部梯度为 +1 线路其余部分计算的最终值是 -12 。在反向传播的过程中，链式法则在电路中以递归方式向后应用。加法门的输出梯度是 -4 。</p>
+            <p>如果我们想要最终的输出结果更高，可以让加法门的输出更低（因为负数梯度）。为了继续递归并链接梯度，加法门采用该梯度并将其乘以所有的局部梯度（使 \(x\) 和 \(y\) 的梯度为 \(1 * -4 = -4\) 。请注意，这是预期的效果：如果 \(x\) 和 \(y\) 减少，则加法门的输入将减少，这反过来似的乘法门的输出增加。</p>
+            <p>因此反向传播可以被认为是门通过梯度信号相互通信，告知他们是否希望其输出增加或减少（以及增加的强度），从而使最终的输出值更高。</p>
+
             <h3>1.4.5 Sigmoid</h3>
+            <p>上面介绍的门是相对任意的，任何可微分函数都可以充当门，我们可以将多个门组合成一个门，或者在方便的时候将一个函数分解为多个门。让我们看看另一个说明这一点的表达式：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(f(w, x) = \frac{1}{1 + e^{-(w_0x_0 + w_1x_1 + w_2)}}\)
+            </div>
+            
+
             <h3>1.4.6 反向传播实践</h3>
             <h3>1.4.7 回流模式</h3>
             <h3>1.4.8 数组梯度</h3>
