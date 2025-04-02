@@ -28,14 +28,61 @@
             
             <h3>1.4.1 介绍</h3>
             <p>在本节中，我们将直观地理解反向传播，这是一种通过递归应用链式法则来计算表达式梯度的方法。理解这个过程及其微妙之处对于我们理解和有效地开发、设计和调试神经网络至关重要。</p>
-            <p>研究的核心问题如下：给定一个函数 \(f(x)\) ，其中 \(x\) 是一个输入向量，我们对计算 \(x\) 处的梯度 (\delta{f(x)}) 感兴趣。</p>
+            <p>研究的核心问题如下：给定一个函数 \(f(x)\) ，其中 \(x\) 是一个输入向量，我们对计算 \(x\) 处的梯度 \(\nabla{f(x)}\) 感兴趣。</p>
             <p>我们对这个问题感兴趣的主要原因是，在神经网络这个具体的情景下，\(f\) 将对应于损失函数 (L) ，输入 \(x\) 将由训练数据和神经网络权重组成。比如，损失可以是 SVM 损失函数，输入是训练数据 \((x_i, y_i), i = 1 ... N\) 和权重 \(W\) 以及偏置 \(b\) 。请注意（机器学习中通常如此），我们认为训练数据是给定且固定的，权重是可以控制的变量。因此尽管我们可以轻松地使用反向传播来计算输入示例 \(x_i\) 的梯度，在实践中仅计算相对于参数（比如 \(W, b\)）的梯度，因此可以用它来进行参数更新。但是，在后续我们还是可以看到 \(x_i\) 的梯度是有用的，比如可以查看和解释神经网络内部正在做什么。</p>
 
             <h3>1.4.2 简单表达式</h3>
             <p>让我们从简单的开始，这样我们就可以计算更复杂的表达式。考虑一个简单的乘法函数 \(f(x, y) = xy\) 。推导出任意输入的偏导数都是一个简单的微积分问题：</p>
-            
+            <div class="highlight-math" style="text-align: center;">
+                \(f(x, y) = xy \rightarrow \frac{\partial f}{\partial x} = y \quad \frac{\partial f}{\partial y} = x\)
+            </div>
+            <p>记住导数告诉我们的内容：它们表示函数相对于特定点附近无穷小区域周围的变量的变化率：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(\frac{df(x)}{dx} = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}\)
+            </div>
+            <p>技术说明：左侧的除法符号与右侧的除法符号不同，不是除法。相反，此符号表示操作符 \(\frac{d}{dx}\) 正在应用于函数 \(f\) ，并返回一个不同的函数（导数）。</p>
+            <p>思考上述表达式的一个好方法是，当 \(h\) 非常小时，则该函数可以用直线很好地近似，导数是其斜率。换句话说，每个变量的导数告诉我们整个表达式对其值的敏感度。</p>
+            <p>比如 \(x = 4, y = -3\) ，那么 \(f(x, y) = -12\) ，在 \(x\) 上的导数 \(\frac{\partial f}{\partial x} = -3\) 。这告诉我们，如果我们将这个变量的值增加一点点，对整个表达式的影响将是减少它（由于负号），并且是这个量的三倍。这可以通过重新写上面的等式 \(f(x + h) = f(x) + h\frac{df(x)}{dx}\) 看出来。</p>
+            <p>同样的，因为 \(\frac{\partial f}{\partial y} = 4\) ，我们可以通过将 \(y\) 的值增加一个非常小的量 \(h\) ，会增加函数的输出（因为是正数），大小为 \(4h\) 。</p>
+            <p class="comment">每个变量的导数告诉您整个表达式对其值的敏感度。</p>
+            <p>如上所述，梯度 \(\delta{f}\) 是偏导数的向量，因为我们有 \(\nabla{f} = [\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}] = [y, x]\) 。尽管从技术上来说，梯度是一个向量，但为了简单起见，我们通常会使用诸如“\(x\) 上的梯度”这样的术语，而不是技术上正确的短语“\(x\) 上的偏导数”。</p>
+            <p>我们还可以推导出加法运算的导数：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(f(x, y) = x + y \rightarrow \frac{\partial f}{\partial x} = 1 \quad \frac{\partial f}{\partial y} = 1\)
+            </div>
+            <p>也就是说，对 \(x, y\) 的导数值和 \(x, y\) 它们本身值无关。这很有作用，因为增加 \(x, y\) 任意一个都会增加输出 \(f\) 的值，增加的速率和 \(x, y\) 的真实值无关（和上面的乘法不同）。最后一个我们经常使用的函数是计算最大值：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(f(x, y) = max(x, y) \rightarrow \frac{\partial f}{\partial x} = 1 (x >= y) \quad \frac{\partial f}{\partial y} = 1 (y >= x)\)
+            </div>
+            <p>也就是说，梯度在较大的输入上是 1，其它的输入为 0 。如果输入 \(x = 4, y = 2\) ，那么较大值是 4 ，函数不受 \(y\) 的值影响。如果我们将 \(y\) 增加一点 \(h\) ，那么函数的输出仍然为 4 ，因此它的梯度为 0 ：没有效果。</p>
+            <p>当然，如果我们将 \(y\) 增加一个非常大的值（比如大于 2），那么函数值就会发生变化，但导数并没有告诉我们如此大的变化对函数输入的影响；它们只对输入的微小、无限小的变化提供信息，就像它定义中 \(\lim_{h \to 0}\) 表示的那样。</p>
 
             <h3>1.4.3 复合表达式</h3>
+            <p>现在让我们开始考虑涉及多个组合函数的更复杂的表达式，例如 \(f(x, y, z) = (x + y)z\) 。这个表达式足够简单，可以直接计算，但我们将采用一个特殊的方法，这将有助于理解反向传播背后的知识。特别注意的是，这个表达式可以分解为两个表达式：\(q = x + y\) 和 \(f = qz\) 。</p>
+            <p>此外，我们知道如何分别计算两个表达式的导数，如上一个小节所示。\(f\) 只是 \(q\) 和 \(z\) 进行相乘，因此 \(\frac{\partial f}{\partial q} = z\) 以及 \frac{\partial f}{\partial z} = q 。同时 \(q\) 是 \(x\) 和 \(y\) 进行相加，因此 \frac{\partial q}{\partial x} = 1 以及 \frac{\partial q}{\partial y} = 1 。</p>
+            <p>然而，我们并不关心中间值 \(q\) 的梯度 ，\(\frac{\partial f}{\partial q}\) 是没有作用的。相反，我们最终感兴趣的是函数 \(f\) 相对于输入 \(x, y, z\) 的梯度。<strong>链式法则 (Chain Rule)</strong> 告诉我们，将这些梯度表达式“链接”在一起的正确方法是通过乘法。例如 \(\frac{\partial f}{\partial x} = \frac{\partial f}{\partial q} \frac{\partial q}{\partial x}\) 。实际上，这只是保存有两个梯度的数值相乘。让我们看一个具体的例子：</p>
+            <pre><code># set some inputs
+x = -2; y = 5; z = -4
+
+# perform the forward pass
+q = x + y   # q becomes 3
+f = q * z   # f becomes -12
+
+# perform the backward pass (backpropagation) in reverse order:
+# first backprop through f = q * z
+df_dz = q   # df/dz = q, so gradient on z becomes 3
+df_dq = z   # df/dq = z, so gradient on q becomes -4
+dq_dx = 1.0
+dq_dy = 1.0
+
+# now backprop through q = x + y
+df_dx = df_dq * dq_dx   # the multiplication here is the chain rule
+df_dy = df_dq * dq_dy
+
+assert df_dx == -4
+assert df_dy == -4
+assert df_dz == 3</code></pre>
+
             <h3>1.4.4 直观理解</h3>
             <h3>1.4.5 Sigmoid</h3>
             <h3>1.4.6 反向传播实践</h3>
@@ -44,7 +91,7 @@
 
             <div class="navigation">
                 <a href="principle_learn.html">上一节：1.3 深度学习原理</a>
-                <a href="#">下一节：1.5</a>
+                <a href="#">下一节：1.5 手写神经网络</a>
             </div>
         </main>
 
