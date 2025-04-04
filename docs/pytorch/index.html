@@ -87,7 +87,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#section8" onclick="toggleChildChapters(event, 'chapter8')">08 语音</a>
-                        <ul id="chapter7" class="child-chapters" style="display: none;">
+                        <ul id="chapter8" class="child-chapters" style="display: none;">
                             <li><a class="nav-link" href="#section8-sub1">8.1 语音特征提取</a></li>
                             <li><a class="nav-link" href="#section8-sub2">8.2 ASR (自动语音识别)</a></li>
                             <li><a class="nav-link" href="#section8-sub3">8.3 TTS (文本转语音)</a></li>
@@ -134,8 +134,6 @@
 
                 <p>本书不仅注重理论知识的讲解，更加重视工程实践。通过结合大量实际的案例，特别是如何训练、优化和部署模型，读者将能够掌握如何使用 PyTorch 完成各种深度学习任务。在每一章节中，我们都会从实际问题出发，讲解如何用 PyTorch 高效地实现各种深度学习模型，帮助读者快速掌握深度学习的核心技术。</p>
                 <p>无论你是深度学习的新手，还是有一定基础的开发者，本书都将为你提供一条清晰的学习路径。通过本书，你不仅能够深入理解 PyTorch 的内核原理，还能够灵活应用 PyTorch 解决实际工程中的问题，提升自己的技术能力和项目经验。</p>
-
-                <img src="res/pytorch_logo_dark.png">
 
                 <section id="section1" class="content-section">
                     <h2>01 张量和梯度基础</h2>
@@ -247,6 +245,8 @@
                     <h3 id="section2-sub4" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.4 损失函数</a>
                     </h3>
+
+                    <p>损失函数（Loss Function）是机器学习和深度学习中用来衡量模型预测值与真实值之间差距的函数。它的主要作用是量化预测的误差，模型通过最小化损失函数来不断调整参数，从而提高预测准确度。</p>
 
                     <h3 id="section2-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.5 优化器</a>
@@ -365,11 +365,13 @@
                     <p>来自论文 <a href="https://arxiv.org/abs/1409.3215">Sequence to Sequence Learning with Neural Networks</a></p>
 
                     <h3 id="section4-sub5" class="content-section-sub">
-                        <a href="#" style="color: inherit;">4.5 词嵌入</a>
+                        <a href="word2vec.html" style="color: inherit;">4.5 word2vec</a>
                     </h3>
 
                     <p>来自论文 <a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a></p>
-                    
+                    <p><a href="https://arxiv.org/abs/1310.4546">Distributed Representations of Words and Phrases and their Compositionality</a></p>
+                    <p>论文提出两种新颖的模型架构，用于从非常大的数据集中计算连续向量表示。这些表示的质量在单词相似性任务中测量，并将结果与以前基于不同类型神经网络的最佳表现进行比较，观察到准确率大幅提高，计算成本却低很多。</p>
+                    <p>翻译教程 <a href="https://www.tensorflow.org/text/tutorials/word2vec">word2vec</a></p>
                 </section>
 
                 <section id="section5" class="content-section">
@@ -378,6 +380,7 @@
                     <h3 id="section5-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.1 注意力</a>
                     </h3>
+                    <p>翻译文章 <a href="https://lilianweng.github.io/posts/2018-06-24-attention/">Attention? Attention!</a></p>
 
                     <h3 id="section5-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.2 Transformer 论文</a>
@@ -388,7 +391,7 @@
                     <h3 id="section5-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.3 Transformer 注释</a>
                     </h3>
-
+                    <p>翻译文章 <a href="https://nlp.seas.harvard.edu/annotated-transformer/">The Annotated Transformer</a></p>
                     <ul>
                         <li><p>1. Transformer 模型架构，包括编码器和解码器。</p></li>
                         <li><p>2. 模型训练，定义每个训练步骤。</p></li>

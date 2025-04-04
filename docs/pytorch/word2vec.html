@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../laptop_coding_48.png" type="image/png">
+    <title>word2vec</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../article_style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 左侧小节列表 -->
+        <nav class="col-md-2 sidebar">
+
+        </nav>
+
+        <!-- 中间内容：显示具体某一个小节 -->
+        <main class="col-md-8 content">
+            <h2 class="custom-title">4.5 word2vec</h2>
+            <p class="title-subtext">使用 <em>Skip-gram</em> 算法从大型数据集中提取词向量！</p>
+            <p style="color: #a0a0a0;">创建日期: 2025-04-04</p>
+
+            <p><em>word2vec</em> 不是单个算法，而是一系列模型架构和优化方法，可用于从大型数据集中学习词向量。通过 <em>word2vec</em> 学习的词向量，已被证明在各种下游自然语言处理任务中都取得了成功。</p>
+            <p class="comment">本教程是基于 <a href="https://arxiv.org/abs/1301.3781">Efficient estimation of word representations in vector space</a> 和 <a href="https://arxiv.org/abs/1310.4546">Distributed representations of words and phrases and their compositionality</a> 。它不是论文的精确实现，相反，旨在说明关键思想。</p>
+
+            <p>这些论文提出了两种学习词语表征的方法：</p>
+            <ul class="with-bullets">
+                <li><p>连续词袋模型 (CBOW)：根据周围的上下文单词预测中间的单词。上下文由当前（中间）单词前后的几个单词组成。这种架构被称为词袋模型，因为上下文中的单词顺序并不重要。</p></li>
+                <li><p>连续跳字模型 (Skip-gram)：预测同一句话中当前单词前后一定范围内的单词。</p></li>
+            </ul>
+            <img src="res/cbow_skip_gram.png" width="600">
+            <p>在本教程中使用 <em>skip-gram</em> 方法。首先我们将使用单个句子来说明 <em>skip-gram</em> 和其它概念。接下来，我们将在小型数据集上训练自己的 <em>word2vec</em> 模型。本教程还包含用于导出训练后的词向量并在 <a href="https://projector.tensorflow.org/">TensorFlow Embedding projector</a> 中对其进行可视化的代码。</p>
+
+            <h3>4.5.1 示例介绍</h3>
+            <p>词袋模型根据相邻上下文预测单词，而 <em>skip-gram</em> 模型则根据单词本身预测上下文（或相邻单词）。本模型在 <em>skip-gram</em> 上进行训练，它是一种 <em>n-grams</em> 算法，只是允许标记被跳过（可以查看下面的示例）。单词的上下文可以通过一组 <em>skip-gram</em> 对 <em>(target_word, context_word)</em> 来表示，其中 <em>context_word</em> 出现在 <em>target_word</em> 中的相邻上下文。</p>
+            <p>考虑以下八个单词的句子：</p>
+            <pre><samp>The wide road shimmered in the hot sun.</samp></pre>
+
+            <p>此句子的 8 个单词中的每一个的上下文单词都由窗口大小定义。窗口大小决定了 <em>target_word</em> 两侧的会被考虑的 <em>context_word</em> 单词。下面是一个不同的窗口大小的表格：</p>
+            <p class="comment">对于本教程，窗口大小 \(n\) 意味着每边有 \(n\) 个单词，总窗口跨度为 \(2 * n + 1\) 个单词。</p>
+            <img src="res/skip_gram.jpg" width="600">
+
+            <p><em>Skip-gram</em> 模型的训练目标是最大化给定目标词预测上下文单词的概率。对于单词序列 \(w_1, w_2, ..., w_T\) ，目标可以写成平均对数概率：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(\frac{1}{T}\sum_{t=1}^{T}\sum_{-c \leq j \leq c, j \ne 0}log(p(w_{t + j}|w_t))\)
+            </div>
+            <p>其中，\(c\) 是训练上下文大小，基本的 <em>skip-gram</em> 公式使用 <em>softmax</em> 函数来定义 \(p(w_O|w_I)\) 这个概率：</p>
+            <div class="highlight-math" style="text-align: center;">
+                \(p(w_O|w_I) = \frac{exp({v_{w_O}^{'}}^T v_{w_I})}{\sum_{w = 1}^{w}exp({v_w^{'}}^Tv_{w_I})}\)
+            </div>
+            <p>其中 \(v_w\) 和 \(v_w^{'}\) 是 \(w\) 的输入和输出向量表示。\(W\) 是词汇表的单词数量。这个公式是不可行的，因为计算 \(\nabla log(p(w_O|w_I))\) 和 \(W\) 成正比，而 \(W\) 通常很大（\(10^5 ~ 10^7\) 项）。</p>
+            <p class="comment">点积的结果衡量了两个词向量之间的相似性，通常可以用于度量词与词之间的关联性。点积越大，表示两个词在语义上越相似。</p>
+
+            <p>噪声对比估计 (NCE) 损失函数是上面的 softmax 的有效代替，如果目标是学习词向量，而不是对词分布进行建模，这可以简化 NCE 损失，以使用负采样。</p>
+            <p class="comment">负采样通过减少需要更新的词向量数量来加速训练过程。它的关键概念是：不是每个词汇都需要参与每次训练，尤其是负样本。负样本是指与目标词无关的词汇，通过这些词的反向传播，模型可以学会区分正样本（目标词）和负样本（随机词汇）。</p>
+
+            <div class="navigation">
+                <a href="#">上一节：4.4 GRU</a>
+                <a href="#">下一节：</a>
+            </div>
+        </main>
+
+            <!-- 右侧小标题导航 -->
+            <aside class="col-md-2 right-sidebar">
+                <h5><a href="index.html#section4">循环网络</a></h5>
+                <ul id="dynamic-sidebar" class="nav flex-column">
+                    <!-- 动态内容 -->
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+        <!-- 引入 Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <script src="../article_script.js"></script>
+</body>
+</html>
