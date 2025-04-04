@@ -87,7 +87,14 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#section8" onclick="toggleChildChapters(event, 'chapter8')">08 语音</a>
-                                                
+                        <ul id="chapter7" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section8-sub1">8.1 语音特征提取</a></li>
+                            <li><a class="nav-link" href="#section8-sub2">8.2 ASR (自动语音识别)</a></li>
+                            <li><a class="nav-link" href="#section8-sub3">8.3 TTS (文本转语音)</a></li>
+                            <li><a class="nav-link" href="#section8-sub4">8.4 语音增强与分离</a></li>
+                            <li><a class="nav-link" href="#section8-sub5">8.5 语音合成与风格迁移</a></li>
+                            <li><a class="nav-link" href="#section8-sub6">8.6 音轨分离</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
@@ -123,11 +130,12 @@
             <!-- 中间内容 -->
             <main class="col-md-8">
                 <h1>PyTorch 详解</h1>
-
                 <p>随着深度学习技术的快速发展，PyTorch 已经成为了最受欢迎的深度学习框架之一。本书《PyTorch 详解》旨在为读者提供一本系统且实用的 PyTorch 教程，从基础的张量操作到深度神经网络的构建与训练，逐步引导读者深入了解 PyTorch 的核心功能和高效实践。</p>
+
                 <p>本书不仅注重理论知识的讲解，更加重视工程实践。通过结合大量实际的案例，特别是如何训练、优化和部署模型，读者将能够掌握如何使用 PyTorch 完成各种深度学习任务。在每一章节中，我们都会从实际问题出发，讲解如何用 PyTorch 高效地实现各种深度学习模型，帮助读者快速掌握深度学习的核心技术。</p>
                 <p>无论你是深度学习的新手，还是有一定基础的开发者，本书都将为你提供一条清晰的学习路径。通过本书，你不仅能够深入理解 PyTorch 的内核原理，还能够灵活应用 PyTorch 解决实际工程中的问题，提升自己的技术能力和项目经验。</p>
 
+                <img src="res/pytorch_logo_dark.png">
 
                 <section id="section1" class="content-section">
                     <h2>01 张量和梯度基础</h2>
@@ -217,11 +225,20 @@
                         <a href="mnist_dataset.html" style="color: inherit;">2.1 MNIST 数据集</a>
                     </h3>
                     <p>翻译文章 <a href="https://yann.lecun.com/exdb/mnist/index.html">THE MNIST DATABASE of handwritten digits</a></p>
-                    
+                    <p>MNIST（Modified National Institute of Standards and Technology）数据集是一个广泛用于训练图像处理系统的标准数据集。它包含了手写数字的图像，广泛用于测试机器学习算法、尤其是图像识别和分类任务。</p>
+                    <ul>
+                        <li><p>1. 理解图片预处理，包括训练集、测试集的制作过程。</p></li>
+                        <li><p>2. 使用 Python 对图片进行解码，加载到 NumPy 数组中。</p></li>
+                        <li><p>3. 使用 Matplotlib 对图片进行批量绘制。</p></li>
+                    </ul>
 
                     <h3 id="section2-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.2 手写数字分类</a>
                     </h3>
+                    <ul>
+                        <li><p>1. 使用全连接神经网络对 MNIST 进行数字分类训练。</p></li>
+                        <li><p>2. 各种方法对模型进行优化。</p></li>
+                    </ul>
 
                     <h3 id="section2-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.3 激活函数</a>
@@ -234,6 +251,15 @@
                     <h3 id="section2-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.5 优化器</a>
                     </h3>
+                    <p>优化器是深度学习中至关重要的一部分，它决定了如何更新模型的权重以最小化损失函数。常见的优化器包括传统的梯度下降法和其改进版本，像随机梯度下降（SGD）、动量法（Momentum）、Adam 等。</p>
+                    <ul>
+                        <li><p>Adam 是最常用的优化器，适合大多数任务，尤其是当数据量较大或模型较复杂时。</p></li>
+                        <li><p>SGD 可以在有较强先验知识的情况下使用，尤其是在小数据集上，但可能需要精细调整学习率。</p></li>
+                        <li><p>RMSProp 在处理非平稳目标函数时非常有效。</p></li>
+                        <li><p>AdaGrad 适合稀疏数据，但可能会过早衰减学习率。</p></li>
+                        <li><p>Nadam 适用于需要加速收敛且需要前瞻性动量的场景。</p></li>
+                    </ul>
+                    <p>优化器的选择不仅依赖于模型的类型，还与训练数据的特性、任务的难度以及需要解决的具体问题相关。</p>
                     
                     <h3 id="section2-sub6" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.6 检测糖尿病</a>
@@ -281,23 +307,44 @@
                         <a href="#" style="color: inherit;">3.4 U-net</a>
                     </h3>
 
+                    <p>来自论文 <a href="https://arxiv.org/abs/1505.04597">U-Net: Convolutional Networks for Biomedical Image Segmentation</a></p>
+
                     <h3 id="section3-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">3.5 花卉分类</a>
                     </h3>
                     <p>参考 <a href="https://github.com/SHI-Labs/Convolutional-MLPs">ConvMLP: Hierarchical Convolutional MLPs for Vision</a></p>
 
                     <h3 id="section3-sub6" class="content-section-sub">
-                        <a href="#" style="color: inherit;">3.6 字符识别</a>
+                        <a href="#" style="color: inherit;">3.6 文字识别</a>
                     </h3>
                     <p>参考 <a href="https://github.com/JaidedAI/EasyOCR">EasyOCR: Ready-to-use OCR with 80+ supported languages</a></p>
 
                     <h3 id="section3-sub7" class="content-section-sub">
                         <a href="#" style="color: inherit;">3.7 抠图</a>
                     </h3>
+
+                    <p>参考 <a href="https://github.com/facebookresearch/segment-anything">segment-anything: provides code for running inference with the SegmentAnything Model (SAM)</a></p>
+
                 </section>
 
                 <section id="section4" class="content-section">
                     <h2>04 循环网络</h2>
+
+                    <p>翻译系列文章：</p>
+                    <ul>
+                        <li>
+                            <p><a href="https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-1/">Recurrent Neural Networks Tutorial, Part 1 – Introduction to RNNs</a></p>
+                        </li>
+                        <li>
+                            <p><a href="https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-2/">Recurrent Neural Networks Tutorial, Part 2 – Implementing a RNN with Python, Numpy and Theano</a></p>
+                        </li>
+                        <li>
+                            <p><a href="https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-3/">Recurrent Neural Networks Tutorial, Part 3 – Backpropagation Through Time and Vanishing Gradients</a></p>
+                        </li>
+                        <li>
+                            <p><a href="https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-4/">Recurrent Neural Networks Tutorial, Part 4 – Implementing a GRU and LSTM RNN with Python and Theano</a></p>
+                        </li>
+                    </ul>
                     
                     <h3 id="section4-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.1 简单实现</a>
@@ -315,9 +362,13 @@
                         <a href="#" style="color: inherit;">4.4 Seq2Seq</a>
                     </h3>
 
+                    <p>来自论文 <a href="https://arxiv.org/abs/1409.3215">Sequence to Sequence Learning with Neural Networks</a></p>
+
                     <h3 id="section4-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.5 词嵌入</a>
                     </h3>
+
+                    <p>来自论文 <a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a></p>
                     
                 </section>
 
@@ -331,6 +382,8 @@
                     <h3 id="section5-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.2 Transformer 论文</a>
                     </h3>
+
+                    <p>来自论文 <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></p>
 
                     <h3 id="section5-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.3 Transformer 注释</a>
@@ -354,6 +407,8 @@
                     <h3 id="section5-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.5 BERT</a>
                     </h3>
+
+                    <p>来自论文 <a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a></p>
 
                     <h3 id="section5-sub6" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.6 ViT</a>
@@ -414,7 +469,7 @@
                     </ul>
 
                     <h3 id="section7-sub2" class="content-section-sub">
-                        <a href="#" style="color: inherit;">7.2 文本识别</a>
+                        <a href="#" style="color: inherit;">7.2 文本识别原理</a>
                     </h3>
 
                     <ul>
@@ -565,6 +620,11 @@
 
                 <section id="section13" class="content-section">
                     <h2>13 模型优化</h2>
+
+                    <h3 id="section13-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">12.1 Lora 微调</a>
+                    </h3>
+
                 </section>
 
                 <section id="section14" class="content-section">
