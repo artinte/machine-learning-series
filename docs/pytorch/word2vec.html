@@ -57,6 +57,12 @@
             <p>噪声对比估计 (NCE) 损失函数是上面的 softmax 的有效代替，如果目标是学习词向量，而不是对词分布进行建模，这可以简化 NCE 损失，以使用负采样。</p>
             <p class="comment">负采样通过减少需要更新的词向量数量来加速训练过程。它的关键概念是：不是每个词汇都需要参与每次训练，尤其是负样本。负样本是指与目标词无关的词汇，通过这些词的反向传播，模型可以学会区分正样本（目标词）和负样本（随机词汇）。</p>
 
+            <p>目标词的简化负采样目标是将上下文词从 <code>num_ns</code> 个使用噪声分布 \(P_n(w)\) 的负采样单词中分离出来。更准确地说，对完整词汇表做 softmax 操作可以近似为将目标词的损失市委上下文词和 <code>num_ns</code> 个负样本之间的分类问题。</p>
+            <p>负采样也是定义为 <em>(target_word, contxt_word)</em> 对，只是 <em>context_word</em> 不是出现在 <em>target_word</em> 单词 <em>window_size</em> 长度周围。比如，下面几一个是潜在的负采样（<em>window_size</em> 大小为 2）：</p>
+            <pre><samp>(hot, shimmered)
+(wide, hot)
+(wide, sum)</samp></pre>
+            <p>在之后的小节中，我们会为每个句子生成 <em>skip-grams</em> 和负样本。还会了解子采样技术，并为正训练示例和负训练示例训练分类模型。</p>
             <div class="navigation">
                 <a href="#">上一节：4.4 GRU</a>
                 <a href="#">下一节：</a>

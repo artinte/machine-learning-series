@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../laptop_coding_48.png" type="image/png">
+    <title>注意力</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../article_style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 左侧小节列表 -->
+        <nav class="col-md-2 sidebar">
+
+        </nav>
+
+        <!-- 中间内容：显示具体某一个小节 -->
+        <main class="col-md-8 content">
+            <h2 class="custom-title">5.1 注意力</h2>
+            <p class="title-subtext"></p>
+            <p style="color: #a0a0a0;">创建日期: 2025-04-05</p>
+            <p>某种程度上来说，注意力是由我们将视觉注意力放在图像的不同区域，或者将一个句子中的单词关联起来而引起的。以下面的柴犬图片为例：</p>
+            <img src="res/shiba_iun.jpg" width="600">
+            <p>人类的视觉注意力使我们能够以“高分辨率”聚焦于某个区域（例如，查看黄色框中的尖耳朵），同时以“低分辨率”感知周围的图像（例如，现在雪景背景和服装怎么样？），然后调整焦点或进行相应的推理。给定一小块图像，其余像素会提供应在此处显示的内容的线索。我们希望在黄色框中看到一只尖耳朵，因为我们已经看到了狗的鼻子、右边的另一只尖耳朵和柴犬的神秘眼睛（红色框中的东西）。但是，底部的毛衣和毯子不如这些狗的特征有用。</p>
+            <p>同样，我们可以在一个句子或密切上下文中解释单词之间的关系。当我们看到“吃”时，我们期望很快会遇到一个食物词。颜色词描述了食物，但与“吃”直接相关的可能并不多。</p>
+            <img src="res/sentence_attention.png" width="600">
+            <p>简而言之，深度学习中的注意力可以广泛解释为重要性权重的向量：为了预测或推断一个元素，例如图像中的像素或句子中的单词，我们使用注意力向量估计它与其他元素的相关性（或“关注”，你可能在许多论文中读到过）的强度，并取注意力向量加权的它们的值之和作为目标的近似值。</p>
+
+            <h3>5.1.1 Seq2Seq 的问题</h3>
+
+            <p><em>Seq2Seq</em> 模型诞生于语言建模领域。广义上讲，它旨在将输入序列（源）转换为新序列（目标），并且两个序列的长度可以是任意的。转换任务的示例包括文本或音频中多种语言之间的机器翻译、问答对话生成，甚至将句子解析为语法树。</p>
+            <p><em>Seq2Seq</em> 模型通常具有编码器-解码器架构，其由以下部分组成：</p>
+            <ul class="with-bullets">
+                <li><p>编码器处理输入序列，并将信息压缩为固定长度的上下文向量（也称为句子嵌入或“思维”向量） 。这种表示有望很好地概括整个源序列的含义。</p></li>
+                <li><p>使用上下文向量初始化解码器以发出变换后的输出。早期的工作仅使用编码器网络的最后状态作为解码器的初始状态。</p></li>
+            </ul>
+            <p>编码器和解码器都是循环神经网络，即使用 LSTM 或 GRU 单元：</p>
+            <img src="res/enc_dec_trans.jpg" width="600">
+            <p>这种固定长度上下文向量设计的一个关键且明显的缺点是无法记住长句子。一旦完成整个输入的处理，它通常会忘记第一部分。注意力机制的诞生（Bahdanau 等人，2015 年）就是为了解决这个问题。</p>
+
+            <h3>5.1.2 为翻译而生</h3>
+            <p>注意力机制的诞生是为了帮助记忆神经机器翻译 ( NMT ) 中的长源句子。注意力机制发明的秘诀不是从编码器的最后一个隐藏状态构建单个上下文向量，而是在上下文向量和整个源输入之间创建快捷方式。这些快捷连接的权重可针对每个输出元素进行自定义。</p>
+            <p>虽然上下文向量可以访问整个输入序列，但我们不必担心遗忘。源和目标之间的对齐由上下文向量学习和控制。本质上，上下文向量消耗三条信息：</p>
+            <ul class="with-bullets">
+                <li><p>编码器隐藏状态；</p></li>
+                <li><p>解码器隐藏状态；</p></li>
+                <li><p>源和目标之间的对齐。</p></li>
+            </ul>
+            <img src="res/enc_dec_attention.jpg" width="600">
+
+            <h3>5.1.3 定义</h3>
+
+            <div class="navigation">
+                <a href="word2vec.html">上一节：4.5 word2vec</a>
+                <a href="transformer_paper.html">下一节：5.2 Transformer 论文</a>
+            </div>
+        </main>
+
+            <!-- 右侧小标题导航 -->
+            <aside class="col-md-2 right-sidebar">
+                <h5><a href="index.html#section1">快速入门</a></h5>
+                <ul id="dynamic-sidebar" class="nav flex-column">
+                    <!-- 动态内容 -->
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+        <!-- 引入 Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <script src="../article_script.js"></script>
+</body>
+</html>
