@@ -1,5 +1,7 @@
 
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 from utils import RNG, gen_data_yinyang, draw_dot, vis_color
 random = RNG(42)
 
@@ -240,7 +242,22 @@ class AdamW:
 
 # Let's train!
 # generate a dataset with 100 2-dimensional datapoints in 3 classes
-train_split, val_split, test_split = gen_data_yinyang(random, n=100)
+train_split, val_split, test_split = gen_data_yinyang(random, n=1000)
+
+# Convert data into two arrays: one for the coordinates and one for the labels
+coordinates = np.array([point[0] for point in train_split])
+labels = np.array([point[1] for point in train_split])
+plt.figure(figsize=(5, 5))
+# Plot each class with different colors
+plt.scatter(coordinates[labels == 0][:, 0], coordinates[labels == 0][:, 1], color='yellow', label='Class 0', s=60)
+plt.scatter(coordinates[labels == 1][:, 0], coordinates[labels == 1][:, 1], color='green', edgecolor='black', label='Class 1', s=60)
+plt.scatter(coordinates[labels == 2][:, 0], coordinates[labels == 2][:, 1], color='blue', label='Class 2', s=60)
+# Set equal aspect ratio for the plot
+plt.gca().set_aspect('equal', adjustable='box')
+plt.title('Yin Yang Diagram')
+plt.legend(loc='upper right')
+plt.axis('off')
+plt.show()
 
 # init the model: 2D inputs, 8 neurons, 3 outputs (logits)
 model = MLP(2, [8, 3])
@@ -261,7 +278,6 @@ def loss_fun(model, split):
 # train the network
 num_steps = 100
 for step in range(num_steps):
-
     # evaluate the validation split every few steps
     if step % 10 == 0:
         val_loss = loss_fun(model, val_split)
