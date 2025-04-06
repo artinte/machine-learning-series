@@ -77,6 +77,14 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section6" onclick="toggleChildChapters(event, 'chapter6')">06 扩散模型</a>
+                        <ul id="chapter6" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section6-sub1">6.1 数学基础</a></li>
+                            <li><a class="nav-link" href="#section6-sub2">6.2 得分函数</a></li>
+                            <li><a class="nav-link" href="#section6-sub3">6.3 训练</a></li>
+                            <li><a class="nav-link" href="#section6-sub4">6.4 从头构建</a></li>
+                            <li><a class="nav-link" href="#section6-sub5">6.5 文本提示</a></li>
+                            <li><a class="nav-link" href="#section6-sub6">6.6 稳定扩散</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#section7" onclick="toggleChildChapters(event, 'chapter7')">07 文本</a>
@@ -99,6 +107,15 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section9" onclick="toggleChildChapters(event, 'chapter9')">09 图片与视频</a>
+                        <ul id="chapter9" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section9-sub1">9.1 物体检测</a></li>
+                            <li><a class="nav-link" href="#section9-sub2">9.2 迁移学习</a></li>
+                            <li><a class="nav-link" href="#section9-sub3">9.3 对抗示例</a></li>
+                            <li><a class="nav-link" href="#section9-sub4">9.4 DCGAN</a></li>
+                            <li><a class="nav-link" href="#section9-sub5">9.5 空间 Transformer</a></li>
+                            <li><a class="nav-link" href="#section9-sub6">9.6 DeepFaceLab</a></li>
+                            <li><a class="nav-link" href="#section9-sub7">9.7 DeepFaceLive</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
@@ -236,31 +253,49 @@
                     <h3 id="section2-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.2 手写数字分类</a>
                     </h3>
+                    <p>MNIST 手写数字分类是一个经典的深度学习入门任务，目标是识别图像中的手写数字，使用 (0–9) 进行标记。</p>
                     <ul>
-                        <li><p>1. 使用全连接神经网络对 MNIST 进行数字分类训练。</p></li>
-                        <li><p>2. 各种方法对模型进行优化。</p></li>
+                        <li><p>1. 数据加载与预处理。</p></li>
+                        <li><p>2. 构建神经网络。</p></li>
+                        <li><p>3. 使用 <code>torch.autograd</code> 进行自动微分。</p></li>
+                        <li><p>4. 优化模型参数。</p></li>
+                        <li><p>5. 加载和保存模型。</p></li>
                     </ul>
 
                     <h3 id="section2-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.3 激活函数</a>
                     </h3>
+                    <p>激活函数是神经网络中的“非线性引擎”，让网络可以逼近各种复杂函数。如果没有激活函数，整个网络只相当于一个线性变换器，做不了复杂任务。</p>
+                    <ul>
+                        <li><p>1. ReLU</p></li>
+                        <li><p>2. Sigmoid</p></li>
+                        <li><p>3. Tanh</p></li>
+                        <li><p>4. Softmax</p></li>
+                    </ul>
+                    <p>讲述一些常用的激活函数，并求解它们的梯度。</p>
 
                     <h3 id="section2-sub4" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.4 损失函数</a>
                     </h3>
 
                     <p>损失函数（Loss Function）是机器学习和深度学习中用来衡量模型预测值与真实值之间差距的函数。它的主要作用是量化预测的误差，模型通过最小化损失函数来不断调整参数，从而提高预测准确度。</p>
+                    <ul>
+                        <li><p>1. 均方误差 (MSE)</p></li>
+                        <li><p>2. 交叉熵损失</p></li>
+                    </ul>
+                    <p>讲解一些常用的损失函数，并求解它们的梯度。</p>
+
 
                     <h3 id="section2-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.5 优化器</a>
                     </h3>
                     <p>优化器是深度学习中至关重要的一部分，它决定了如何更新模型的权重以最小化损失函数。常见的优化器包括传统的梯度下降法和其改进版本，像随机梯度下降（SGD）、动量法（Momentum）、Adam 等。</p>
                     <ul>
-                        <li><p>Adam 是最常用的优化器，适合大多数任务，尤其是当数据量较大或模型较复杂时。</p></li>
-                        <li><p>SGD 可以在有较强先验知识的情况下使用，尤其是在小数据集上，但可能需要精细调整学习率。</p></li>
-                        <li><p>RMSProp 在处理非平稳目标函数时非常有效。</p></li>
-                        <li><p>AdaGrad 适合稀疏数据，但可能会过早衰减学习率。</p></li>
-                        <li><p>Nadam 适用于需要加速收敛且需要前瞻性动量的场景。</p></li>
+                        <li><p>1. Adam 是最常用的优化器，适合大多数任务，尤其是当数据量较大或模型较复杂时。</p></li>
+                        <li><p>2. SGD 可以在有较强先验知识的情况下使用，尤其是在小数据集上，但可能需要精细调整学习率。</p></li>
+                        <li><p>3. RMSProp 在处理非平稳目标函数时非常有效。</p></li>
+                        <li><p>4. AdaGrad 适合稀疏数据，但可能会过早衰减学习率。</p></li>
+                        <li><p>5. Nadam 适用于需要加速收敛且需要前瞻性动量的场景。</p></li>
                     </ul>
                     <p>优化器的选择不仅依赖于模型的类型，还与训练数据的特性、任务的难度以及需要解决的具体问题相关。</p>
                     
@@ -268,6 +303,11 @@
                         <a href="#" style="color: inherit;">2.6 检测糖尿病</a>
                     </h3>
                     <p>翻译文章 <a href="https://machinelearningmastery.com/develop-your-first-neural-network-with-pytorch-step-by-step/">Develop Your First Neural Network with PyTorch, Step by Step</a></p>
+                    <ul>
+                        <li><p>如何记载 CSV 数据集并使用 PyTorch 进行预处理。</p></li>
+                        <li><p>如何在 PyToch 中定义多层感知器模型。</p></li>
+                        <li><p>如何在验证数据集上训练和评估 PyToch 模型。</p></li>
+                    </ul>
                 </section>
                 
                 <section id="section3" class="content-section">
@@ -285,7 +325,6 @@
                         <li><p>3. 模型训练。</p></li>
                         <li><p>4. 模型评估与优化。</p></li>
                     </ul>
-
 
                     <h3 id="section3-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">3.2 AlexNet</a>
@@ -309,6 +348,7 @@
                     <h3 id="section3-sub4" class="content-section-sub">
                         <a href="#" style="color: inherit;">3.4 U-net</a>
                     </h3>
+                    <p>提出了一种网络和训练策略，它依赖于大量使用数据增强来更有效地使用可用的带注释样本。该架构由一条用于捕获上下文的收缩路径和一条用于实现精确定位的对称扩展路径组成。</p>
 
                     <p>来自论文 <a href="https://arxiv.org/abs/1505.04597">U-Net: Convolutional Networks for Biomedical Image Segmentation</a></p>
 
@@ -356,10 +396,13 @@
                     <h3 id="section4-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.2 长短期记忆</a>
                     </h3>
+                    <p>来自论文 <a href="https://www.bioinf.jku.at/publications/older/2604.pdf">Long Short-term Memory</a></p>
+                    <p>LSTM 是一种改进的循环神经网络，能有效解决长期依赖问题。它通过遗忘门、输入门和输出门控制信息流动，保留有用记忆、忘记无关内容，从而在处理序列数据如文本、语音时表现优异，广泛应用于自然语言处理等任务。</p>
 
                     <h3 id="section4-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.3 GRU</a>
                     </h3>
+                    <p>来自论文 <a href="https://arxiv.org/abs/1406.1078">Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation</a></p>
 
                     <h3 id="section4-sub4" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.4 Seq2Seq</a>
@@ -413,12 +456,14 @@
                     <h3 id="section5-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.5 BERT</a>
                     </h3>
-
                     <p>来自论文 <a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a></p>
+                    <p>引入一种叫做 <strong>BERT</strong> 的语言表示模型，英文为 <em>Bidirectional Encoder Representations from Transformers</em> 。与最近的语言表示模型不同，BERT 旨在通过联合调节所有层的左上下文和右上下文来预训练来自未标记文本的深度双向表示。因此，只需一个额外的输出层即可对预训练的 BERT 模型进行微调，以创建用于各种任务（例如问答和语言推理）的最先进的模型，而无需对特定于任务的架构进行大量修改。</p>
 
                     <h3 id="section5-sub6" class="content-section-sub">
                         <a href="#" style="color: inherit;">5.6 ViT</a>
                     </h3>
+                    <p>来自论文 <a href="https://arxiv.org/abs/2010.11929">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale</a></p>
+                    <p>直接应用于图像块序列的纯 Transformer 可以在图像分类任务中表现得非常好。当对大量数据进行预训练并转移到多个中型或小型图像识别基准（ImageNet、CIFAR-100、VTAB 等）时，与最先进的卷积网络相比，Vision Transformer (ViT) 取得了出色的结果，同时需要更少的计算资源来训练。</p>
                     
                 </section>
 
@@ -483,6 +528,10 @@
                         <li><p>2. 字符分割。</p></li>
                         <li><p>3. 字符识别。</p></li>
                     </ul>
+
+                    <h3 id="section7-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">7.3 翻译任务</a>
+                    </h3>
 
                 </section>
 
@@ -616,7 +665,7 @@
                     <h3 id="section12-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">12.1 ONNX</a>
                     </h3>
-                    <p><strong>Open Neural Network Exchange (ONNX)</strong> 为 AI 模型（包括深度学习和传统机器学习）提供了一种开源格式。</p>
+                    <p><strong>Open Neural Network Exchange (ONNX)</strong> 为 AI 模型（包括深度学习和传统机器学习）提供了一种开源格式。ONNX Runtime 是一个跨平台推理和训练机器学习加速器。</p>
                     <ul>
                         <li><p>1. 模型训练完成后导出 ONNX 格式。</p></li>
                         <li><p>2. 在终端加载 ONNX 格式进行推理。</p></li>
@@ -630,6 +679,7 @@
                     <h3 id="section13-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">12.1 Lora 微调</a>
                     </h3>
+                    <p><a href="https://arxiv.org/abs/2106.09685">LoRA: Low-Rank Adaptation of Large Language Models</a></p>
 
                 </section>
 
