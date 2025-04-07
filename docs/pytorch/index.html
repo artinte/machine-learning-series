@@ -120,26 +120,55 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section10" onclick="toggleChildChapters(event, 'chapter10')">10 强化学习</a>
+                        <ul id="chapter10" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section10-sub1">10.1 DQN</a></li>
+                            <li><a class="nav-link" href="#section10-sub2">10.2 PPO</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section11" onclick="toggleChildChapters(event, 'chapter11')">11 PyTorch 拓展</a>
+                        <ul id="chapter11" class="child-chapters" style="display: none;">
+
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section12" onclick="toggleChildChapters(event, 'chapter12')">12 模型部署</a>
+                        <ul id="chapter12" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section12-sub1">12.1 ONNX</a></li>
+                            <li><a class="nav-link" href="#section12-sub2">12.2 TorchScript</a></li>
+                            <li><a class="nav-link" href="#section13-sub3">12.3 ExecuTorch</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section13" onclick="toggleChildChapters(event, 'chapter13')">13 模型优化</a>
+                        <ul id="chapter13" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section13-sub1">13.1 Lora 微调</a></li>
+                            <li><a class="nav-link" href="#section13-sub2">13.2 修剪</a></li>
+                            <li><a class="nav-link" href="#section13-sub3">13.3 量化</a></li>
+                            <li><a class="nav-link" href="#section13-sub4">13.4 蒸馏</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section14" onclick="toggleChildChapters(event, 'chapter14')">14 分布式训练</a>
+                        <ul id="chapter14" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section14-sub1">14.1 数据并行</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="#section15" onclick="toggleChildChapters(event, 'chapter15')">15 图神经网络</a>
+                        <ul id="chapter15" class="child-chapters" style="display: none;">
+                            <li><a class="nav-link" href="#section15-sub1">15.1 基础</a></li>
+                            <li><a class="nav-link" href="#section15-sub2">15.2 核心思想</a></li>
+                            <li><a class="nav-link" href="#section15-sub3">15.3 主流模型</a></li>
+                            <li><a class="nav-link" href="#section15-sub4">15.4 Geometric</a></li>
+                            <li><a class="nav-link" href="#section15-sub5">15.5 节点分类</a></li>
+                            <li><a class="nav-link" href="#section15-sub6">15.6 进阶</a></li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
@@ -721,6 +750,55 @@
 
                 <section id="section15" class="content-section">
                     <h2>15 图神经网络</h2>
+                    <h3 id="section15-sub1" class="content-section-sub">
+                        <a href="#" style="color: inherit;">15.1 基础</a>
+                    </h3>
+                    <ul>
+                        <li><p>1. 什么是图（Graph）：节点、边、邻接矩阵。</p></li>
+                        <li><p>2. 图的种类：有向图、无向图、加权图、多重图、异构图。</p></li>
+                        <li><p>3. 图学习任务：节点分类、边缘预测、图分类。</p></li>
+                    </ul>
+                    <h3 id="section15-sub2" class="content-section-sub">
+                        <a href="#" style="color: inherit;">15.2 核心思想</a>
+                    </h3>
+                    <ul>
+                        <li><p>1. 信息传播（Message Passing）框架。</p></li>
+                        <li><p>2. 局部聚合 vs 全局图建模</p></li>
+                    </ul>
+                    <h3 id="section15-sub3" class="content-section-sub">
+                        <a href="#" style="color: inherit;">15.3 主流模型</a>
+                    </h3>
+                    <ul>
+                        <li><p>1. GCN（Graph Convolutional Network）</p></li>
+                        <li><p>2. GAT（Graph Attention Network）</p></li>
+                        <li><p>3. GraphSAGE</p></li>
+                        <li><p>4. GIN（Graph Isomorphism Network）</p></li>
+                    </ul>
+                    <h3 id="section15-sub4" class="content-section-sub">
+                        <a href="#" style="color: inherit;">15.4 Geometric</a>
+                    </h3>
+                    <ul>
+                        <li><p>1. 安装与基本结构</p></li>
+                        <li><p>2. 数据结构（Data, Dataset, DataLoader）</p></li>
+                    </ul>
+                    <h3 id="section15-sub5" class="content-section-sub">
+                        <a href="#" style="color: inherit;">15.5 节点分类</a>
+                    </h3>
+                    <ul>
+                        <li><p>1. 使用 Cora/Citeseer 数据集</p></li>
+                        <li><p>2. 用 GCN 进行节点分类</p></li>
+                        <li><p>3. 可视化训练过程</p></li>
+                        <li><p>4. 模型评估与调参技巧</p></li>
+                    </ul>
+                    <h3 id="section15-sub6" class="content-section-sub">
+                        <a href="#" style="color: inherit;">15.6 进阶</a>
+                    </h3>
+                    <ul>
+                        <li><p>1. 图注意力机制（GAT 原理与实现）</p></li>
+                        <li><p>2. 图池化（Graph Pooling）</p></li>
+                        <li><p>3. 图生成（GraphVAE、GraphGAN）</p></li>
+                        <li><p>4. 图自监督学习</p>
+                    </ul>
                 </section>
             </main>
 
