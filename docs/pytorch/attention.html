@@ -85,13 +85,56 @@
             <p>借助注意力机制，源序列和目标序列之间的依赖关系不再受距离的限制！鉴于注意力机制在机器翻译方面的巨大进步，它很快就拓展到计算机视觉领域，人们开始探索各种其它形式的注意力机制。</p>
             <h4>5.1.3.1 概括</h4>
             <p>下面是几种流行的注意力机制和对应的对齐分数函数的汇总表：</p>
-            
+            <table>
+                <thead>
+                    <tr>
+                        <th>名字</th>
+                        <th>对齐得分函数</th>
+                        <th>引用</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>基于内容的注意力</td>
+                        <td>\(score(s_t, h_i) = cosine[s_t, h_i]\)</td>
+                        <td><a href="https://arxiv.org/abs/1410.5401">Graves, 2014</a></td>
+                    </tr>
+                    <tr>
+                        <td>加性注意力</td>
+                        <td>\(score(s_t, h_i) = (v_a)^Ttanh(W_a[s_{t-t}; h_i])\)</td>
+                        <td><a href="https://arxiv.org/abs/1409.0473">Bahdanau, 2015</a></td>
+                    </tr>
+                    <tr>
+                        <td>基于位置的注意力</td>
+                    </tr>
+                    <tr>
+                        <td>通用注意力</td>
+                    </tr>
+                    <tr>
+                        <td>点积注意力</td>
+                    </tr>
+                    <tr>
+                        <td>缩放点积注意力</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>5.1.3.2 自注意力</h4>
+            <p><strong>自注意力 (Self-atttention)</strong> 又称内部注意力，是一种将单个序列的不同位置关联起来以计算同一序列的表示的注意力机制。自注意力机制已被证明在机器阅读、抽象摘要或图像描述生成中非常有用。</p>
+            <p>论文 <a href="https://arxiv.org/abs/1601.06733">Long Short-Term Memory-Networks for Machine Reading</a> 使用自注意力机制进行机器阅读。在下面的例子中，自注意力机制使我们能够学习当前单词与句子前一部分之间的相关性：</p>
+            <img src="res/att_reading.jpg" width="600">
+
+            <h4>5.1.3.3 软/硬注意力</h4>
+
+            <h4>5.1.3.4 全局/局部注意力</h4>
+
 
             <h3>5.1.4 图灵机器</h3>
 
             <h3>5.1.5 指针网络</h3>
 
             <h3>5.1.6 Transformer</h3>
+            <p>“Attention is All you Need” （Vaswani 等人，2017 年）无疑是 2017 年最具影响力和最有趣的论文之一。它对软注意力进行了大量改进，并使得无需循环网络单元即可进行 seq2seq 建模成为可能。所提出的“ Transformer ”模型完全建立在自注意力机制之上，而无需使用序列对齐的循环架构。</p>
 
             <h3>5.1.7 SNAIL 架构</h3>
 
