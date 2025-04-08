@@ -204,7 +204,7 @@
                         <li><p>1. 下载 CUDA 包进行安装。</p></li>
                         <li><p>2. 使用 NVIDIA 官方提供的 <em>nbody</em> 程序验证安装。</p></li>
                         <li><p>3. 安装 <em>torch</em> 、<em>torchaudio</em> 、<em>torchvision</em> 库。</p></li>
-                        <li><p>4. 验证 GPU 能够被 torch 访问。</p></li>
+                        <li><p>4. 确认 <em>torch</em> 安装正确，以及验证 GPU 能够被 <em>torch</em> 访问。</p></li>
                     </ul>
 
                     <h3 id="section1-sub2" class="content-section-sub">
@@ -318,6 +318,7 @@
                     <h3 id="section2-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">2.5 优化器</a>
                     </h3>
+                    <p>参考教程 <a href="https://nn.labml.ai/optimizers/index.html">Optimizers</a>，有非常多的优化器，选择其中常见的几种进行讲解。</p>
                     <p>优化器是深度学习中至关重要的一部分，它决定了如何更新模型的权重以最小化损失函数。常见的优化器包括传统的梯度下降法和其改进版本，像随机梯度下降（SGD）、动量法（Momentum）、Adam 等。</p>
                     <ul>
                         <li><p>1. Adam 是最常用的优化器，适合大多数任务，尤其是当数据量较大或模型较复杂时。</p></li>
@@ -506,26 +507,39 @@
                         <li><p><a href="https://scholar.harvard.edu/binxuw/classes/machine-learning-scratch/materials/foundation-diffusion-generative-models">Mathematical Foundation of Diffusion Generative Models</a></p></li>
                         <li><p><a href="https://scholar.harvard.edu/binxuw/classes/machine-learning-scratch/materials/stable-diffusion-scratch">Understanding Stable Diffusion from "Scratch"</a></p></li>
                     </ul>
-                    
+                    <p>在《扩散模型的数学基础中》，我们将讲述 <strong>扩散生成模型 (Diffusion Generative Models)</strong> 的数学基础，会对以下内容有扎实的理解：</p>
+                    <ul>
+                        <li><p>1. <strong>得分函数 (Score Function)</strong> 作为数据分布的梯度。</p></li>
+                        <li><p>2. 得分函数使前向扩散过程得以逆转 (Reversal of Forward Diffusion Process)。</p></li>
+                        <li><p>3. 通过去噪分数匹配（及其与显式分数匹配的等价性）来学习得分函数</p></li>
+                        <li><p>4. 用神经网络近似得分函数。</p></li>
+                        <li><p>5. 从扩散模型中进行抽样。</p></li>
+                    </ul>
+
                     <h3 id="section6-sub1" class="content-section-sub">
                         <a href="#" style="color: inherit;">6.1 数学基础</a>
                     </h3>
+                    <p>翻译教程 <a href="https://colab.research.google.com/drive/1aSQTgoqmyqGpLI9q7IRDlXXeMdAG-E4X?usp=sharing">Diffusion generative models, Day 1 (Theory)</a></p>
 
                     <h3 id="section6-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">6.2 得分函数</a>
                     </h3>
+                    <p>翻译教程 <a href="https://colab.research.google.com/drive/1dol5AXz_oNkFZMrwpDyK6MYnOB4ayEQU?usp=sharing">Diffusion, Reverse Diffusion and Score function</a></p>
 
                     <h3 id="section6-sub3" class="content-section-sub">
                         <a href="#" style="color: inherit;">6.3 训练</a>
                     </h3>
+                    <p>翻译教程 <a href="https://colab.research.google.com/drive/16ZNcxNo7DJh1yZfFa2ombVd_uZqFTcQe?usp=sharing">Denoising Score Matching, and Train Neural Network to Approximate Score</a></p>
 
                     <h3 id="section6-sub4" class="content-section-sub">
                         <a href="#" style="color: inherit;">6.4 从头构建</a>
                     </h3>
+                    <p>翻译教程 <a href="https://colab.research.google.com/drive/1mm67_irYu3qU3hnfzqK5yQC38Fd5UFam?usp=sharing">Build your own Stable Diffusion UNet model from scratch in a notebook</a></p>
 
                     <h3 id="section6-sub5" class="content-section-sub">
                         <a href="#" style="color: inherit;">6.5 文本提示</a>
                     </h3>
+                    <p>翻译教程 <a href="https://colab.research.google.com/drive/1Y5wr91g5jmpCDiX-RLfWL1eSBWoSuLqO?usp=sharing">Build a Diffusion model (with UNet + cross attention) and train it to generate MNIST images based on the "text prompt"</a></p>
 
                     <h3 id="section6-sub6" class="content-section-sub">
                         <a href="#" style="color: inherit;">6.6 稳定扩散</a>
