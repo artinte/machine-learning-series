@@ -174,10 +174,9 @@ if __name__ == '__main__':
             batch = next(iter(iterator))  
             src = batch.src  # 源句子
             trg = batch.trg  # 目标句子
-            trg_input = trg[:, :-1]  # 去掉目标句子的最后一个 token，作为输入
             
             # 使用模型生成翻译
-            output = model(src, trg_input)
+            output = model(src, trg[:, :-1])
             output = output.argmax(dim=-1)  # 选择最大概率的预测词
             
             # 将预测结果转为词汇表中的词

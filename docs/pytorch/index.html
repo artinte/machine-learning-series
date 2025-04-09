@@ -405,6 +405,13 @@
 
                 <section id="section4" class="content-section">
                     <h2>04 循环网络</h2>
+                    <p><strong>循环神经网络 (RNN)</strong> 是一种用于处理序列数据的神经网络。它通过将上一时刻的输出作为当前时刻的输入，能够记住前面时间步的信息，适用于文本、语音等具有时间依赖关系的数据。</p>
+                    <p>1. <strong>简单实现</strong>：介绍如何用 PyTorch 实现简单的文本分类和生成任务，帮助理解 RNN 在实际中的应用。</p>
+                    <p>2. <strong>长短期记忆 (LSTM)</strong>：LSTM 是一种改进的 RNN，能够解决传统 RNN 在处理长期依赖时的问题。通过遗忘门、输入门和输出门，LSTM 可以有效地记住重要信息并丢弃不相关的部分，广泛应用于文本和语音处理。</p>
+                    <p>3. <strong>GRU</strong>：GRU 是 LSTM 的简化版本，计算效率更高，但在效果上与 LSTM 类似，适用于机器翻译等任务。</p>
+                    <p>4. <strong>Seq2Seq</strong>：Seq2Seq 是一种基于 RNN 的模型，它通过编码器将输入序列转为一个固定向量，再通过解码器生成输出序列，常用于机器翻译等任务。</p>
+                    <p>5. <strong>word2vec</strong>：word2vec 是一种用于学习单词向量的技术，能够将词语转换为向量，捕捉词语之间的语义关系，常用于文本数据处理。</p>
+                    <p>总结来说，这一章讲解了 RNN 及其改进版本（如 LSTM 和 GRU）的基础，重点介绍了它们如何处理序列数据，特别是在自然语言处理中的应用。</p>
 
                     <h3 id="section4-sub1" class="content-section-sub">
                         <a href="rnn_scratch.html" style="color: inherit;">4.1 简单实现</a>
@@ -444,9 +451,9 @@
                     <p>1. <strong>注意力</strong>：从宏观角度介绍了注意力的基本概念，并总结了各种类型的注意力，如自注意力、全局注意力和局部注意力等，这些概念为理解Transformer架构的核心思想奠定了基础。</p>
                     <p>2. <strong>经典的编码器-解码器架构</strong>：使用 PyTorch 重新实现论文 <a href="https://arxiv.org/abs/1706.03762">Attention is All You Need</a> 中德语-英语翻译。 </p>
                     <p>3. <strong>nanoGPT</strong>：使用 Transformer 的解码器部分，完成文字生成任务。</p>
-                    <p>4. <strong>BERT</strong>： 使用 Transformer 的编码器部分，进行预训练。</p>
+                    <p>4. <strong>BERT 分类实现</strong>： 使用 Transformer 的编码器部分，进行预训练。</p>
                     <p>5. <strong>ViT</strong>：Transformer 在视觉方面的应用，对于图像分类方面也可以表现的非常好。</p>
-                    <p>总的来说，Transformer架构不仅在自然语言处理领域取得了突破性的进展，而且其强大的灵活性和适应性使其在计算机视觉和其他领域也取得了显著的成功。</p>
+                    <p>总的来说，Transformer 架构不仅在自然语言处理领域取得了突破性的进展，而且其强大的灵活性和适应性使其在计算机视觉和其他领域也取得了显著的成功。</p>
 
                     <h3 id="section5-sub1" class="content-section-sub">
                         <a href="attention.html" style="color: inherit;">5.1 注意力概述</a>
@@ -479,13 +486,13 @@
                     </ul>
 
                     <h3 id="section5-sub5" class="content-section-sub">
-                        <a href="#" style="color: inherit;">5.5 BERT</a>
+                        <a href="bert_impl.html" style="color: inherit;">5.5 BERT 分类实现</a>
                     </h3>
                     <p>来自论文 <a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a></p>
                     <p>引入一种叫做 <strong>BERT</strong> 的语言表示模型，英文为 <em>Bidirectional Encoder Representations from Transformers</em> 。与最近的语言表示模型不同，BERT 旨在通过联合调节所有层的左上下文和右上下文来预训练来自未标记文本的深度双向表示。因此，只需一个额外的输出层即可对预训练的 BERT 模型进行微调，以创建用于各种任务（例如问答和语言推理）的最先进的模型，而无需对特定于任务的架构进行大量修改。</p>
 
                     <h3 id="section5-sub6" class="content-section-sub">
-                        <a href="#" style="color: inherit;">5.6 ViT</a>
+                        <a href="vit_impl.html" style="color: inherit;">5.6 ViT</a>
                     </h3>
                     <p>来自论文 <a href="https://arxiv.org/abs/2010.11929">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale</a></p>
                     <p>直接应用于图像块序列的纯 Transformer 可以在图像分类任务中表现得非常好。当对大量数据进行预训练并转移到多个中型或小型图像识别基准（ImageNet、CIFAR-100、VTAB 等）时，与最先进的卷积网络相比，Vision Transformer (ViT) 取得了出色的结果，同时需要更少的计算资源来训练。</p>
@@ -499,13 +506,22 @@
                         <li><p><a href="https://scholar.harvard.edu/binxuw/classes/machine-learning-scratch/materials/foundation-diffusion-generative-models">Mathematical Foundation of Diffusion Generative Models</a></p></li>
                         <li><p><a href="https://scholar.harvard.edu/binxuw/classes/machine-learning-scratch/materials/stable-diffusion-scratch">Understanding Stable Diffusion from "Scratch"</a></p></li>
                     </ul>
-                    <p>在《扩散模型的数学基础中》，我们将讲述 <strong>扩散生成模型 (Diffusion Generative Models)</strong> 的数学基础，会对以下内容有扎实的理解：</p>
+                    <p>在《扩散模型的数学基础》中，我们将讲述 <strong>扩散生成模型 (Diffusion Generative Models)</strong> 的数学基础，会对以下内容有扎实的理解：</p>
                     <ul>
                         <li><p>1. <strong>得分函数 (Score Function)</strong> 作为数据分布的梯度。</p></li>
                         <li><p>2. 得分函数使前向扩散过程得以逆转 (Reversal of Forward Diffusion Process)。</p></li>
                         <li><p>3. 通过去噪分数匹配（及其与显式分数匹配的等价性）来学习得分函数。</p></li>
                         <li><p>4. 用神经网络近似得分函数。</p></li>
                         <li><p>5. 从扩散模型中进行抽样。</p></li>
+                    </ul>
+                    <p>在《从“零开始”理解稳定扩散》中，我们将讲解稳定扩散的所有基本组成部分，包括：</p>
+                    <ul>
+                        <li><p>1. 扩散模型原理。</p></li>
+                        <li><p>2. UNet 模型的得分函数。</p></li>
+                        <li><p>3. 通过语境词嵌入理解提示。</p></li>
+                        <li><p>4. 通过交叉注意力让文本影响图像。</p></li>
+                        <li><p>5. 通过添加自动编码器提高效率。</p></li>
+                        <li><p>6. 大规模训练。</p></li>
                     </ul>
 
                     <h3 id="section6-sub1" class="content-section-sub">

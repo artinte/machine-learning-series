@@ -23,7 +23,7 @@
             <p class="title-subtext">使用 PyTorch 的 <code>nn.Transformer</code> 接口，实现德语-英语翻译。</p>
             <p style="color: #a0a0a0;">创建日期: 2025-04-09</p>
 
-            <p>在讲完 <a href="attention.html">注意力机制</a> 和 <a href="../deep_learning/transformer_paper.html">Transformer 论文 "Attention is All You Need"</a> 之后，接下来就是将想法付诸实践，最有效的办法就是复现论文中德语-英语翻译。我们使用 PyTorch 提供的 <code>nn.Transformer</code> 接口，通过参数传递，快速实现 Transformer 模型，代码在 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/05_transformer/2_paper/torch_impl.py">torch_impl.py</a> 文件中，为后续手写 Transformer 实现打下基础。</p>
+            <p>在讲完 <a href="attention.html">注意力机制</a> 和 <a href="../deep_learning/transformer_paper.html">Transformer 论文 "Attention is All You Need"</a> 之后，接下来将想法付诸实践，最有效的办法就是复现论文中德语-英语翻译。我们使用 PyTorch 提供的 <code>nn.Transformer</code> 接口，通过参数传递，快速实现 Transformer 模型，代码在 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/05_transformer/2_paper/torch_impl.py">torch_impl.py</a> 文件中，为后续手写 Transformer 实现打下基础。</p>
 
             <h3>5.2.1 模型概述</h3>
 
@@ -168,6 +168,114 @@ torch.Size([32, 21])</samp></pre>
             <p>做好上述准备后，就可以开始训练啦！</p>
 
             <h3 id="train">5.2.4 训练与验证</h3>
+            <p>训练过程和之前学习的模型类似，定义模型的架构，分别定义 <code>train</code> 和 <code>evaluate</code> 函数。</p>
+
+            <h4>5.2.4.1 架构定义</h4>
+
+            <p>模型架构都封装在 <code>nn.Transformer</code> 结构体中，使用 <code>nn.Embedding</code> 函数将进行词嵌入，最后使用 <code>nn.Linear</code> 将模型的输出映射到目标词汇表：</p>
+
+            <pre><code>class TransformerModel(nn.Module):
+    def __init__(self, src_vocab_size, trg_vocab_size,
+                    emb_size=256, nhead=8, nhid=1024, nlayers=6, dropout=0.1):
+        super(TransformerModel, self).__init__()
+
+        self.src_emb = nn.Embedding(src_vocab_size, emb_size)
+        self.trg_emb = nn.Embedding(trg_vocab_size, emb_size)
+        
+        self.transformer = nn.Transformer(
+            d_model=emb_size,
+            nhead=nhead,
+            num_encoder_layers=nlayers,
+            num_decoder_layers=nlayers,
+            dim_feedforward=nhid,
+            batch_first=True,
+            dropout=dropout,
+        )
+
+        self.fc_out = nn.Linear(emb_size, trg_vocab_size)
+    
+    def forward(self, src, trg):
+        src_emb = self.src_emb(src)
+        trg_emb = self.trg_emb(trg)
+        
+        output = self.transformer(src_emb, trg_emb)
+        
+        return self.fc_out(output)</code></pre>
+
+            <h4>5.2.4.2 训练与验证</h4>
+
+            <p>分别定义优化器和损失函数：</p>
+            <pre><code>optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=0.01)
+criterion = nn.CrossEntropyLoss(ignore_index=TRG.vocab.stoi[TRG.pad_token])</code></pre>
+
+            <p>训练函数：</p>
+            <pre><code># 调整训练轮数和梯度裁剪
+EPOCHS = 40
+CLIP = 1.0  # Gradient clipping
+
+def train(model, iterator, optimizer, criterion, clip):
+    model.train()
+    
+    epoch_loss = 0
+    for i, batch in enumerate(iterator):
+        src = batch.src  # 源句子
+        trg = batch.trg  # 目标句子
+        
+        # 确保 batch_size 一致
+        assert src.size(0) == trg.size(0)
+
+        optimizer.zero_grad()
+        
+        # Exclude the last token from target sequence (shifted target sequence)
+        output = model(src, trg[:, :-1])  # tgt[:, :-1] 排除目标序列的最后一个 token
+        
+        output_dim = output.shape[-1]
+        
+        # Flatten output and trg to calculate loss
+        output = output.view(-1, output_dim)  # (batch_size * seq_len, trg_vocab_size)
+        trg = trg[:, 1:].contiguous().view(-1)  # Exclude first token from target sequence
+        
+        loss = criterion(output, trg)
+        loss.backward()
+        
+        # Gradient clipping to avoid exploding gradients
+        torch.nn.utils.clip_grad_norm_(model.parameters(), clip)
+        
+        optimizer.step()
+        
+        epoch_loss += loss.item()
+
+    return epoch_loss / len(iterator)</code></pre>
+
+            <p>验证函数：</p>
+            <pre><code>def evaluate(model, iterator, criterion):
+    model.eval()  # 设置为评估模式
+    epoch_loss = 0
+    
+    with torch.no_grad():  # 评估时不计算梯度
+        for i, batch in enumerate(iterator):
+            src = batch.src  # 源句子
+            trg = batch.trg  # 目标句子
+            
+            # 目标句子去掉最后一个 token
+            output = model(src, trg[:, :-1])
+            
+            output_dim = output.shape[-1]
+            
+            # Flatten output 和 trg 用于计算 loss
+            output = output.view(-1, output_dim)
+            trg = trg[:, 1:].contiguous().view(-1)
+            
+            loss = criterion(output, trg)  # 计算损失
+            epoch_loss += loss.item()
+    
+    return epoch_loss / len(iterator)</code></pre>
+
+            <p>设置 40 个训练轮回：</p>
+            <pre><code>for epoch in range(EPOCHS):
+    train_loss = train(model, train_iterator, optimizer, criterion, CLIP)
+    valid_loss = evaluate(model, valid_iterator, criterion)
+    print(f"Epoch {epoch+1} | Train Loss: {train_loss:.3f} | Validation Loss: {valid_loss:.3f}")</code></pre>
 
             <pre><samp>Epoch 1 | Train Loss: 4.126 | Validation Loss: 3.174
 Epoch 2 | Train Loss: 3.048 | Validation Loss: 2.654
@@ -194,7 +302,46 @@ Epoch 36 | Train Loss: 0.377 | Validation Loss: 1.525
 Epoch 38 | Train Loss: 0.360 | Validation Loss: 1.552
 Epoch 40 | Train Loss: 0.346 | Validation Loss: 1.574</samp></pre>
 
+            <h4>5.2.4.3 待优化</h4>
+            <p>观察每一轮的训练损失和验证损失，验证损失到达 1.4 之后，就趋于稳定，而训练损失还在不断降低，说明模型发生比较严重的过拟合现象。</p>
+            <p>推断引起该问题的主要原因是数据量太小，可以采用更大的数据集进行训练，但是这会极大地增加训练时间和训练难度，感兴趣的读者可以结合自己的配置进行处理。</p>
+
             <h3>5.2.5 翻译推理</h3>
+            <p>翻译推理函数，这里取测试集的第一批数据进行推理，当输出遇到 <code>"sos"</code> 时结束就去掉句子后续的预测值：</p>
+            <pre><code>def translate_one_batch(model, iterator, SRC, TRG):
+    model.eval()  # 切换到评估模式
+    translations = []  # 存储翻译结果
+    
+    with torch.no_grad():
+        # 获取第一个 batch
+        batch = next(iter(iterator))  
+        src = batch.src  # 源句子
+        trg = batch.trg  # 目标句子
+        
+        # 使用模型生成翻译
+        output = model(src, trg[:, :-1])
+        output = output.argmax(dim=-1)  # 选择最大概率的预测词
+        
+        # 将预测结果转为词汇表中的词
+        for i in range(src.size(0)):  # 遍历每一个样本
+            src_tokens = [SRC.vocab.itos[idx] for idx in src[i]]  # 源句子
+            # hyp_tokens = [TRG.vocab.itos[idx] for idx in output[i] if idx != TRG.vocab.stoi[TRG.pad_token]]  # 预测的翻译
+            hyp_tokens = []
+            for idx in output[i]:  # 遍历每个生成的词
+                if idx == TRG.vocab.stoi[TRG.eos_token]:  # 如果生成的是 EOS token，停止生成
+                    break
+                if idx != TRG.vocab.stoi[TRG.pad_token]:  # 如果不是 pad token，加入到翻译中
+                    hyp_tokens.append(TRG.vocab.itos[idx])
+
+            # 保存翻译结果
+            translations.append({
+                'src': ' '.join(src_tokens),  # 源句子
+                'hyp': ' '.join(hyp_tokens),  # 生成的翻译
+                'trg': ' '.join([TRG.vocab.itos[idx] for idx in trg[i][1:].cpu().numpy() if idx != TRG.vocab.stoi[TRG.pad_token]])  # 目标句子
+            })
+    
+    return translations</code></pre>
+            <p>下面是预测的部分结果，可以看到有些句子还是和参考一样的，有些句子则发生一些错误：</p>
 
             <pre><samp>--------------------------------------------------
 Source: <sos> drei leute sitzen in einer höhle . <eos>
@@ -213,6 +360,8 @@ Source: <sos> zwei jungen vor einem <unk> . <eos> <pad>
 Prediction: two boys in front of a machine machine .
 Reference: two boys in front of a soda machine . <eos>
 --------------------------------------------------</samp></pre>
+
+            <p>以上就是全部内容，还有很多值得研究的地方！比如文本生成是如何处理的。</p>
 
             <div class="navigation">
                 <a href="attention.html">上一节：5.1 注意力概述</a>
