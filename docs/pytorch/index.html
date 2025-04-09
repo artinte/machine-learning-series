@@ -66,8 +66,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#section5" onclick="toggleChildChapters(event, 'chapter5')">05 Transformer</a>
                         <ul id="chapter5" class="child-chapters" style="display: none;">
-                            <li><a class="nav-link" href="#section5-sub1">5.1 注意力</a></li>
-                            <li><a class="nav-link" href="#section5-sub2">5.2 Transformer 论文</a></li>
+                            <li><a class="nav-link" href="#section5-sub1">5.1 注意力概述</a></li>
+                            <li><a class="nav-link" href="#section5-sub2">5.2 nn.Transformer</a></li>
                             <li><a class="nav-link" href="#section5-sub3">5.3 Transformer 注释</a></li>
                             <li><a class="nav-link" href="#section5-sub4">5.4 nanoGPT</a></li>
                             <li><a class="nav-link" href="#section5-sub5">5.5 BERT</a></li>
@@ -406,26 +406,10 @@
                 <section id="section4" class="content-section">
                     <h2>04 循环网络</h2>
 
-                    <p>翻译系列文章：</p>
-                    <ul>
-                        <li>
-                            <p><a href="https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-1/">Recurrent Neural Networks Tutorial, Part 1 – Introduction to RNNs</a></p>
-                        </li>
-                        <li>
-                            <p><a href="https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-2/">Recurrent Neural Networks Tutorial, Part 2 – Implementing a RNN with Python, Numpy and Theano</a></p>
-                        </li>
-                        <li>
-                            <p><a href="https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-3/">Recurrent Neural Networks Tutorial, Part 3 – Backpropagation Through Time and Vanishing Gradients</a></p>
-                        </li>
-                        <li>
-                            <p><a href="https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-4/">Recurrent Neural Networks Tutorial, Part 4 – Implementing a GRU and LSTM RNN with Python and Theano</a></p>
-                        </li>
-                    </ul>
-                    
                     <h3 id="section4-sub1" class="content-section-sub">
                         <a href="rnn_scratch.html" style="color: inherit;">4.1 简单实现</a>
                     </h3>
-                    <p>介绍什么是 RNN，并使用 Python 实现 RNN 的 <strong>反向时间传播 (BPTT)</strong> 算法。</p>
+                    <p>在教程《深度学习综合指南》中，我们使用 RNN 手动实现过文本分类和文本生成，感兴趣的读者可以前往阅读。本教程在介绍完基本的原理之后，将使用 PyTorch 实现简单地两个类似的功能。</p>
 
                     <h3 id="section4-sub2" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.2 长短期记忆</a>
@@ -441,7 +425,6 @@
                     <h3 id="section4-sub4" class="content-section-sub">
                         <a href="#" style="color: inherit;">4.4 Seq2Seq</a>
                     </h3>
-
                     <p>来自论文 <a href="https://arxiv.org/abs/1409.3215">Sequence to Sequence Learning with Neural Networks</a></p>
                     <p>提出了一种通用的端到端序列学习方法，该方法对序列结构做出最少的假设。使用多层长短期记忆 (LSTM) 将输入序列映射到固定维数的向量，然后使用另一个深度 LSTM 从向量解码目标序列。</p>
 
@@ -463,20 +446,20 @@
                     <p>3. <strong>nanoGPT</strong>：使用 Transformer 的解码器部分，完成文字生成任务。</p>
                     <p>4. <strong>BERT</strong>： 使用 Transformer 的编码器部分，进行预训练。</p>
                     <p>5. <strong>ViT</strong>：Transformer 在视觉方面的应用，对于图像分类方面也可以表现的非常好。</p>
-                    <p>总的来说，Transformer架构不仅在自然语言处理领域取得了突破性的进展，而且其强大的灵活性和适应性使其在计算机视觉和其他领域也取得了显著的成功。通过对这些关键模型的学习和理解，我们可以更好地应用这些先进的技术来解决实际问题，并推动相关领域的发展。</p>
+                    <p>总的来说，Transformer架构不仅在自然语言处理领域取得了突破性的进展，而且其强大的灵活性和适应性使其在计算机视觉和其他领域也取得了显著的成功。</p>
 
                     <h3 id="section5-sub1" class="content-section-sub">
-                        <a href="attention.html" style="color: inherit;">5.1 注意力</a>
+                        <a href="attention.html" style="color: inherit;">5.1 注意力概述</a>
                     </h3>
                     <p>翻译文章 <a href="https://lilianweng.github.io/posts/2018-06-24-attention/">Attention? Attention!</a></p>
                     <p>在阅读这篇教程前，如果不知道 <strong>得分函数 (Score Function)</strong> ，最好提前阅读文章 <a href="https://artinte.github.io/machine-learning-series/deep_learning/attention_mechanism.html">注意力机制</a> ，它是从更基础的角度解释注意力是什么。</p>
 
                     <h3 id="section5-sub2" class="content-section-sub">
-                        <a href="#" style="color: inherit;">5.2 Transformer 论文</a>
+                        <a href="nn_transformer.html" style="color: inherit;">5.2 nn.Transformer</a>
                     </h3>
                     <p>来自论文 <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></p>
                     <p>论文提出了一种新的简单网络架构 <strong>Transformer</strong> ，它完全基于注意力机制，完全省去了循环和卷积。在两个机器翻译任务上的实验表明，这些模型质量更优越，同时并行化更好，并且需要的训练时间明显减少。</p>
-
+                    <p>使用 PyTorch 实现论文中德语-英语的翻译，核心是使用 <code>nn.Transformer</code> 接口。</p>
                     <h3 id="section5-sub3" class="content-section-sub">
                         <a href="annotated_tran.html" style="color: inherit;">5.3 Transformer 注释</a>
                     </h3>
@@ -506,7 +489,6 @@
                     </h3>
                     <p>来自论文 <a href="https://arxiv.org/abs/2010.11929">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale</a></p>
                     <p>直接应用于图像块序列的纯 Transformer 可以在图像分类任务中表现得非常好。当对大量数据进行预训练并转移到多个中型或小型图像识别基准（ImageNet、CIFAR-100、VTAB 等）时，与最先进的卷积网络相比，Vision Transformer (ViT) 取得了出色的结果，同时需要更少的计算资源来训练。</p>
-                    
                 </section>
 
                 <section id="section6" class="content-section">
@@ -521,7 +503,7 @@
                     <ul>
                         <li><p>1. <strong>得分函数 (Score Function)</strong> 作为数据分布的梯度。</p></li>
                         <li><p>2. 得分函数使前向扩散过程得以逆转 (Reversal of Forward Diffusion Process)。</p></li>
-                        <li><p>3. 通过去噪分数匹配（及其与显式分数匹配的等价性）来学习得分函数</p></li>
+                        <li><p>3. 通过去噪分数匹配（及其与显式分数匹配的等价性）来学习得分函数。</p></li>
                         <li><p>4. 用神经网络近似得分函数。</p></li>
                         <li><p>5. 从扩散模型中进行抽样。</p></li>
                     </ul>

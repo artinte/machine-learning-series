@@ -7,9 +7,9 @@ from nltk.tokenize import word_tokenize
 
 class TransformerModel(nn.Module):
     def __init__(self, src_vocab_size, trg_vocab_size,
-                 emb_size=256, nhead=8, nhid=512, nlayers=6):
+                 emb_size=256, nhead=8, nhid=1024, nlayers=6, dropout=0.1):
         super(TransformerModel, self).__init__()
-        
+
         self.src_emb = nn.Embedding(src_vocab_size, emb_size)
         self.trg_emb = nn.Embedding(trg_vocab_size, emb_size)
         
@@ -20,6 +20,7 @@ class TransformerModel(nn.Module):
             num_decoder_layers=nlayers,
             dim_feedforward=nhid,
             batch_first=True,
+            dropout=dropout,
         )
 
         self.fc_out = nn.Linear(emb_size, trg_vocab_size)
@@ -65,6 +66,9 @@ if __name__ == '__main__':
     
     print('Source vocabulary size: ' + str(len(SRC.vocab)))
     print('Target vocabulary size: ' + str(len(TRG.vocab)))
+    
+    print([word for word, _ in list(SRC.vocab.stoi.items())[:10]])
+    print([word for word, _ in list(TRG.vocab.stoi.items())[:10]])
 
     src_vocab_size = len(SRC.vocab)
     trg_vocab_size = len(TRG.vocab)
@@ -92,12 +96,11 @@ if __name__ == '__main__':
     model = TransformerModel(src_vocab_size, trg_vocab_size).to(device)
     optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=0.01)
     criterion = nn.CrossEntropyLoss(ignore_index=TRG.vocab.stoi[TRG.pad_token])
-    
-    
+
     criterion.to(device)
     
     # 调整训练轮数和梯度裁剪
-    EPOCHS = 20
+    EPOCHS = 40
     CLIP = 1.0  # Gradient clipping
     
     def train(model, iterator, optimizer, criterion, clip):
@@ -180,7 +183,13 @@ if __name__ == '__main__':
             # 将预测结果转为词汇表中的词
             for i in range(src.size(0)):  # 遍历每一个样本
                 src_tokens = [SRC.vocab.itos[idx] for idx in src[i]]  # 源句子
-                hyp_tokens = [TRG.vocab.itos[idx] for idx in output[i] if idx != TRG.vocab.stoi[TRG.pad_token]]  # 预测的翻译
+                # hyp_tokens = [TRG.vocab.itos[idx] for idx in output[i] if idx != TRG.vocab.stoi[TRG.pad_token]]  # 预测的翻译
+                hyp_tokens = []
+                for idx in output[i]:  # 遍历每个生成的词
+                    if idx == TRG.vocab.stoi[TRG.eos_token]:  # 如果生成的是 EOS token，停止生成
+                        break
+                    if idx != TRG.vocab.stoi[TRG.pad_token]:  # 如果不是 pad token，加入到翻译中
+                        hyp_tokens.append(TRG.vocab.itos[idx])
 
                 # 保存翻译结果
                 translations.append({

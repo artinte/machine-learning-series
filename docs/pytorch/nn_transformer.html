@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../laptop_coding_48.png" type="image/png">
+    <title>nn.Transformer</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../article_style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 左侧小节列表 -->
+        <nav class="col-md-2 sidebar">
+
+        </nav>
+
+        <!-- 中间内容：显示具体某一个小节 -->
+        <main class="col-md-8 content">
+            <h2 class="custom-title">5.2 nn.Transformer</h2>
+            <p class="title-subtext">使用 PyTorch 的 <code>nn.Transformer</code> 接口，实现德语-英语翻译。</p>
+            <p style="color: #a0a0a0;">创建日期: 2025-04-09</p>
+
+            <p>在讲完 <a href="attention.html">注意力机制</a> 和 <a href="../deep_learning/transformer_paper.html">Transformer 论文 "Attention is All You Need"</a> 之后，接下来就是将想法付诸实践，最有效的办法就是复现论文中德语-英语翻译。我们使用 PyTorch 提供的 <code>nn.Transformer</code> 接口，通过参数传递，快速实现 Transformer 模型，代码在 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/05_transformer/2_paper/torch_impl.py">torch_impl.py</a> 文件中，为后续手写 Transformer 实现打下基础。</p>
+
+            <h3>5.2.1 模型概述</h3>
+
+            <p>Transformer 架构的左边是编码器，右边是解码器，左右两边同时使用注意力机制，如下图所示：</p>
+            <img src="res/transformer.png" width="400">
+            <p>这里不会细讲这个模型，感兴趣的读者可以查看之前的教程 <a href="../deep_learning/transformer_paper.html">Transformer 论文</a> 。主要介绍 <code>nn.Transformer</code> 接口，全部参数如下：</p>
+            <pre><code>def __init__(
+    self,
+    d_model: int = 512,
+    nhead: int = 8,
+    num_encoder_layers: int = 6,
+    num_decoder_layers: int = 6,
+    dim_feedforward: int = 2048,
+    dropout: float = 0.1,
+    activation: Union[str, Callable[[Tensor], Tensor]] = F.relu,
+    custom_encoder: Optional[Any] = None,
+    custom_decoder: Optional[Any] = None,
+    layer_norm_eps: float = 1e-5,
+    batch_first: bool = False,
+    norm_first: bool = False,
+    bias: bool = True,
+    device=None,
+    dtype=None,
+) -> None:</code></pre>
+            <p>对其中重要的参数做简单的解释：</p>
+            <ol>
+                <li><p><code>d_model</code>：编码器/解码器输入中预期特征的数量（默认值为 512），可以理解为单词嵌入的维度。</p></li>
+                <li><p><code>nhead</code>：多头注意力模型中的头数量（默认值为 8）。</p></li>
+                <li><p><code>num_encoder_layers</code>：编码器中子层的数量（默认值为 6）。</p></li>
+                <li><p><code>num_decoder_layers</code>：解码器中子层的数量（默认值为 6）。</p></li>
+                <li><p><code>dim_feedforward</code>：前馈网络模型的维度（默认值为 2048）。</p></li>
+                <li><p><code>dropout</code>：随机失活值（默认值为 0.1）。</p></li>
+                <li><p><code>activation</code>：编码器/解码器中间层的激活函数，可以是字符串（例如 "relu" 或 "gelu"）或一元可调用函数。默认值是 relu 。</p></li>
+                <li><p><code>custom_encoder</code>：自定义编码器（默认值为 None）。</p></li>
+                <li><p><code>custom_decoder</code>：自定义解码器（默认值为 None）。</p></li>
+                <li><p><code>batch_first</code>：如果为 "True"，则输入和输出张量将以 (batch, seq, feature) 的形式提供。默认值为 False (seq, batch, feature)。</p></li>
+                <li><p><code>norm_first</code>：如果为 "True"，则编码器和解码器层将在其他注意力机制和前馈操作之前执行 LayerNorm，否则在操作之后执行。默认值：False（之后）。</p></li>
+                <li><p><code>bias</code>：如果设置为 "False"，则 "Linear" 层和 "LayerNorm" 层将不会学习加性偏差。默认值为 True。</p></li>
+            </ol>
+
+            <p>在 Transformer 论文中，作者使用 8 台 P100 GPU，450 万句子对，到达当时最先进的水平需要训练 12 个小时。我们基本上也使用相同的参数，大约 3 万句子对，在单台 4070 GPU 上训练，40 个轮回需要大约半个小时，详细训练过程见 <a href="#train">第 4 小节</a> 。</p>
+
+            <h3>5.2.2 德-英数据集</h3>
+            <p>我们的任务是将德语翻译成英语，因此需要有英语-德语数据集。国内有个比较大的问题就是网络下载环境，这里每个人碰到的情况会不一样。另外一个问题就是 Python 库的兼容性，原本打算使用的是 <a href="https://github.com/explosion/spaCy">spaCy</a>，但是 <em>pip install spacy</em> 告知编译阶段报错（一个可行的办法是使用 Python 虚拟环境）。这里使用的是 <a href="https://github.com/nltk/nltk">nltk</a> 代替，主要作用是 <em>Tokenize</EM> ，将句子分成独立的单词。</p>
+            <p>数据集来自于 <a href="https://huggingface.co/">HuggingFace</a> 的 <a href="https://github.com/huggingface/datasets">datasets</a> 仓库。下载方式如下：</p>
+            <pre><code>from datasets import load_dataset
+dataset = load_dataset('bentrevett/multi30k')
+print(dataset)</code></pre>
+            <pre><samp>DatasetDict({
+                train: Dataset({
+                    features: ['en', 'de'],
+                    num_rows: 29000
+                })
+                validation: Dataset({
+                    features: ['en', 'de'],
+                    num_rows: 1014
+                })
+                test: Dataset({
+                    features: ['en', 'de'],
+                    num_rows: 1000
+                })
+            })</samp></pre>
+            <p>数据集已经包含 <em>train</em> ，<em>validation</em> ，<em>test</em> 三个部分，查看 <em>train</em> 部分第一个句子：</p>
+            <pre><code>print(dataset['train'][0])</code></pre>
+            <pre><samp>{'en': 'Two young, White males are outside near many bushes.',
+                'de': 'Zwei junge weiße Männer sind im Freien in der Nähe vieler Büsche.'}</samp></pre>
+
+            <h3>5.2.3 预处理</h3>
+            <p>预处理包含两部分，一是将句子进行拆分，转换为一个词汇表，并给首尾加上开始和结束标记，二是将转换后的文本使用 PyTorch 的 API 进行分批处理。</p>
+
+            <h4>5.2.3.1 构建词汇表</h4>
+            <p><strong>NLTK (Natural Language Toolkit)</strong> 是用于构建处理人类语言数据的 Python 程序，可用于分类、标记化、词干提取等文本处理任务。</p>
+            <p>使用 <code>nltk.download('punkt')</code> 初始化 nltk 库标记部分：</p>
+            <pre><samp>[nltk_data] Downloading package punkt to
+[nltk_data]     C:\Users\15207\AppData\Roaming\nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+[nltk_data] Downloading package punkt_tab to
+[nltk_data]     C:\Users\15207\AppData\Roaming\nltk_data...
+[nltk_data]   Package punkt_tab is already up-to-date!</samp></pre>
+            
+            <p>将标记器传递到 <code>Field</code> 结构体中，设置开始标记，结束标记，以及空标记,构建源语言和目标语言的单词库（单词至少要出现 2 次）：</p>
+            <pre><code>train_data = [(example['de'], example['en']) for example in dataset['train']]
+valid_data = [(example['de'], example['en']) for example in dataset['validation']]
+test_data = [(example['de'], example['en']) for example in dataset['test']]
+
+SRC = Field(tokenize=word_tokenize, init_token='<sos>', eos_token='<eos>', pad_token='<pad>', lower=True, batch_first=True)
+TRG = Field(tokenize=word_tokenize, init_token='<sos>', eos_token='<eos>', pad_token='<pad>', lower=True, batch_first=True)
+
+# 创建 `Example` 列表
+train_examples = [Example.fromlist([src, trg], fields=[('src', SRC), ('trg', TRG)]) for src, trg in train_data]
+valid_examples = [Example.fromlist([src, trg], fields=[('src', SRC), ('trg', TRG)]) for src, trg in valid_data]
+test_examples = [Example.fromlist([src, trg], fields=[('src', SRC), ('trg', TRG)]) for src, trg in test_data]
+
+# 转换为 `Dataset`
+train_dataset = Dataset(examples=train_examples, fields=[('src', SRC), ('trg', TRG)])
+valid_dataset = Dataset(examples=valid_examples, fields=[('src', SRC), ('trg', TRG)])
+test_dataset = Dataset(examples=test_examples, fields=[('src', SRC), ('trg', TRG)])
+
+# 构建词汇表
+SRC.build_vocab(train_dataset, min_freq=2)
+TRG.build_vocab(train_dataset, min_freq=2)
+
+print('Source vocabulary size: ' + str(len(SRC.vocab)))
+print('Target vocabulary size: ' + str(len(TRG.vocab)))</code></pre>
+
+            <p>源数据有 7861 个标记，目标数据有 5920 个标记：</p>
+            <pre><samp>Source vocabulary size: 7861
+Target vocabulary size: 5920</samp></pre>
+            <p>分别打印前 10 个标记：</p>
+            <pre><code>print([word for word, _ in list(SRC.vocab.stoi.items())[:10]])
+print([word for word, _ in list(TRG.vocab.stoi.items())[:10]])</code></pre>
+            <pre><samp>['<unk>', '<pad>', '<sos>', '<eos>', '.', 'ein', 'einem', 'in', 'eine', ',']
+['<unk>', '<pad>', '<sos>', '<eos>', 'a', '.', 'in', 'the', 'on', 'man']</samp></pre>
+
+            <h4>5.2.3.2 数据迭代器</h4>
+            <p>使用 <code>BucketIterator</code> 对标记后的数据集对进行分批处理，批次大小设置为 32 。判断是否 GPU 可用，如果可用，就将数据转移到 GPU 上。</p>
+            <pre><code>src_vocab_size = len(SRC.vocab)
+trg_vocab_size = len(TRG.vocab)
+
+BATCH_SIZE = 32
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+train_iterator, valid_iterator, test_iterator = BucketIterator.splits(
+    (train_dataset, valid_dataset, test_dataset),
+    batch_size=BATCH_SIZE,
+    device=device,
+    sort_within_batch=True,
+    sort_key=lambda x: len(x.src),
+)
+
+for batch in train_iterator:
+    src = batch.src
+    trg = batch.trg
+    
+    print(src.shape)
+    print(trg.shape)
+    break</code></pre>
+            <p>打印训练数据集的第一个批次，当前批次源数据的标记最大长度为 17 ，目标数据的标记最大长度为 21 ：</p>
+            <pre><samp>torch.Size([32, 17])
+torch.Size([32, 21])</samp></pre>
+
+            <p>做好上述准备后，就可以开始训练啦！</p>
+
+            <h3 id="train">5.2.4 训练与验证</h3>
+
+            <pre><samp>Epoch 1 | Train Loss: 4.126 | Validation Loss: 3.174
+Epoch 2 | Train Loss: 3.048 | Validation Loss: 2.654
+Epoch 3 | Train Loss: 2.622 | Validation Loss: 2.346
+Epoch 4 | Train Loss: 2.326 | Validation Loss: 2.142
+Epoch 5 | Train Loss: 2.096 | Validation Loss: 1.967
+Epoch 6 | Train Loss: 1.905 | Validation Loss: 1.845
+Epoch 7 | Train Loss: 1.743 | Validation Loss: 1.724
+Epoch 8 | Train Loss: 1.601 | Validation Loss: 1.648
+Epoch 10 | Train Loss: 1.367 | Validation Loss: 1.518
+Epoch 12 | Train Loss: 1.176 | Validation Loss: 1.447
+Epoch 14 | Train Loss: 1.021 | Validation Loss: 1.386
+Epoch 16 | Train Loss: 0.893 | Validation Loss: 1.359
+Epoch 18 | Train Loss: 0.787 | Validation Loss: 1.355
+Epoch 20 | Train Loss: 0.699 | Validation Loss: 1.352
+Epoch 22 | Train Loss: 0.629 | Validation Loss: 1.358
+Epoch 24 | Train Loss: 0.573 | Validation Loss: 1.384
+Epoch 26 | Train Loss: 0.525 | Validation Loss: 1.402
+Epoch 28 | Train Loss: 0.485 | Validation Loss: 1.439
+Epoch 30 | Train Loss: 0.451 | Validation Loss: 1.452
+Epoch 32 | Train Loss: 0.424 | Validation Loss: 1.488
+Epoch 34 | Train Loss: 0.399 | Validation Loss: 1.506
+Epoch 36 | Train Loss: 0.377 | Validation Loss: 1.525
+Epoch 38 | Train Loss: 0.360 | Validation Loss: 1.552
+Epoch 40 | Train Loss: 0.346 | Validation Loss: 1.574</samp></pre>
+
+            <h3>5.2.5 翻译推理</h3>
+
+            <pre><samp>--------------------------------------------------
+Source: <sos> drei leute sitzen in einer höhle . <eos>
+Prediction: three people sit in a cave .
+Reference: three people sit in a cave . <eos>
+--------------------------------------------------
+Source: <sos> ein typ arbeitet an einem gebäude . <eos>
+Prediction: a building works on a building .
+Reference: a guy works on a building . <eos>
+--------------------------------------------------
+Source: <sos> leute reparieren das dach eines hauses . <eos>
+Prediction: people are fixing the roof of a house .
+Reference: people are fixing the roof of a house . <eos>
+--------------------------------------------------
+Source: <sos> zwei jungen vor einem <unk> . <eos> <pad>
+Prediction: two boys in front of a machine machine .
+Reference: two boys in front of a soda machine . <eos>
+--------------------------------------------------</samp></pre>
+
+            <div class="navigation">
+                <a href="attention.html">上一节：5.1 注意力概述</a>
+                <a href="annotated_tran.html">下一节：5.3 Transformer 注释</a>
+            </div>
+        </main>
+
+            <!-- 右侧小标题导航 -->
+            <aside class="col-md-2 right-sidebar">
+                <h5><a href="index.html#section5">Transformer</a></h5>
+                <ul id="dynamic-sidebar" class="nav flex-column">
+                    <!-- 动态内容 -->
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+        <!-- 引入 Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <script src="../article_script.js"></script>
+</body>
+</html>
