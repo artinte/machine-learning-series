@@ -247,13 +247,20 @@
             <h3>9.1.1 历史发展</h3>
 
             <p>顾名思义，注意力机制的灵感来源于人类（和其它动物）选择性地关注突出细节并忽略当前不太重要的细节的能力。获取所有信息但只关注最相关的信息有助于确保不会丢失任何有意义的细节，同时还能有效利用有限的内存和时间。</p>
+            <p>举个例子，用一句话描述下图：</p>
+            <img src="res/duck.jpg" width="400">
+            <p>大部分的人都会说“一只鸭子在水里游”，可以看到这里我们忽略了青山，我们的大脑经过不断地学习，第一反应是将注意力放在鸭子身上。</p>
 
             <p>在心理学中，注意力（Attention）是指人类大脑对特定信息的优先选择和处理的能力，是认知心理学的核心研究领域之一。注意力不仅影响我们的感知、记忆和决策，还涉及多种行为任务的完成。</p>
 
             <p>从数学上讲，注意力机制计算 <strong>注意力权重 (Attention Weight) </strong>，该权重反映了输入序列的每个部分对当前任务的相对重要性。然后，它根据输入序列每个部分的重要性，应用这些注意力权重来增加（或减少）输入序列每个部分的影响。注意力模型（即采用注意力机制的人工智能模型）通过对大量示例进行监督学习或自我监督学习来训练，以分配准确的注意力权重。</p>
+            <p>输入 "It is in this spirit that a majority of American governments have passed new laws since 2009 making the registration or voting process more difficult."，下图是注意力权重的可视化：</p>
+            <img src="res/attention_visual.jpg" width="600">
+            <p>许多注意力头（不同颜色代表不同的注意力头）关注动词 "making" 的远距离关系，从而完成短语 "making ... more difficult" ，此处仅显示针对单词 "making" 的注意力。</p>
+
             <p>注意力机制最初由 Bahdanau 等人于 2014 年提出（论文 <a href="https://arxiv.org/abs/1409.0473">Neural Machine Translation by Jointly Learning to Align and Translate</a>），作为一种技术来解决当时用于机器翻译的最先进的循环神经网络 (RNN) 模型的缺点。后续研究将注意力机制整合到用于图像字幕和视觉问答等任务的卷积神经网络 (CNN) 中。</p>
             <p>2017 年，开创性的论文 <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> 引入了 Transformer 模型，该模型完全摒弃了循环和卷积，只采用注意力层和标准前馈层。从那时起，Transformer 架构就成为了推动生成式 AI 时代发展的尖端模型的支柱。</p>
-            <p>虽然注意力机制主要与用于自然语言处理 (NLP) 任务（例如摘要、问答、文本生成和情感分析）的 LLM 相关，但基于注意力的模型也广泛应用于其他领域，先进的图像生成的扩散模型通常包含注意力机制。</p>
+            <p>虽然注意力机制主要与用于自然语言处理 (NLP) 任务（例如摘要、问答、文本生成和情感分析），但基于注意力的模型也广泛应用于其他领域，先进的图像生成扩散模型通常包含注意力机制。</p>
             <p>了解了注意力机制的历史，接下来通过代码理解注意力在计算机中是如何实现！</p>
 
             <h3>9.1.2 注意力提示</h3>
@@ -306,13 +313,13 @@
             <p>被动注意对应的是 Key 的显著性作用——环境中的某些刺激自动吸引注意。被动注意的触发依赖于键值对的匹配。当一个人分心时，环境中的突发噪音（Key）触发了无意识的注意力转移，导致人关注这个刺激，并提取相应的信息（Value）。</p>
 
             <p>主动注意与被动注意解释了人类的注意力方式，下面来看看如何通过这两个注意力，用神经网络来设计注意力机制的框架。</p>
-            <p>首先，考虑一个相对简单情况，即只使用被动注意。要想将选择偏向于感官输入，则可以简单地使用参数化的全连接层，甚至是非参数化的最大汇聚层或平均汇聚层。</p>
+            <p>首先，考虑一个相对简单情况，即只使用被动注意。要想将选择偏向于感官输入，则可以简单地使用参数化的全连接层，甚至是非参数化的最大汇聚层或 <a href="#average_pool">平均汇聚层</a> 。</p>
             <p>因此，是否包含主动注意将注意力机制与全连接层或汇聚层区别开来。在注意力机制的背景下，主动注意被称为查询。给定任何查询，注意力机制通过 <strong>注意力汇聚 (Attention Pooling)</strong> 将选择引导至感官输入中，它们被称为值 (Value) 。</p>
             <p>更通俗的解释是，每个值 (Value) 都与一个键 (Key) 匹配，这可以理解成感官的被动注意，如下图所示，可以通过设计注意力汇聚的方式，便于给定的查询与键进行匹配，这将引导得到最匹配的值（感官输入）：</p>
             <a href="https://drive.google.com/file/d/1wFzP8od_swcNgA-cWwpBCh7Lqdig3MP-/view?usp=sharing">
                 <img src="res/attention_pooling.svg" alt="注意力汇聚" width="600" >
             </a>
-            <h3>9.1.4 注意力汇聚</h3>
+            <h3 id="pooling">9.1.4 注意力汇聚</h3>
             <p>查询（主动注意）和键（被动注意）之间的交互形成了注意力汇聚，注意力汇聚有选择地聚合了值（感官输入）以生成最终的输出。接下来介绍注意力汇聚的更多细节，以便从宏观上了解注意力机制在实践中的运作方式。</p>
             <p>具体来说，1964 年提出的 <strong>Nadaraya-Watson 核回归模型</strong> 是一个简单但完整的例子，可以用于演示具有注意力机制的机器学习。</p>
 
@@ -332,26 +339,30 @@ x = numpy.arange(0, 5, 0.05)
 y_truth = func(x)</code></pre>
             <img src="res/random_point_dataset.png" alt="随机点数据集" width="600">
 
-            <h4>9.1.4.2 平均汇聚</h4>
+            <h4 id="average_pool">9.1.4.2 平均汇聚</h4>
             <p>先使用最简单的估计器来解决回归问题，基于平均汇聚来计算所有训练样本输出的平均值：</p>
             <p class="highlight-math" style="text-align: center;">\(f(x) = \frac{1}{n}\sum_{i=1}^{n} y_i\)</p>
-            <p>代码实现在 <a href="https://github.com/artinte/machine-learning-series/blob/develop/deep_learning/09_transformer/1_attention/average_pooling.py">average_pooling.py</a> 文件里，学习得到的预测函数使用 Pred 进行标记：</p>
+            <p>代码实现在 <a href="https://github.com/artinte/machine-learning-series/blob/develop/deep_learning/09_transformer/1_attention/average_pooling.py">average_pooling.py</a> 文件里，学习得到的预测函数使用 <em>Pred</em> 进行标记：</p>
             <pre><code>y_pred = y_train.mean().repeat(len(x))</code></pre>
             <p>如下图所示，这个估计器确实不够聪明，真实函数 (Truth) 和预测函数 (Pred) 相差很大：</p>
             <img src="res/average_pooling.png" alt="平均汇聚" width="600">
 
-            <h4>9.1.4.2 无参注意汇聚</h4>
+            <h4>9.1.4.3 无参注意汇聚</h4>
             <p>显然，平均汇聚忽略了输入 \(x_i\) 。于是 Nadaraya 和 Watson 提出了一个更好的想法，根据输入的位置对输出 \(y_i\) 进行加权：</p>
             <p class="highlight-math" style="text-align: center;">\(f(x) = \sum_{i=1}^{n} \frac{K(x - x_i)}{\sum_{j=1}^{n} K(x - x_j)} y_i\)</p>
-            <p>其中 \(K\) 是 核 ，上述公式被称为 Nadaraya-Watson 核回归。这里不会深入讨论核函数细节，但受此启发，我们可以得到一个更加通用的注意力汇聚公式：</p>
+            <p>其中 \(K\) 是核 ，上述公式被称为 <em>Nadaraya-Watson</em> 核回归。这里不会深入讨论核函数细节，但受此启发，我们可以得到一个更加通用的注意力汇聚公式：</p>
             <p class="highlight-math" style="text-align: center;">\(f(x) = \sum_{i=1}^{n} \alpha(x, x_i)y_i\)</p>
-            <p>其中 \(x\) 是查询，\((x_i, y_i)\) 是键值对，将查询 \(x\) 和键 \(x_i\) 之间的关系建模为注意力权重 \(\alpha(x, x_i)\) ，这个权重将被分配给每一个对应值 \(y_i\) 。对于任何查询，模型在所有键值对注意力权重都是一个有效的概率分布：它们是非负的，并且总和为 1 。</p>
+            <p>其中 \(x\) 是查询，\((x_i, y_i)\) 是键值对，将查询 \(x\) 和键 \(x_i\) 之间的关系建模为注意力权重 \(\alpha(x, x_i)\) ，这个权重将被分配给每一个对应值 \(y_i\) 。对于任何查询，模型在所有键值对的注意力权重都是一个有效的概率分布：它们是非负的，并且总和为 1 。</p>
             <p>为了更好地理解注意力汇聚，下面考虑一个 <em>高斯核 (Gaussian Kernel)</em> ，其定义为：</p>
             <p class="highlight-math" style="text-align: center;">\(K(\mu) = \frac{1}{\sqrt{2\pi}} exp(-\frac{{{\mu}^2}}{2})\)</p>
 
             <p>将高斯核代入注意力汇聚公式可以得到：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
                 \(f(x) = \sum_{i=1}^{n} \alpha(x, x_i)y_i = \sum_{i=1}^{n}softmax(-\frac{1}{2}(x - x_i)^2)y_i\)
+            </div>
+            <p class="comment">给定一个向量 \(z = [z_1, z_2, \dots, z_n]\) ，Softmax 函数将其转换为一个概率分布 \(p = [p_1, p_2, \dots, p_n]\) ，其中每个 \(p_i\) 对应于输入向量 \(z\) 中的元素 \(z_i\) 的归一化概率，公式如下：</p>
+            <div class="scroll-container highlight-math" style="text-align: center;">
+                \(p_i = \frac{exp(z_i)}{\sum_{j=1}^{n}exp(z_j)}\)
             </div>
             <p>上面公式表明，如果一个键 \(x_i\) 越是接近给定的查询 \(x\) ，那么分配给这个键对应值 \(y_i\) 的注意力权重就会越大，也就是“获得了更多的注意力”，代码在 <a href="https://github.com/artinte/machine-learning-series/blob/develop/deep_learning/09_transformer/1_attention/nonparam_pooling.py">nonparam_pooling.py</a> 文件里：</p>
             <pre><code># Each row contains the same input (query).
@@ -382,7 +393,7 @@ y_hat = torch.matmul(attention_weights, torch.tensor(y_train))</code></pre>
     pyplot.show()</code></pre>
             <img src="res/nonparam_heatmap.png" alt="无参热力图" width="600">
 
-            <h4>9.1.4.3 有参注意汇聚</h4>
+            <h4>9.1.4.4 有参注意汇聚</h4>
             <p>无参数的 Nadaraya-Watson 核回归具有一致性的优点：如果有足够的数据，此模型会收敛到最优结果。尽管如此，我们还是可以轻松地将可学习的参数集成到注意力汇聚中。</p>
             <p>与无参注意汇聚公式略有不同，在将查询 \(x\) 和键 \(x_i\) 之间的距离乘以可学习参数 \(w\)：</p>
             <div class="scroll-container highlight-math"  style="text-align: center;">
@@ -435,7 +446,7 @@ for epoch in range(5):
             <img src="res/param_heatmap.png" alt="有参热力图" width="600">
 
             <h3>9.1.5 注意力评分函数</h3>
-            <p>在上一个小节中使用了高斯核来对查询核键之间的关系建模，高斯核的指数部分可以视为 <strong>注意力评分函数 (Attention Scoring Function)</strong> ，把这个函数的输出结果输入到 softmax 函数中进行计算。通过上述步骤，将得到与键对应的值的概率分布（即注意力权重）。最后，注意力汇聚的输出就是基于这些注意力权重的值的加权和。</p>
+            <p>在 <a href="#pooling">9.1.4 小节</a> 中使用了高斯核来对查询核键之间的关系建模，高斯核的指数部分 \(-\frac{1}{2}(x - x_i)^2\) 可以视为 <strong>注意力评分函数 (Attention Scoring Function)</strong> ，把这个函数的输出结果输入到 softmax 函数中进行计算。通过上述步骤，将得到与键对应的值的概率分布（即注意力权重）。最后，注意力汇聚的输出就是基于这些注意力权重的值的加权和。</p>
             <p>从宏观上看，下图实现了注意力机制架构，其中 \(\alpha\) 表示注意力评分函数，由于注意力权重是概率分布，因此加权和其本质上是加权平均值：</p>
             <img src="res/attention_scoring.svg" alt="注意力评分函数" width="600">
             <p>用数学语言描述，假设有一个查询 \(q \in R^q\) 和 \(m\) 个键-值对 \((k_1, v_1), ... , (k_m, v_m)\) ，其中 \(k_i \in R^k\) ，\(v_i \in R^v\) 。注意力汇聚函数 \(f\) 就被表示成值的加权和：</p>
@@ -446,18 +457,18 @@ for epoch in range(5):
             <div class="scroll-container highlight-math" style="text-align: center;">
                 \(\alpha(q, k_i) = softmax(\alpha(q, k_i)) = \frac{exp(\alpha(q, k_i))}{\sum_{j=1}^{m}exp(\alpha(q, k_j))} \in R\)
             </div>
-            <p>正如上图所示，选择不同的注意力评分函数 \(\alpha\) 会导致不同的注意力汇聚操作，本节将介绍两种流行的评分函数，稍后将它们来实现更复杂的注意力机制。</p>
+            <p>正如上图所示，选择不同的注意力评分函数 \(\alpha\) 会导致不同的注意力汇聚操作，本节将介绍两种流行的评分函数，稍后将它们来实现更复杂的注意力模型。</p>
 
             <h4>9.1.5.1 掩码 softmax 操作</h4>
             <p>注意力机制最流行的应用之一是序列模型。因此我们需要能够处理不同长度的序列。在某些情况下，这样的序列可能会出现在同一个小批量中，因此需要使用虚拟标记填充较短的序列。这些特殊标记不具有任何意义。例如，假设我们有以下三个句子：</p>
             <pre><samp>Dive   into  Deep  Learning
 Learn  to    code  &lt;blank&gt;
 Hello  world &lt;blank&gt;  &lt;blank&gt;</samp></pre>
-            <p>为了仅将有意义的词元作为值来获取注意力汇聚， 可以指定一个有效序列长度（即词元的个数）， 以便在计算softmax时过滤掉超出指定范围的位置。下面 <code>masked_softmax</code> 函数实现了这样的 <strong>掩码 softmax 操作 (Masked Softmax Operation)</strong> ，其中任何超出长度的位置都被置为 0 ，代码在 <a href="https://github.com/artinte/machine-learning-series/blob/develop/deep_learning/09_transformer/1_attention/masked_softmax.py">masked_softmax.py</a> 文件里：</p>
+            <p>为了仅将有意义的词元作为值来获取注意力汇聚， 可以指定一个有效序列长度（即词元的个数）， 以便在计算 <em>softmax</em> 时过滤掉超出指定范围的位置。下面 <code>masked_softmax</code> 函数实现了这样的 <strong>掩码 softmax 操作 (Masked Softmax Operation)</strong> ，其中任何超出长度的位置都被置为 0 ，代码在 <a href="https://github.com/artinte/machine-learning-series/blob/develop/deep_learning/09_transformer/1_attention/masked_softmax.py">masked_softmax.py</a> 文件里：</p>
             <pre><code>def sequence_mask(x, valid_len, value=0):
     # Perform softmax operation by masking elements on the last axis.
     maxlen = x.size(1)
-    mask = torch.arange((maxlen), dtype=torch.float32)[None, :] < valid_len[:, None]
+    mask = torch.arange((maxlen), dtype=torch.float32)[None, :] &lt; valid_len[:, None]
     x[~mask] = value
     return x
 
@@ -481,20 +492,19 @@ def masked_softmax(x, valid_lens):
 
         [[0.3408, 0.2334, 0.4258, 0.0000],
          [0.2890, 0.3940, 0.3170, 0.0000]]])</samp></pre>
-            <p>同样，也可以使用二维张亮，为矩阵样本中的每一行指定有效长度：</p>
+            <p>同样，也可以使用二维张量，为矩阵样本中的每一行指定有效长度：</p>
             <pre><code>print(masked_softmax(torch.rand(2, 2, 4), torch.tensor([[1, 3], [2, 4]])))</code></pre>
             <pre><samp>tensor([[[1.0000, 0.0000, 0.0000, 0.0000],
          [0.3294, 0.4430, 0.2276, 0.0000]],
 
         [[0.4534, 0.5466, 0.0000, 0.0000],
          [0.1996, 0.3411, 0.2128, 0.2464]]])</samp></pre>
-            <h4>9.1.5.2 加性注意力</h4>
-            <p>一般来说，当查询和键是不同的长度的矢量时，可以使用加性注意力作为评分函数。给定查询 \(q \in R^q\) 和键 \(k \in R^k\) ，<strong>加性注意力 (Additive Attention)</strong> 的评分函数为：</p>
+
+            <h4>9.1.5.2 缩放点积注意力</h4>
+            <p>让我们回顾一下高斯核的注意力函数（没有指数部分）：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(\alpha(q, k) = \alpha(q, k) = w_v^{T}tanh(W_qQ + W_kk) \in R\)
+                \(\alpha(q, k_i) = -\frac{1}{2}{\lVert q - k_i \rVert}^2 = q^\top k_i - \frac{1}{2}{\lVert k_i \rVert}^2 - \frac{1}{2}{\lVert q \rVert}^2\)
             </div>
-            <p>其中可学习参数 \(W_q \in R^{h \times q}\) 、\(W_k \in R^{h \times k}\) 和 \(W_v \in R^h\) 。如上所示，将查询和键连接起来后，使用 \(tanh\) 作为激活函数和禁用偏置项，输入到具有单个隐藏层的 MLP 中，其单元数是一个超参数 \(h\) ，下面实现加性注意力：</p>
-            <h4>9.1.5.3 缩放点积注意力</h4>
             <p>使用点积可以得到计算效率更高的评分函数，但是点积操作要求查询和键具有相同的长度 \(d\) 。假设查询和键的所有元素都是独立的随机变量，并且都满足零均值和单位方差，那么两个向量的点积的均值为 0 ，方差为 d 。为确保无论向量长度如何，点积的方差再不考虑向量长度的情况下仍然是 1 ，我们再将点积除以 \(\sqrt{d}\) ，此过程称为 <strong>缩放点积注意力 (Scaled Dot-Product Attention)</strong> ，它的评分函数为：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
                 \(\alpha(q, k) = q^Tk/\sqrt{d}\)
@@ -503,6 +513,22 @@ def masked_softmax(x, valid_lens):
             <div class="scroll-container highlight-math" style="text-align: center;">
                 \(softmax(\frac{QK^T}{\sqrt{d}})V \in R^{n \times v}\)
             </div>
+
+            <h4>9.1.5.3 加性注意力</h4>
+            <p>一般来说，当查询和键是不同的长度的矢量时，可以使用加性注意力作为评分函数。给定查询 \(q \in R^q\) 和键 \(k \in R^k\) ，<strong>加性注意力 (Additive Attention)</strong> 的评分函数为：</p>
+            <div class="scroll-container highlight-math" style="text-align: center;">
+                \(\alpha(q, k) = \alpha(q, k) = w_v^{T}tanh(W_qQ + W_kk) \in R\)
+            </div>
+            <p>其中可学习参数 \(W_q \in R^{h \times q}\) 、\(W_k \in R^{h \times k}\) 和 \(W_v \in R^h\) 。如上所示，将查询和键连接起来后，使用 \(tanh\) 作为激活函数和禁用偏置项，输入到具有单个隐藏层的 MLP 中，其单元数是一个超参数 \(h\) ，下面实现加性注意力：</p>
+            
+
+            <h3>9.1.6 Bahdanau 模型</h3>
+            <p>当我们进行机器翻译时，Seq2Seq 模型使用两个 RNN 设计了一个编码器-解码器架构，用于处理序列到序列学习。具体来说，RNN 编码器将可变长度的序列转换为固定形状的上下文变量，然后 RNN 解码器根据生成的标记和上下文变量，逐个标记地生成输出（目标）序列。</p>
+
+            <h4>9.1.6.1 模型架构</h4>
+            <h4>9.1.6.2 带注意力的解码器</h4>
+            <h4>9.1.6.3 训练</h4>
+
         </main>
 
             <!-- 右侧小标题导航 -->
