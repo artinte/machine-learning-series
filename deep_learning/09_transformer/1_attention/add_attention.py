@@ -14,20 +14,15 @@ class AdditiveAttention(nn.Module):
     
     def forward(self, queries, keys, values, valid_lens):
         queries, keys = self.W_q(queries), self.W_k(keys)
-        assert queries.shape == (2, 1, 8)
-        assert keys.shape == (2, 10, 8)
         # After dimension expansion, shape of queries: (batch_size, no. of
         # queries, 1, num_hiddens) and shape of keys: (batch_size, 1, no. of
         # key-value pairs, num_hiddens). Sum them up with broadcasting
         features = queries.unsqueeze(2) + keys.unsqueeze(1)
-        assert features.shape == (2, 1, 10, 8)
         features = torch.tanh(features)
         # There is only one output of self.w_v, so we remove the last
         # one-dimensional entry from the shape. Shape of scores: (batch_size,
         # no. of queries, no. of key-value pairs)
         scores = self.w_v(features).squeeze(-1)
-        assert scores.shape == (2, 1, 10)
-        assert values.shape == (2, 10, 4)
         self.attention_weights = masked_softmax(scores, valid_lens)
         # Shape of values: (batch_size, no. of key-value pairs, value
         # dimension)
