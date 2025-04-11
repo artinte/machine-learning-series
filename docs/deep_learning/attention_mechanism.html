@@ -455,9 +455,9 @@ for epoch in range(5):
             </div>
             <p>其中查询 \(q\) 和 键 \(k_i\) 的注意力权重，是通过注意力评分函数 \(\alpha\) 将两个向量映射成标量，再经过 softmax 运算得到的：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(\alpha(q, k_i) = softmax(\alpha(q, k_i)) = \frac{exp(\alpha(q, k_i))}{\sum_{j=1}^{m}exp(\alpha(q, k_j))} \in R\)
+                \(\alpha(q, k_i) = softmax(\a(q, k_i)) = \frac{exp(\a(q, k_i))}{\sum_{j=1}^{m}exp(\a(q, k_j))} \in R\)
             </div>
-            <p>正如上图所示，选择不同的注意力评分函数 \(\alpha\) 会导致不同的注意力汇聚操作，本节将介绍两种流行的评分函数，稍后将它们来实现更复杂的注意力模型。</p>
+            <p>正如上图所示，选择不同的注意力评分函数 \(\a\) 会导致不同的注意力汇聚操作，本节将介绍两种流行的评分函数，稍后将它们来实现更复杂的注意力模型。</p>
 
             <h4>9.1.5.1 掩码 softmax 操作</h4>
             <p>注意力机制最流行的应用之一是序列模型。因此我们需要能够处理不同长度的序列。在某些情况下，这样的序列可能会出现在同一个小批量中，因此需要使用虚拟标记填充较短的序列。这些特殊标记不具有任何意义。例如，假设我们有以下三个句子：</p>
@@ -503,12 +503,19 @@ def masked_softmax(x, valid_lens):
             <h4>9.1.5.2 缩放点积注意力</h4>
             <p>让我们回顾一下高斯核的注意力函数（没有指数部分）：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(\alpha(q, k_i) = -\frac{1}{2}{\lVert q - k_i \rVert}^2 = q^\top k_i - \frac{1}{2}{\lVert k_i \rVert}^2 - \frac{1}{2}{\lVert q \rVert}^2\)
+                \(\a(q, k_i) = -\frac{1}{2}{\lVert q - k_i \rVert}^2 = q^\top k_i - \frac{1}{2}{\lVert k_i \rVert}^2 - \frac{1}{2}{\lVert q \rVert}^2\)
             </div>
-            <p>使用点积可以得到计算效率更高的评分函数，但是点积操作要求查询和键具有相同的长度 \(d\) 。假设查询和键的所有元素都是独立的随机变量，并且都满足零均值和单位方差，那么两个向量的点积的均值为 0 ，方差为 d 。为确保无论向量长度如何，点积的方差再不考虑向量长度的情况下仍然是 1 ，我们再将点积除以 \(\sqrt{d}\) ，此过程称为 <strong>缩放点积注意力 (Scaled Dot-Product Attention)</strong> ，它的评分函数为：</p>
+            <p>首先，注意最后一项仅和 \(q\) 有关，对于所有的 \(q, k_i\) 数据对都是一样的。将注意力权重标准化，该项会完全消失。其次，批次归一化和层归一化都会导致激活具有良好界限，通常都是常数 \(\lVert k_i \rVert\) 。我们从 \(a\) 的定义中将 \(\lVert k_i \rVert\) 去掉，也不会对最终的输出造成大的影响。</p>
+            <p>最后我们需要控制参数的值，假定所有的查询 \(q \in R^d\) 和 键 \(k_i \in R^d\) 都是独立的，它们都是均值为 0 ，方差为 1 的随机变量。两个向量之间的点积均值为 0，方差为 \(d\) ，为了确保点积的方差仍然保持 1，无论向量的长度如何，我们使用 <strong>缩放点积注意力 (Scaled Dot-Product Attention)</strong> 评分函数。也就是说，我们将点积重新缩放为 \(\frac{1}{\srqt{d}}\) 。因此得到了第一个常用的注意力函数：</p>
+
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(\alpha(q, k) = q^Tk/\sqrt{d}\)
+                \(\a(q, k_i) = q^Tk_i/\sqrt{d}\)
             </div>
+            <p>注意力权重 \(\alpha\) 仍然需要归一化，利用 <em>softmax</em> 运算进一步简化这一个过程：</p>
+            <div class="scroll-container highlight-math" style="text-align: center;">
+                \(\alpha(q, k_i) = softmax(a(q, k_i)) = \frac{exp(q^\top k_i / \sqrt{d})}{\sum_{j=1}exp(q^\top k_j / \sqrt{d})}\)
+            </div>
+            <p>通常，缩放点积注意力要求查询和键具有相同的向量长度，例如 \(d\) ，尽管这个问题可以通过</p>
             <p>在实践中，我们通常从小批量的角度来考虑提高效率，例如基于 \(n\) 个查询和 \(m\) 个键-值对的计算，其中查询和键的长度为 \(d\) ，值的长度为 \(v\) 。查询 \(Q \in R^{n \times d}\) 、键 \(K \in R^{m \times d}\) 和值 \(V \in R^{m \times v}\) 的缩放点积注意力是：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
                 \(softmax(\frac{QK^T}{\sqrt{d}})V \in R^{n \times v}\)
