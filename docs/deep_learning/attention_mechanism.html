@@ -246,8 +246,7 @@
 
             <h3>9.1.1 历史发展</h3>
 
-            <p>顾名思义，注意力机制的灵感来源于人类（和其它动物）选择性地关注突出细节并忽略当前不太重要的细节的能力。获取所有信息但只关注最相关的信息有助于确保不会丢失任何有意义的细节，同时还能有效利用有限的内存和时间。</p>
-            <p>举个例子，用一句话描述下图：</p>
+            <p>顾名思义，注意力机制的灵感来源于人类（和其它动物）选择性地关注突出细节并忽略当前不太重要的细节的能力。获取所有信息但只关注最相关的信息有助于确保不会丢失任何有意义的细节，同时还能有效利用有限的内存和时间。举个例子，用一句话描述下图：</p>
             <img src="res/duck.jpg" width="400">
             <p>大部分的人都会说“一只鸭子在水里游”，可以看到这里我们忽略了青山，我们的大脑经过不断地学习，第一反应是将注意力放在鸭子身上。</p>
 
@@ -447,17 +446,17 @@ for epoch in range(5):
 
             <h3>9.1.5 注意力评分函数</h3>
             <p>在 <a href="#pooling">9.1.4 小节</a> 中使用了高斯核来对查询核键之间的关系建模，高斯核的指数部分 \(-\frac{1}{2}(x - x_i)^2\) 可以视为 <strong>注意力评分函数 (Attention Scoring Function)</strong> ，把这个函数的输出结果输入到 softmax 函数中进行计算。通过上述步骤，将得到与键对应的值的概率分布（即注意力权重）。最后，注意力汇聚的输出就是基于这些注意力权重的值的加权和。</p>
-            <p>从宏观上看，下图实现了注意力机制架构，其中 \(\alpha\) 表示注意力评分函数，由于注意力权重是概率分布，因此加权和其本质上是加权平均值：</p>
+            <p>从宏观上看，下图实现了注意力机制架构，其中 \(a\) 表示注意力评分函数，由于注意力权重是概率分布，因此加权和其本质上是加权平均值：</p>
             <img src="res/attention_scoring.svg" alt="注意力评分函数" width="600">
             <p>用数学语言描述，假设有一个查询 \(q \in R^q\) 和 \(m\) 个键-值对 \((k_1, v_1), ... , (k_m, v_m)\) ，其中 \(k_i \in R^k\) ，\(v_i \in R^v\) 。注意力汇聚函数 \(f\) 就被表示成值的加权和：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
                 \(f(q, (k_1, v_1), ... , (k_m, v_m)) = \sum_{i=1}^{m}\alpha(q, k_i)v_i \in R^v\)
             </div>
-            <p>其中查询 \(q\) 和 键 \(k_i\) 的注意力权重，是通过注意力评分函数 \(\alpha\) 将两个向量映射成标量，再经过 softmax 运算得到的：</p>
+            <p>其中查询 \(q\) 和键 \(k_i\) 的注意力权重，是通过注意力评分函数 \(a\) 将两个向量映射成标量，再经过 softmax 运算得到的：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(\alpha(q, k_i) = softmax(\a(q, k_i)) = \frac{exp(\a(q, k_i))}{\sum_{j=1}^{m}exp(\a(q, k_j))} \in R\)
+                \(\alpha(q, k_i) = softmax(a(q, k_i)) = \frac{exp(a(q, k_i))}{\sum_{j=1}^{m}exp(a(q, k_j))} \in R\)
             </div>
-            <p>正如上图所示，选择不同的注意力评分函数 \(\a\) 会导致不同的注意力汇聚操作，本节将介绍两种流行的评分函数，稍后将它们来实现更复杂的注意力模型。</p>
+            <p>正如上图所示，选择不同的注意力评分函数 \(a\) 会导致不同的注意力汇聚操作，本节将介绍两种流行的评分函数，稍后将它们来实现更复杂的注意力模型。</p>
 
             <h4>9.1.5.1 掩码 softmax 操作</h4>
             <p>注意力机制最流行的应用之一是序列模型。因此我们需要能够处理不同长度的序列。在某些情况下，这样的序列可能会出现在同一个小批量中，因此需要使用虚拟标记填充较短的序列。这些特殊标记不具有任何意义。例如，假设我们有以下三个句子：</p>
@@ -503,31 +502,107 @@ def masked_softmax(x, valid_lens):
             <h4>9.1.5.2 缩放点积注意力</h4>
             <p>让我们回顾一下高斯核的注意力函数（没有指数部分）：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(\a(q, k_i) = -\frac{1}{2}{\lVert q - k_i \rVert}^2 = q^\top k_i - \frac{1}{2}{\lVert k_i \rVert}^2 - \frac{1}{2}{\lVert q \rVert}^2\)
+                \(a(q, k_i) = -\frac{1}{2}{\lVert q - k_i \rVert}^2 = q^\top k_i - \frac{1}{2}{\lVert k_i \rVert}^2 - \frac{1}{2}{\lVert q \rVert}^2\)
             </div>
             <p>首先，注意最后一项仅和 \(q\) 有关，对于所有的 \(q, k_i\) 数据对都是一样的。将注意力权重标准化，该项会完全消失。其次，批次归一化和层归一化都会导致激活具有良好界限，通常都是常数 \(\lVert k_i \rVert\) 。我们从 \(a\) 的定义中将 \(\lVert k_i \rVert\) 去掉，也不会对最终的输出造成大的影响。</p>
-            <p>最后我们需要控制参数的值，假定所有的查询 \(q \in R^d\) 和 键 \(k_i \in R^d\) 都是独立的，它们都是均值为 0 ，方差为 1 的随机变量。两个向量之间的点积均值为 0，方差为 \(d\) ，为了确保点积的方差仍然保持 1，无论向量的长度如何，我们使用 <strong>缩放点积注意力 (Scaled Dot-Product Attention)</strong> 评分函数。也就是说，我们将点积重新缩放为 \(\frac{1}{\srqt{d}}\) 。因此得到了第一个常用的注意力函数：</p>
+            <p>最后我们需要控制参数的值，假定所有的查询 \(q \in R^d\) 和 键 \(k_i \in R^d\) 都是独立的，它们都是均值为 0 ，方差为 1 的随机变量。两个向量之间的点积均值为 0，方差为 \(d\) ，为了确保点积的方差仍然保持 1，无论向量的长度如何，我们使用 <strong>缩放点积注意力 (Scaled Dot-Product Attention)</strong> 评分函数。也就是说，我们将点积重新缩放为 \(\frac{1}{\sqrt{d}}\) 。因此得到了第一个常用的注意力函数：</p>
 
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(\a(q, k_i) = q^Tk_i/\sqrt{d}\)
+                \(a(q, k_i) = q^\top k_i/\sqrt{d}\)
             </div>
             <p>注意力权重 \(\alpha\) 仍然需要归一化，利用 <em>softmax</em> 运算进一步简化这一个过程：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
                 \(\alpha(q, k_i) = softmax(a(q, k_i)) = \frac{exp(q^\top k_i / \sqrt{d})}{\sum_{j=1}exp(q^\top k_j / \sqrt{d})}\)
             </div>
-            <p>通常，缩放点积注意力要求查询和键具有相同的向量长度，例如 \(d\) ，尽管这个问题可以通过</p>
+            <p>通常，缩放点积注意力要求查询和键具有相同的向量长度，例如 \(d\) ，尽管这个问题可以通过使用 \(q^\top Mk\) 代替 \(q^\top k\) 解决，其中 \(M\) 表示适合在两个空间进行平移的矩阵。 </p>
             <p>在实践中，我们通常从小批量的角度来考虑提高效率，例如基于 \(n\) 个查询和 \(m\) 个键-值对的计算，其中查询和键的长度为 \(d\) ，值的长度为 \(v\) 。查询 \(Q \in R^{n \times d}\) 、键 \(K \in R^{m \times d}\) 和值 \(V \in R^{m \times v}\) 的缩放点积注意力是：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
                 \(softmax(\frac{QK^T}{\sqrt{d}})V \in R^{n \times v}\)
             </div>
+            <p>下面就是具体的实现：</p>
+            <pre><code>class DotProductAttention(nn.Module):
+    '''Scaled dot product attention.'''
+    def __init__(self, dropout):
+        super().__init__()
+        self.dropout = nn.Dropout(dropout)
+    
+    # Shape of queries: (batch_size, no. of queries, d)
+    # Shape of keys: (batch_size, no. of key-value pairs, d)
+    # Shape of values: (batch_size, no. of key-value pairs, value dimension)
+    # Shape of valid_lens: (batch_size,) or (batch_size, no. of queries)
+    def forward(self, queries, keys, values, valid_lens=None):    
+        d = queries.shape[-1]
+        # Swap the last two dimensions of keys with keys.transpose(1, 2).
+        scores = torch.bmm(queries, keys.transpose(1, 2)) / math.sqrt(d)
+        self.attention_weights = masked_softmax(scores, valid_lens)
+        return torch.bmm(self.dropout(self.attention_weights), values)</code></pre>
+
+            <p>为了展示 <code>DotProductAttention</code> 类型是如何工作的，我们假设小批量的大小是 2 ，总共包括 10 个键值对，值的维度是 4 ，最后假设合法长度是 2 和 6 。那么我们的输出是一个 \(2 \times 1 \times 4 \) 的张量：</p>
+            <pre><code>queries = torch.normal(0, 1, (2, 1, 2))
+keys = torch.normal(0, 1, (2, 10, 2))
+values = torch.normal(0, 1, (2, 10, 4))
+valid_lens = torch.tensor([2, 6])
+
+attention = DotProductAttention(dropout=0.1)
+attention.eval()
+assert attention(queries, keys, values, valid_lens).shape == (2, 1, 4)
+
+show_heatmap(attention.attention_weights.reshape((1, 1, 2, 10)),
+                x_label='Keys', y_label='Queries')</code></pre>
+
+            <p>让我们检查一下注意力权重是否真的会在第二列和第六列之后消失（因为将有效长度设置为 2 和 6）:</p>
+            <img src="res/dot_prod_att.png" width="600">
 
             <h4>9.1.5.3 加性注意力</h4>
-            <p>一般来说，当查询和键是不同的长度的矢量时，可以使用加性注意力作为评分函数。给定查询 \(q \in R^q\) 和键 \(k \in R^k\) ，<strong>加性注意力 (Additive Attention)</strong> 的评分函数为：</p>
+            <p>当查询 \(q\) 和键 \(k\) 是不同维度的矢量时，可以使用矩阵 \(q^\top Mk\) 来解决不匹配问题，或者使用 <strong>加性注意力 (Additive Attention)</strong> 作为评分函数。一个好处是，正如其名所示，注意力用的是加法，这可以节省一些资源。给定一个查询 \(q \in R^q\) 和键 \(k \in R^k\) ，加性注意力的评分函数为：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(\alpha(q, k) = \alpha(q, k) = w_v^{T}tanh(W_qQ + W_kk) \in R\)
+                \(a(q, k) = \alpha(q, k) = w_v^\top tanh(W_q q + W_kk) \in R\)
             </div>
-            <p>其中可学习参数 \(W_q \in R^{h \times q}\) 、\(W_k \in R^{h \times k}\) 和 \(W_v \in R^h\) 。如上所示，将查询和键连接起来后，使用 \(tanh\) 作为激活函数和禁用偏置项，输入到具有单个隐藏层的 MLP 中，其单元数是一个超参数 \(h\) ，下面实现加性注意力：</p>
+            <p>其中可学习参数 \(W_q \in R^{h \times q}\) 、\(W_k \in R^{h \times k}\) 和 \(w_v \in R^h\) 。然后将该项输入到 <em>softmax</em> 中，以确保非负性和正则化。加性注意力的一个等效解释是，将查询和键连接起来，并输入到具有单个隐藏层的 MLP 中，使用 tanh 作为激活函数和禁用偏置项，我们实现的加性注意力如下：</p>
+            <pre><code>class AdditiveAttention(nn.Module):
+    '''Additive attention.'''
+    def __init__(self, num_hiddens, dropout, **kwargs):
+        super(AdditiveAttention, self).__init__(**kwargs)
+        self.W_k = nn.LazyLinear(num_hiddens, bias=False)
+        self.W_q = nn.LazyLinear(num_hiddens, bias=False)
+        self.w_v = nn.LazyLinear(1, bias=False)
+        self.dropout = nn.Dropout(dropout)
+    
+    def forward(self, queries, keys, values, valid_lens):
+        queries, keys = self.W_q(queries), self.W_k(keys)
+        assert queries.shape == (2, 1, 8)
+        assert keys.shape == (2, 10, 8)
+        # After dimension expansion, shape of queries: (batch_size, no. of
+        # queries, 1, num_hiddens) and shape of keys: (batch_size, 1, no. of
+        # key-value pairs, num_hiddens). Sum them up with broadcasting
+        features = queries.unsqueeze(2) + keys.unsqueeze(1)
+        assert features.shape == (2, 1, 10, 8)
+        features = torch.tanh(features)
+        # There is only one output of self.w_v, so we remove the last
+        # one-dimensional entry from the shape. Shape of scores: (batch_size,
+        # no. of queries, no. of key-value pairs)
+        scores = self.w_v(features).squeeze(-1)
+        assert scores.shape == (2, 1, 10)
+        assert values.shape == (2, 10, 4)
+        self.attention_weights = masked_softmax(scores, valid_lens)
+        # Shape of values: (batch_size, no. of key-value pairs, value
+        # dimension)
+        return torch.bmm(self.dropout(self.attention_weights), values)</code></pre>
+            <p>让我们看看 <code>AdditiveAttention</code> 是如何工作的，设置查询、键与值的大小分别为 \(（2, 1, 20）\) 、 \((2, 10, 2)\) 和 \((2, 10, 4)\) 。和 <code>DotProductAttention</code> 的选择相同，只是现在查询是 20 维。同样，选取 \((2, 6)\) 作为小批量中序列的有效长度。</p>
+            <pre><code># 2 个样本，每个样本 1 个查询向量，维度是 20
+queries = torch.normal(0, 1, (2, 1, 20))
+keys = torch.normal(0, 1, (2, 10, 2))
+values = torch.normal(0, 1, (2, 10, 4))
+valid_lens = torch.tensor([2, 6])
+attention = AdditiveAttention(num_hiddens=8, dropout=0.1)
+attention.eval()
+assert attention(queries, keys, values, valid_lens).shape == (2, 1, 4)
+
+show_heatmap(attention.attention_weights.detach().reshape((1, 1, 2, 10)),
+                x_label='Keys', y_label='Queries')</code></pre>
             
+            <p>当查看热力图时，和 <code>DotProductAttention</code> 有非常类似的行为，只在选定的有效范围内的词是非零的：</p>
+            <img src="res/add_attention.png" width="600">
 
             <h3>9.1.6 Bahdanau 模型</h3>
             <p>当我们进行机器翻译时，Seq2Seq 模型使用两个 RNN 设计了一个编码器-解码器架构，用于处理序列到序列学习。具体来说，RNN 编码器将可变长度的序列转换为固定形状的上下文变量，然后 RNN 解码器根据生成的标记和上下文变量，逐个标记地生成输出（目标）序列。</p>
