@@ -25,7 +25,11 @@ assert torch.isclose(tensor.min(), torch.tensor(1.0))
 
 a = torch.tensor([1, 2, 3])
 b = torch.tensor([[1], [2], [3]])
-print(a + b)
+c = a + b
+assert a.shape == (3,)
+assert b.shape == (3, 1)
+assert c.shape == (3, 3)
+print(c)
 
 tensor = torch.tensor([1, 2, 3, 4, 5, 6])
 reshaped_tensor = tensor.view(2, 3)

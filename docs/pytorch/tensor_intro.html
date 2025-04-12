@@ -190,6 +190,17 @@ assert torch.isclose(tensor.max(), torch.tensor(4.0))
 assert torch.isclose(tensor.min(), torch.tensor(1.0))</code></pre>
 
             <h4>1.2.3.3 广播机制</h4>
+            <p><strong>广播机制 (Broadcasting)</strong> 是指在不同形状的张量之间进行元素级操作时，自动扩展较小的张量，以使其形状匹配较大的张量，从而进行后续操作。如下所示：</p>
+            <pre><code>a = torch.tensor([1, 2, 3])
+b = torch.tensor([[1], [2], [3]])
+c = a + b
+assert a.shape == (3,)
+assert b.shape == (3, 1)
+assert c.shape == (3, 3)
+print(c)</code></pre>
+
+            <img src="res/broadcast_demo.svg" width="600">
+
             <h4>1.2.3.4 形状变换</h4>
 
             <div class="navigation">
