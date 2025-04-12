@@ -205,8 +205,62 @@ print(c)</code></pre>
             <p>张量的形状变换是常见的操作，我们可以通过几种方法来改变张量的形状，包括 <code>view()</code> 、<code>reshape()</code> 、<code>transpose()</code> 、<code>squeeze()</code> 、<code>unsqueeze()</code> 等。以下是常见的形状变换方法及其用途：</p>
             <ul class="with-bullets">
                 <li><p><code>view()</code> 和 <code>reshape()</code> 用于重新排列张量的形状。</p></li>
+                <li><p><code>transpose()</code> 用于交换维度。</p></li>
+                <li><p><code>squeeze()</code> 用于删除维度为 1 的维度。</p></li>
+                <li><p><code>unsqueeze()</code> 用于在指定位置增加一个维度。</p></li>
+                <li><p><code>permute()</code> 用于重新排列维度的顺序。</p></li>
+                <li><p><code>flatten()</code> 用于将多维张量展平为一维张量。</p></li>
             </ul>
 
+            <p><code>view()</code> 用于重新排列张量的形状，保持元素总数不变。它返回一个新的张量，不会修改原始张量。可以使用 -1 来推断某一维度的大小：</p>
+            <pre><code>x = torch.randn((2, 3, 4))
+y = x.view((6, 4))
+assert x.shape == (2, 3, 4)
+assert y.shape == (6, 4)
+
+z = x.view(-1, 4)
+assert z.shape == (6, 4)</code></pre>
+
+            <p><code>reshape()</code> 是 <code>view()</code> 的一个更灵活的版本，它会在可能的情况下返回一个新的视图，但如果无法返回视图，它将创建一个新的张量：</p>
+            <pre><code>x = torch.randn((2, 3, 4))
+y = x.reshape((6, 4))
+assert x.data_ptr() == y.data_ptr()</code></pre>
+
+            <p><code>transpose()</code> 用于交换张量的两个维度。例如，二维张量的转置将交换其行和列。对于更高维的张量，可以交换任意两个维度：</p>
+            <pre><code>x = torch.randn((2, 3))
+y = x.transpose(0, 1)
+assert y.shape == (3, 2)
+
+x = torch.randn(2, 3, 4)
+y = x.transpose(1, 2)
+assert y.shape == (2, 4, 3)</code></pre>
+
+            <p><code>squeeze()</code> 用于去除形状中所有为1的维度。它不会影响其他维度。如果只想删除特定维度为 1 的维度，可以指定维度：</p>
+            <pre><code>x = torch.randn((1, 3, 1, 4))
+y = x.squeeze()
+assert y.shape == (3, 4)
+
+x = torch.randn((1, 3, 1, 4))
+y = x.squeeze(0)
+assert y.shape == (3, 1, 4)</code></pre>
+
+            <p><code>unsqueeze()</code> 用于在张量的指定位置增加一个大小为 1 的维度：</p>
+            <pre><code>x = torch.randn(3, 4)
+y = x.unsqueeze(0)
+assert y.shape == (1, 3, 4)</code></pre>
+
+            <p><code>permute()</code> 允许我们按任意顺序重新排列张量的维度，它对于高维张量尤其有用：</p>
+            <pre><code>x = torch.randn((2, 3, 4))
+y = x.permute(2, 0, 1)
+assert y.shape == (4, 2, 3)</code></pre>
+
+            <p><code>flatten()</code> 用于将张量展平为一个一维张量，可以指定展平的开始和结束维度：</p>
+            <pre><code>x = torch.randn((2, 3, 4))
+y = x.flatten()
+assert y.shape == (24,)
+
+y = x.flatten(start_dim=1)
+assert y.shape == (2, 12)</code></pre>
 
             <div class="navigation">
                 <a href="cuda_install.html">上一节：1.1 程序安装</a>
