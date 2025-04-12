@@ -389,7 +389,7 @@
             <h4>9.4.5.3 优化器</h4>
             <p>我们使用 Adam 优化器，它的参数为 \(\beta_1 = 0.9\) ，\(\beta_2 = 0.98\) 以及 \(\epsilon = 10^{-9}\) 。我们根据以下公式在训练过程中改变学习率：</p>
             <div class="scroll-container highlight-math" style="text-align: center;">
-                \(lrate = d_{model}^{-0.5} \dot min(step_num^{-0.5} , step_num \dot warmup_steps^{-1.5})\) 
+                \(lrate = d_{model}^{-0.5} \dot min(step\_num^{-0.5} , step\_num \dot warmup\_steps^{-1.5})\)
             </div>
             <p>这相当于在第一个 \(warmup_steps\) 训练步骤中线性增加学习率，然后按步数的平方根倒数比例降低。我们使用了 \(warmup_steps = 4000\) 。</p>
 

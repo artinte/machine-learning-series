@@ -614,9 +614,128 @@ show_heatmap(attention.attention_weights.detach().reshape((1, 1, 2, 10)),
             <p>受学习对齐思想的启发， Bahdanau 等人（2014）提出了一种可微分注意力模型，摆脱了单向对齐的限制。在预测某个 token 时，如果并非所有输入 token 都相关，则该模型会仅对齐（或关注）输入序列中与当前预测相关的部分。之后，在生成下一个 token 之前，该模型会用它来更新当前状态。尽管Bahdanau 的这种注意力机制描述起来并无恶意，但它无疑已成为过去十年深度学习领域最具影响力的思想之一，并催生了 Transformer 以及许多相关的新架构。</p>
 
             <h4>9.1.6.1 模型架构</h4>
-            <h4>9.1.6.2 带注意力的解码器</h4>
-            <h4>9.1.6.3 训练</h4>
+            <p>模型的关键思想是，我们不再保存状态，比如源句子的上下文变量 \(c\) 。会根据源句子（编码器的隐藏状态 \(h_t\)）和已经生成的文本（解码器的隐藏状态\(s_{t'-1}\)）来动态更新。生成的结果为 \(c_{t'}\) ，在时间步长 \(t'\) 之后就会被更新。假设输入序列的长度为 \(T\) ，那么经过注意力汇聚的上下文输出如下公式所示：</p>
+            <div class="scroll-container highlight-math" style="text-align: center;">
+                \(c_{t'} = \sum_{t=1}^{T}\alpha(s_{t'-1}, h_t)h_t\)
+            </div>
+            <p>我们使用 \(s_{t'-1}\) 作为查询，\(h_t\) 既是键也是值。记住 \(c_{t'}\) 用于生成状态 \(s_{t'}\) ，进而产生新的标记。注意力权重 \(\alpha\) 使用加性注意力评分函数，Bahdanau 模型架构如下图所示：</p>
+            <img src="res/bahdanau_arch.svg" width="600">
 
+            <h4>9.1.6.2 带注意力的解码器</h4>
+            <p>要实现带注意力机制的 RNN 编码器-解码器，我们只需重新定义解码器，全部实现在文件 <a href="https://github.com/artinte/machine-learning-series/blob/develop/deep_learning/09_transformer/1_attention/bahdanau.py">bahdanau.py</a> 中，我们需要在Seq2SeqAttentionDecoder 类中实现 RNN 解码器。解码器的状态使用以下参数初始化：(i) 所有时间步长中编码器最后一层的隐藏状态，用作注意力机制的键和值；(ii) 最后时间步长中编码器所有层的隐藏状态，用于初始化解码器的隐藏状态；以及 (iii) 编码器的有效长度，用于排除注意力池中的填充标记。在每个解码时间步长中，前一时间步长获得的解码器最后一层的隐藏状态用作注意力机制的查询。注意力机制的输出和输入嵌入被连接起来作为 RNN 解码器的输入。</p>
+            <pre><code>class Seq2SeqAttentionDecoder(AttentionDecoder):
+    def __init__(self, vocab_size, embed_size, num_hiddens, num_layers,
+                    dropout=0):
+        super().__init__()
+        self.attention = AdditiveAttention(num_hiddens, dropout)
+        self.embedding = nn.Embedding(vocab_size, embed_size)
+        self.rnn = nn.GRU(
+            embed_size + num_hiddens, num_hiddens, num_layers,
+            dropout=dropout)
+        self.dense = nn.LazyLinear(vocab_size)
+    
+    def init_state(self, enc_outputs, enc_valid_lens):
+        # Shape of outputs: (num_steps, batch_size, num_hiddens).
+        # Shape of hidden_state: (num_layers, batch_size, num_hiddens)
+        outputs, hidden_state = enc_outputs
+        return (outputs.permute(1, 0, 2), hidden_state, enc_valid_lens)
+
+    def forward(self, X, state):
+        # Shape of enc_outputs: (batch_size, num_steps, num_hiddens).
+        # Shape of hidden_state: (num_layers, batch_size, num_hiddens)
+        enc_outputs, hidden_state, enc_valid_lens = state
+        # Shape of the output X: (num_steps, batch_size, embed_size)
+        X = self.embedding(X).permute(1, 0, 2)
+        outputs, self._attention_weights = [], []
+        for x in X:
+            # Shape of query: (batch_size, 1, num_hiddens)
+            query = torch.unsqueeze(hidden_state[-1], dim=1)
+            # Shape of context: (batch_size, 1, num_hiddens)
+            context = self.attention(
+                query, enc_outputs, enc_outputs, enc_valid_lens)
+            # Concatenate on the feature dimension
+            x = torch.cat((context, torch.unsqueeze(x, dim=1)), dim=-1)
+            # Reshape x as (1, batch_size, embed_size + num_hiddens)
+            out, hidden_state = self.rnn(x.permute(1, 0, 2), hidden_state)
+            outputs.append(out)
+            self._attention_weights.append(self.attention.attention_weights)
+        # After fully connected layer transformation, shape of outputs:
+        # (num_steps, batch_size, vocab_size)
+        outputs = self.dense(torch.cat(outputs, dim=0))
+        return outputs.permute(1, 0, 2), [enc_outputs, hidden_state,
+                                            enc_valid_lens]
+        
+    @property
+    def attention_weights(self):
+        return self._attention_weights</code></pre>
+
+            <p>接下来，我们使用四个序列的小批量来测试已实现的解码器，每个序列有七个时间步长：</p>
+            <pre><code>vocab_size, embed_size, num_hiddens, num_layers = 10, 8, 16, 2
+    batch_size, num_steps = 4, 7
+    
+    encoder = Seq2SeqEncoder(vocab_size, embed_size, num_hiddens, num_layers)
+    decoder = Seq2SeqAttentionDecoder(vocab_size, embed_size, num_hiddens,
+                                    num_layers)
+    X = torch.zeros((batch_size, num_steps), dtype=torch.long)
+    state = decoder.init_state(encoder(X), None)
+    output, state = decoder(X, state)
+
+    assert output.shape == (batch_size, num_steps, vocab_size)
+    assert state[0].shape == (batch_size, num_steps, num_hiddens)
+    assert state[1][0].shape == (batch_size, num_hiddens)</code></pre>
+
+            <h4>9.1.6.3 训练</h4>
+            <p>现在我们指定了新的解码器，实例化常规编码器和带有注意力的解码器，并训练该模型进行机器翻译：</p>
+            <pre><code>data = MTFraEng(batch_size=128)
+embed_size, num_hiddens, num_layers, dropout = 256, 256, 2, 0.2
+encoder = Seq2SeqEncoder(
+    len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
+decoder = Seq2SeqAttentionDecoder(
+    len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
+
+epochs = 30
+model = Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'], lr=0.005)
+trainer = Trainer(max_epochs=epochs, gradient_clip_val=1)
+(train_his, val_his) = trainer.fit(model, data)
+
+pyplot.plot(range(1, epochs + 1), train_his, label='Train Loss', color='blue', marker='o')
+pyplot.plot(range(1, epochs + 1), val_his, label='Validation Loss', color='red', marker='o')   
+pyplot.legend()
+pyplot.grid()
+pyplot.show() </code></pre>
+            <img src="res/bahdanau_train.png" width="600">
+
+            <p>模型训练完成后，我们用它将一些英语句子翻译成法语并计算其 BLEU 分数：</p>
+            <pre><code>engs = ['go .', 'i lost .', 'he\'s calm .', 'i\'m home .']
+fras = ['va !', 'j\'ai perdu .', 'il est calme .', 'je suis chez moi .']
+preds, _ = model.predict_step(
+    data.build(engs, fras), data.num_steps)
+for en, fr, p in zip(engs, fras, preds):
+    translation = []
+    for token in data.tgt_vocab.to_tokens(p):
+        if token == '<eos>':
+            break
+        translation.append(token)
+    print(f'{en} => {translation}, bleu,'
+        f'{bleu(" ".join(translation), fr, k=2):.3f}')</code></pre>
+
+            <pre><samp>go . => ['va', '!'], bleu,1.000
+i lost . => ["j'ai", 'perdu', '.'], bleu,1.000
+he's calm . => ['je', 'vais', 'bien', '.'], bleu,0.000
+i'm home . => ['je', 'suis', 'chez', 'moi', '.'], bleu,1.000</samp></pre>
+
+            <p>让我们将翻译最后一句英文句子时的注意力权重可视化。我们可以看到，每个查询在键值对上分配的权重并不均匀。这表明，在每个解码步骤中，输入序列的不同部分都会被选择性地聚合到注意力池中：</p>
+            <pre><code>_, dec_attention_weights = model.predict_step(
+    data.build([engs[-1]], [fras[-1]]), data.num_steps, True)
+attention_weights = torch.cat([step[0][0][0] for step in dec_attention_weights], 0)
+attention_weights = attention_weights.reshape((1, 1, -1, data.num_steps))
+
+# Plus one to include the end-of-sequence token.
+show_heatmap(attention_weights[:, :, :, :len(engs[-1].split()) + 1].detach().numpy(),
+    x_label='Key positions', y_label='Query positions')</code></pre>
+            <img src="res/bahdanau_visual.png" width="400">
+
+            <p>在预测一个 token 时，如果并非所有输入 token 都相关，则采用 Bahdanau 注意力机制的 RNN 编码器-解码器会选择性地聚合输入序列的不同部分。这是通过将状态（上下文变量）视为加性注意力池的输出来实现的。在 RNN 编码器-解码器中，Bahdanau 注意力机制将前一时间步的解码器隐藏状态视为查询，并将所有时间步的编码器隐藏状态视为键和值。</p>
         </main>
 
             <!-- 右侧小标题导航 -->
