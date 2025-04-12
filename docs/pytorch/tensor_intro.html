@@ -149,7 +149,7 @@ tensor2d = tensor1d[:, None]
 assert tensor2d.shape == (3, 1)</code></pre>
 
             <h3>1.2.3 张量操作</h3>
-            <p>PyTorch 张量支持的操作非常丰富，涵盖了基本的数学运算、聚合、广播、变形等各类操作。</p>
+            <p>PyTorch 张量支持的操作非常丰富，涵盖了基本的数学运算、聚合、广播、变形等各类操作。文件 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/2_tensor/tensor_operate.py">tensor_operate.py</a> 展示一些常见的函数用法。</p>
 
             <h4>1.2.3.1 数学运算</h4>
             <p>PyTorch 提供了丰富的数学操作来进行各种计算，包括基本的算术运算、线性代数运算等：</p>
@@ -202,6 +202,11 @@ print(c)</code></pre>
             <img src="res/broadcast_demo.svg" width="600">
 
             <h4>1.2.3.4 形状变换</h4>
+            <p>张量的形状变换是常见的操作，我们可以通过几种方法来改变张量的形状，包括 <code>view()</code> 、<code>reshape()</code> 、<code>transpose()</code> 、<code>squeeze()</code> 、<code>unsqueeze()</code> 等。以下是常见的形状变换方法及其用途：</p>
+            <ul class="with-bullets">
+                <li><p><code>view()</code> 和 <code>reshape()</code> 用于重新排列张量的形状。</p></li>
+            </ul>
+
 
             <div class="navigation">
                 <a href="cuda_install.html">上一节：1.1 程序安装</a>
