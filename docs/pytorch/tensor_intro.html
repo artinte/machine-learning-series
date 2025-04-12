@@ -54,7 +54,7 @@ Tensor from array: tensor([[1, 2],
                 <li><p><code>torch.zeros()</code> 创建一个指定形状的全零张量。</p></li>
                 <li><p><code>torch.ones()</code> 创建一个指定形状的全一张量。</p></li>
                 <li><p><code>torch.empty()</code> 创建一个未初始化的张量，里面的值是随机的。</p></li>
-                <li><p><code>torch.rand()</code> 返回一个均匀分布在 [0, 1) 之间的随机张量。</p></li>
+                <li><p><code>torch.rand()</code> 返回一个均匀分布在 [0, 1&lt; 之间的随机张量。</p></li>
                 <li><p><code>torch.randn()</code> 返回一个服从标准正态分布的随机张量。</p></li>
             </ul>
             <pre><code>tensor_zeros = torch.zeros(3, 3)
@@ -90,15 +90,18 @@ assert torch.allclose(tensor_linspace,
             
             <p>创建过程中，可以指定其它的参数，比如数据类型、在 GPU 上运行：</p>
             <pre><code>tensor_int = torch.tensor([1, 2, 3], dtype=torch.int64)
-tensor_gpu = torch.tensor([1, 2, 3], device='cuda')
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+tensor_gpu = torch.tensor([1, 2, 3], device=device)
+print(tensor_int)
 print(tensor_gpu)</code></pre>
-            <pre><samp>tensor([1, 2, 3], device='cuda:0')</samp></pre>
+            <pre><samp>tensor([1, 2, 3])
+tensor([1, 2, 3], device='cuda:0')</samp></pre>
 
             <h3>1.2.2 张量索引</h3>
-            <p>在 PyTorch 中，<code>torch.Tensor</code> 提供了强大的 <strong>索引 (Indexing)</strong> 功能，是我们可以高效地访问和修改张量的元素。PyTorch 的张量索引方式类似于 NumPy，支持基本索引、切片、布尔索引、高级索引等多种操作，文件 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/2_tensor/tensor_indexing.py">tensor_indexing.py</a> 展示了一些常用的索引方法。</p>
+            <p>在 PyTorch 中，<code>torch.Tensor</code> 提供了强大的 <strong>索引 (Indexing)</strong> 功能，使我们可以高效地访问和修改张量的元素。PyTorch 的张量索引方式类似于 NumPy ，支持基本索引、切片、布尔索引、高级索引等多种操作，文件 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/2_tensor/tensor_indexing.py">tensor_indexing.py</a> 展示了一些常用的索引方法。</p>
 
             <h4>1.2.2.1 基本索引</h4>
-            <p>PyTorch 的张量索引从 0 开始，与 Python 的 list 和 NumPy 数组一致。可以使用方括号 [] 访问单个元素：</p>
+            <p>PyTorch 的张量索引从 0 开始，与 Python 的 <code>list</code> 和 NumPy 的 <coe>ndarray</coe> 一致。可以使用方括号 [] 访问单个元素：</p>
             <pre><code>tensor2d = torch.tensor([[1, 2, 3], 
                 [4, 5, 6], 
                 [7, 8, 9]])
@@ -108,6 +111,11 @@ assert tensor2d[-1, -1] == 9</code></pre>
 
             <h4>1.2.2.2 切片</h4>
             <p>PyTorch 切片语法和 Python 的 <code>list</code> 、NumPy 的 <code>ndarray</code> 类似，使用 <code>start:stop:step</code> 的形式：</p>
+            <ul class="with-bullets">
+                <li><p><code>start</code>：切片的起始索引（包含），默认是 0 。</p></li>
+                <li><p><code>stop</code>：切片的结束索引（不包含），默认是张量的维度大小。</p></li>
+                <li><p><code>step</code>：步长，默认是 1 。</p></li>
+            </ul>
             <pre><code>tensor2d = torch.tensor([[1, 2, 3], 
                          [4, 5, 6], 
                          [7, 8, 9]])
@@ -116,7 +124,7 @@ assert (tensor2d[:, 1] == torch.tensor([2, 5, 8])).all()
 assert (tensor2d[1:, 1:] == torch.tensor([[5, 6], [8, 9]])).all()</code></pre>
 
             <h4>1.2.2.3 布尔索引</h4>
-            <p>PyTorch 允许使用布尔掩码（Mask）索引，提取符合条件的元素：</p>
+            <p>PyTorch 允许使用 <em>布尔掩码 (Boolean Mask)</em> 索引，提取符合条件的元素：</p>
             <pre><code>tensor = torch.tensor([10, 20, 30, 40, 50])
 mask = tensor > 25
 assert (mask == torch.tensor([False, False, True, True, True])).all()
@@ -136,10 +144,9 @@ assert (tensor2d[row_indices, col_indices] == torch.tensor([3, 5, 7])).all()</co
 
             <p>None 是一种特殊的标记，用于在索引中插入新的维度，常用于通过增加维度来改变张量的形状：</p>
             <pre><code>tensor1d = torch.tensor([1, 2, 3])
-print(tensor1d.shape)
+assert tensor1d.shape == (3,)
 tensor2d = tensor1d[:, None]
 assert tensor2d.shape == (3, 1)</code></pre>
-            <pre><samp>torch.Size([3])</samp></pre>
 
             <h3>1.2.3 张量操作</h3>
             <p>PyTorch 张量支持的操作非常丰富，涵盖了基本的数学运算、聚合、广播、变形等各类操作。</p>
@@ -159,7 +166,8 @@ assert (torch.mm(a, b) == a @ b).all()</code></pre>
             
             <pre><samp>tensor([[19, 22],
         [43, 50]])</samp></pre>
-            <p>这里重点说明矩阵的点积，如果有两个矩阵 A 和 B ，它们的形状分别是 (m, n) 和 (n, p) ，那么矩阵乘法 A x B 的结果是一个形状为 (m, p) 的矩阵。</p>
+            <p>这里重点说明矩阵的点积，如果有两个矩阵 \(A\) 和 \(B\) ，它们的形状分别是 \((m, n)\) 和 \((n, p)\) ，那么矩阵乘法 \(A \times B\) 的结果是一个形状为 \((m, p)\) 的矩阵。</p>
+
             <img src="res/matrix_dot_product.jpg">
             <p>在处理高维矩阵时，点积规则遵循类似的逻辑，但需要对多个维度进行匹配。假设有两个张量 A 和 B ，它们的形状分别是 \(d_1, d_2, ... , d_n\) 和 \(d_n, d_{n+1}, ... , d_m\) ，则点积后的形状为：</p>
             <div class="highlight-math" style="text-align: center;">\(d_1, d_2, ... , d_{n-1}, d_{n+1}, d_{n+2}, ... , d_m\)</div>

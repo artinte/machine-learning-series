@@ -1,11 +1,11 @@
 import torch
-import numpy as np
+import numpy
 
 data = [[1, 2], [3, 4]]
 tensor_from_list = torch.tensor(data)
 print('Tensor from list:', tensor_from_list)
 
-numpy_array = np.array(data)
+numpy_array = numpy.array(data)
 tensor_from_array = torch.tensor(numpy_array)
 print('Tensor from array:', tensor_from_array)
 
@@ -28,5 +28,7 @@ assert torch.allclose(tensor_linspace,
                       torch.Tensor([0.0000, 0.2500, 0.5000, 0.7500, 1.0000]))
 
 tensor_int = torch.tensor([1, 2, 3], dtype=torch.int64)
-tensor_gpu = torch.tensor([1, 2, 3], device='cuda')
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+tensor_gpu = torch.tensor([1, 2, 3], device=device)
+print(tensor_int)
 print(tensor_gpu)

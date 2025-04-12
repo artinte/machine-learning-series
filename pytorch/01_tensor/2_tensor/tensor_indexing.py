@@ -29,6 +29,6 @@ assert (tensor2d[row_indices, col_indices] == torch.tensor([3, 5, 7])).all()
 assert (tensor2d[..., 0] == torch.tensor([1, 4, 7])).all()
 
 tensor1d = torch.tensor([1, 2, 3])
-print(tensor1d.shape)
+assert tensor1d.shape == (3,)
 tensor2d = tensor1d[:, None]
 assert tensor2d.shape == (3, 1)
