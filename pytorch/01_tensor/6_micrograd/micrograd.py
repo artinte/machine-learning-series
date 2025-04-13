@@ -1,95 +1,98 @@
-
+"""
+Defines a simple autograd engine and uses it to classify points in the plane
+to 3 classes (red, green, blue) using a simple multilayer perceptron (MLP).
+"""
+import numpy
 import math
-import matplotlib.pyplot as plt
-import numpy as np
+from matplotlib import pyplot
 from utils import RNG, gen_data_yinyang, draw_dot, vis_color
 random = RNG(42)
 
+# -----------------------------------------------------------------------------
+# Value. Similar to PyTorch's Tensor but only of size 1 element
+
 class Value:
-    '''
-    Stores a single scalar value and its gradient.
-    Similar to PyTorch's Tensor but only of size 1 element.
-    '''
+    """ stores a single scalar value and its gradient """
+
     def __init__(self, data, _prev=(), _op=''):
         self.data = data
         self.grad = 0
-
-        # internal variables used for autograd graph construciton.
+        # internal variables used for autograd graph construction
         self._backward = lambda: None
         self._prev = _prev
-        # the op that produced this node, fro graphviz / debugging / etc
-        self._op = _op
-    
+        self._op = _op # the op that produced this node, for graphviz / debugging / etc
+
     def __add__(self, other):
         other = other if isinstance(other, Value) else Value(other)
         out = Value(self.data + other.data, (self, other), '+')
-        
+
         def _backward():
             self.grad += out.grad
             other.grad += out.grad
         out._backward = _backward
-        
+
         return out
 
     def __mul__(self, other):
         other = other if isinstance(other, Value) else Value(other)
         out = Value(self.data * other.data, (self, other), '*')
-        
+
         def _backward():
             self.grad += other.data * out.grad
-            self.grad += self.data * out.grad
+            other.grad += self.data * out.grad
         out._backward = _backward
-        
+
         return out
-    
+
     def __pow__(self, other):
-        assert isinstance(other, (int, float)), 'only supporting int/float powers for now'
+        assert isinstance(other, (int, float)), "only supporting int/float powers for now"
         out = Value(self.data**other, (self,), f'**{other}')
-        
+
         def _backward():
             self.grad += (other * self.data**(other-1)) * out.grad
         out._backward = _backward
-        
+
         return out
 
     def relu(self):
         out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')
-        
+
         def _backward():
             self.grad += (out.data > 0) * out.grad
         out._backward = _backward
-        
+
         return out
 
     def tanh(self):
         out = Value(math.tanh(self.data), (self,), 'tanh')
-        
+
         def _backward():
             self.grad += (1 - out.data**2) * out.grad
         out._backward = _backward
-        
+
         return out
 
     def exp(self):
         out = Value(math.exp(self.data), (self,), 'exp')
-        
+
         def _backward():
             self.grad += out.data * out.grad
         out._backward = _backward
-        
+
         return out
-    
+
     def log(self):
-        # this is the natural log
+        # (this is the natural log)
         out = Value(math.log(self.data), (self,), 'log')
-        
+
         def _backward():
-            self.grad += (1 / self.data) * out.grad
+            self.grad += (1/self.data) * out.grad
         out._backward = _backward
-        
+
         return out
-    
+
     def backward(self):
+
         # topological order all of the children in the graph
         topo = []
         visited = set()
@@ -100,12 +103,12 @@ class Value:
                     build_topo(child)
                 topo.append(v)
         build_topo(self)
-        
+
         # go one variable at a time and apply the chain rule to get its gradient
         self.grad = 1
         for v in reversed(topo):
             v._backward()
-            
+
     def __neg__(self): # -self
         return self * -1.0
 
@@ -128,16 +131,19 @@ class Value:
         return other * self**-1
 
     def __repr__(self):
-        return f'Value(data={self.data}, grad={self.grad})'
+        return f"Value(data={self.data}, grad={self.grad})"
 
+# -----------------------------------------------------------------------------
 # Multi-Layer Perceptron (MLP) network. Module here is similar to PyTorch's nn.Module
+
 class Module:
+
     def zero_grad(self):
         for p in self.parameters():
             p.grad = 0
-        
-        def parameters(self):
-            return 0
+
+    def parameters(self):
+        return []
 
 class Neuron(Module):
 
@@ -157,7 +163,7 @@ class Neuron(Module):
 
     def __repr__(self):
         return f"{'TanH' if self.nonlin else 'Linear'}Neuron({len(self.w)})"
-    
+
 class Layer(Module):
 
     def __init__(self, nin, nout, **kwargs):
@@ -172,7 +178,7 @@ class Layer(Module):
 
     def __repr__(self):
         return f"Layer of [{', '.join(str(n) for n in self.neurons)}]"
-    
+
 class MLP(Module):
 
     def __init__(self, nin, nouts):
@@ -190,9 +196,11 @@ class MLP(Module):
     def __repr__(self):
         return f"MLP of [{', '.join(str(layer) for layer in self.layers)}]"
 
+# -----------------------------------------------------------------------------
 # loss function: the negative log likelihood (NLL) loss
 # NLL loss = CrossEntropy loss when the targets are one-hot vectors
 # same as PyTorch's F.cross_entropy
+
 def cross_entropy(logits, target):
     # subtract the max for numerical stability (avoids overflow)
     # commenting these two lines out to get a cleaner visualization
@@ -210,7 +218,9 @@ def cross_entropy(logits, target):
     nll = -logp
     return nll
 
+# -----------------------------------------------------------------------------
 # The AdamW optimizer, same as PyTorch optim.AdamW
+
 class AdamW:
     def __init__(self, parameters, lr=1e-1, betas=(0.9, 0.95), eps=1e-8, weight_decay=0.0):
         self.parameters = parameters
@@ -239,25 +249,27 @@ class AdamW:
         for p in self.parameters:
             p.grad = 0
 
+# -----------------------------------------------------------------------------
+# let's train!
 
-# Let's train!
 # generate a dataset with 100 2-dimensional datapoints in 3 classes
 train_split, val_split, test_split = gen_data_yinyang(random, n=1000)
 
 # Convert data into two arrays: one for the coordinates and one for the labels
-coordinates = np.array([point[0] for point in train_split])
-labels = np.array([point[1] for point in train_split])
-plt.figure(figsize=(5, 5))
+coordinates = numpy.array([point[0] for point in train_split])
+labels = numpy.array([point[1] for point in train_split])
+pyplot.figure(figsize=(5, 5))
+pyplot.subplots_adjust(left=0.06, right=0.94, top=0.94, bottom=0.06)
 # Plot each class with different colors
-plt.scatter(coordinates[labels == 0][:, 0], coordinates[labels == 0][:, 1], color='yellow', label='Class 0', s=60)
-plt.scatter(coordinates[labels == 1][:, 0], coordinates[labels == 1][:, 1], color='green', edgecolor='black', label='Class 1', s=60)
-plt.scatter(coordinates[labels == 2][:, 0], coordinates[labels == 2][:, 1], color='blue', label='Class 2', s=60)
+pyplot.scatter(coordinates[labels == 0][:, 0], coordinates[labels == 0][:, 1], color='yellow', label='Class 0', s=60)
+pyplot.scatter(coordinates[labels == 1][:, 0], coordinates[labels == 1][:, 1], color='green', edgecolor='black', label='Class 1', s=60)
+pyplot.scatter(coordinates[labels == 2][:, 0], coordinates[labels == 2][:, 1], color='blue', label='Class 2', s=60)
 # Set equal aspect ratio for the plot
-plt.gca().set_aspect('equal', adjustable='box')
-plt.title('Yin Yang Diagram')
-plt.legend(loc='upper right')
-plt.axis('off')
-plt.show()
+pyplot.gca().set_aspect('equal', adjustable='box')
+pyplot.title('Yin Yang Diagram')
+pyplot.legend(loc='upper right')
+pyplot.axis('off')
+pyplot.show()
 
 # init the model: 2D inputs, 8 neurons, 3 outputs (logits)
 model = MLP(2, [8, 3])
@@ -274,6 +286,12 @@ def loss_fun(model, split):
         total_loss = total_loss + loss
     mean_loss = total_loss * (1.0 / len(split))
     return mean_loss
+
+def predict(model, x):
+    x = (Value(x[0]), Value(x[1]))
+    logits = model(x)
+    label = numpy.argmax(numpy.array([v.data for v in logits]))
+    return label
 
 # train the network
 num_steps = 100
@@ -292,13 +310,40 @@ for step in range(num_steps):
     optimizer.zero_grad()
     # print some stats
     print(f"step {step+1}/{num_steps}, train loss {loss.data}")
+    
+def plot_decision_plot(x, pred_func):
+    # Set min and max values and give it some padding
+    x_min, x_max = x[:, 0].min() - .5, x[:, 0].max() + .5
+    y_min, y_max = x[:, 1].min() - .5, x[:, 1].max() + .5
+    h = 0.01
+    # Generate a grid of points with distance h between them
+    xx, yy = numpy.meshgrid(numpy.arange(x_min, x_max, h),
+                            numpy.arange(y_min, y_max, h))
+    xx_ravel = xx.ravel()
+    yy_ravel = yy.ravel()
+    Z = []
+    for x_coord, y_coord in zip(xx_ravel, yy_ravel):
+        Z.append(pred_func(numpy.array([x_coord, y_coord])))
+    Z = numpy.array(Z)
+    Z = Z.reshape(xx.shape)
+    pyplot.figure(figsize=(5, 5))
+    pyplot.subplots_adjust(left=0.06, right=0.94, top=0.94, bottom=0.06)
+    # Plot the contour and training examples
+    pyplot.contourf(xx, yy, Z, cmap='Wistia', alpha=0.8)
+    pyplot.grid(True)
+    # pyplot.scatter(x[:, 0], x[:, 1], c=y)
+    pyplot.show()
+
+# 绘制预测边界
+plot_decision_plot(numpy.array([point[0] for point in train_split]),
+                   lambda x: predict(model, x))
 
 # (optional) visualization at the end: take origin (0,0) and draw the computational graph
-x, y = (Value(0.0), Value(0.0)), 0
-loss = loss_fun(model, [(x, y)])
-loss.backward()
-try:
-    vis_color(x, "lightblue") # color the inputs light blue in the visualization
-    draw_dot(loss)
-except Exception as e:
-    print(e)
+# x, y = (Value(0.0), Value(0.0)), 0
+# loss = loss_fun(model, [(x, y)])
+# loss.backward()
+# try:
+#     vis_color(x, "lightblue") # color the inputs light blue in the visualization
+#     draw_dot(loss)
+# except Exception as e:
+#     print("graphviz not installed? skipped visualization")
