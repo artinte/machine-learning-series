@@ -9,7 +9,7 @@ numpy_array = numpy.array(data)
 tensor_from_array = torch.tensor(numpy_array)
 print('Tensor from array:', tensor_from_array)
 
-tensor_zeros = torch.zeros(3, 3)
+tensor_zeros = torch.zeros((3, 3))
 print(tensor_zeros)
 tensor_ones = torch.ones(2, 2)
 print(tensor_ones)

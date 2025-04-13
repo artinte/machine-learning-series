@@ -61,7 +61,7 @@ y_true = numpy.round(3 * input + 4 + random_numbers, 4)</code></pre>
             <ol>
                 <li><p>设定曲线为 \(y = param * x + 4\) ，param 的初始值为 1.0 ；</p></li>
                 <li><p>对于每个输入点 \((x,y)\) ，x 代入 \(y =param * x + 4\) ，计算得到预测值 \(y'\) ；</p></li>
-                <li><p>将 y' 与实际值 y 进行比较，如果 y' &gt; y ，那么 <code>param = param - 0.01</code> ；如果 y' &lt; y ，那么 <code>param = param + 0.01</code> ；</p></li>
+                <li><p>将 \(y'\) 与实际值 \(y\) 进行比较，如果 \(y'\) &gt; \(y\) ，那么 <code>param = param - 0.01</code> ；如果 \(y' \lt y\) ，那么 <code>param = param + 0.01</code> ；</p></li>
                 <li><p>重复过程 2 和 3，直到 param 趋于稳定（可以将随机点遍历多个回合）。</p></li>
             </ol>
             <p>将上述过程转换为可执行的代码：</p>

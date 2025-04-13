@@ -1,36 +1,26 @@
 # 机器学习系列
 
-🚀🚀🚀🚀🚀🚀🚀 **[访问官方网站](https://artinte.github.io/machine-learning-series/)** 🌟🌟🌟🌟🌟🌟🌟
+[《机器学习系列》](https://artinte.github.io/machine-learning-series/) 是一个深入浅出地介绍机器学习各个领域的学习资源的集合。
 
-《机器学习系列》是一个深入浅出地介绍机器学习各个领域的学习资源的集合，旨在帮助读者全面理解和掌握机器学习的核心技术与应用。包括以下几个部分：
+---
 
-* Python 语言入门：专为机器学习写的入门教材
+## 📖 [PyTorch 详解](https://artinte.github.io/machine-learning-series/pytorch/index.html)
 
-* 深度学习 30 天速成：快速理解深度学习原理
+[x] 📹 [《PyTorch 详解》开篇介绍](https://youtu.be/fQl-dHQjYgo?si=p5EjdOAZjKRAJ9E9)
 
-* [深度学习综合指南](https://artinte.github.io/machine-learning-series/deep_learning/index.html)：全面介绍深度学习的基础概念
+### 第 01 章 张量与梯度基础
 
-* [TensorFlow 详解](https://artinte.github.io/machine-learning-series/tensorflow/index.html)：翻译 TensorFlow 官方文档
+#### 1.1 程序安装
 
-* [PyTorch 详解](https://artinte.github.io/machine-learning-series/pytorch/index.html)：深入浅出讲解 PyTorch 使用
+[x] 📝 [程序安装 - 安装 CUDA 以及 PyTorch 相关库！](https://artinte.github.io/machine-learning-series/pytorch/cuda_install.html)
 
-* 微型数据集：学习过程中使用的微型数据集
+[x] 📹 [] [CUDA 和 PyTorch 程序安装与验证](https://youtu.be/rcx_YbX7FVU?si=03M1KDdCZSW43rn0)
 
-* 经典论文：机器学习方面的经典论文翻译版本
+#### 1.2 张量介绍
 
-* 预科微积分：免费的基础数学教科书
+[x] 📝 [张量介绍 - 介绍 PyTorch 中常见的张量接口，包括创建、索引、操作等函数！](https://artinte.github.io/machine-learning-series/pytorch/tensor_intro.html)
 
-* 微积分：免费的微积分教科书
-
-* 统计学介绍：免费的统计学教科书
-
-* 线性代数：免费的线性代数教科书
-
-* [数据结构与算法](https://artinte.github.io/machine-learning-series/data_algorithm/index.html)：教程 Hello 算法的扩充版本
-
-* 视频翻译：翻译外网上的热门机器学习视频
-
-* 虚拟人软件：虚拟人技术集合
+[x] 📹 [张量介绍：创建、索引、计算](https://youtu.be/z7sWsFsgZYw?si=dZexu4uxgkIhPvMM)
 
 ---
 
@@ -292,4 +282,33 @@
 ### 12 大语言模型 (LLM)
 
 `nanoGPT` 是最简单、最快的中型 GPT 训练/微调存储库，优先考虑实用性而非教育性。介绍 Llama 开源模型，包括如何访问模型、托管、操作方法和集成指南。
+
+
+---
+
+* Python 语言入门：专为机器学习写的入门教材
+
+* 深度学习 30 天速成：快速理解深度学习原理
+
+* [深度学习综合指南](https://artinte.github.io/machine-learning-series/deep_learning/index.html)：全面介绍深度学习的基础概念
+
+* [TensorFlow 详解](https://artinte.github.io/machine-learning-series/tensorflow/index.html)：翻译 TensorFlow 官方文档
+
+* 微型数据集：学习过程中使用的微型数据集
+
+* 经典论文：机器学习方面的经典论文翻译版本
+
+* 预科微积分：免费的基础数学教科书
+
+* 微积分：免费的微积分教科书
+
+* 统计学介绍：免费的统计学教科书
+
+* 线性代数：免费的线性代数教科书
+
+* [数据结构与算法](https://artinte.github.io/machine-learning-series/data_algorithm/index.html)：教程 Hello 算法的扩充版本
+
+* 视频翻译：翻译外网上的热门机器学习视频
+
+* 虚拟人软件：虚拟人技术集合
 

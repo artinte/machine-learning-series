@@ -20,7 +20,7 @@
         <!-- 中间内容：显示具体某一个小节 -->
         <main class="col-md-8 content">
             <h2 class="custom-title">1.4 梯度</h2>
-            <p class="title-subtext">理解梯度</p>
+            <p class="title-subtext">理解反向传播的核心：梯度！</p>
             <p style="color: #a0a0a0;">创建日期: 2025-04-01</p>
             <p>当单个神经元通过相互之间的连接成为神经网络，如果对每个参数都进行前向和反向操作，就会发现，每次增加一个参数，每个输入就需要多计算 3 次。如果有上千万的参数，那么计算量是网络无法承受的。</p>
             <p>因此就需要想一种办法，只需要一次输入计算，就能够更新所有的参数。答案就是在微积分教材中学到的导数，根据导数的正负，是可以知道当前参数的变化对于网络的影响的。</p>
@@ -60,7 +60,7 @@
             <h3>1.4.3 复合表达式</h3>
             <p>现在让我们开始考虑涉及多个组合函数的更复杂的表达式，例如 \(f(x, y, z) = (x + y)z\) 。这个表达式足够简单，可以直接计算，但我们将采用一个特殊的方法，这将有助于理解反向传播背后的知识。特别注意的是，这个表达式可以分解为两个表达式：\(q = x + y\) 和 \(f = qz\) 。</p>
             <p>此外，我们知道如何分别计算两个表达式的导数，如上一个小节所示。\(f\) 只是 \(q\) 和 \(z\) 进行相乘，因此 \(\frac{\partial f}{\partial q} = z\) 以及 \(\frac{\partial f}{\partial z} = q\) 。同时 \(q\) 是 \(x\) 和 \(y\) 进行相加，因此 \(\frac{\partial q}{\partial x} = 1\) 以及 \(\frac{\partial q}{\partial y} = 1\) 。</p>
-            <p>然而，我们并不关心中间值 \(q\) 的梯度 ，\(\frac{\partial f}{\partial q}\) 是没有作用的。相反，我们最终感兴趣的是函数 \(f\) 相对于输入 \(x, y, z\) 的梯度。<strong>链式法则 (Chain Rule)</strong> 告诉我们，将这些梯度表达式“链接”在一起的正确方法是通过乘法。例如 \(\frac{\partial f}{\partial x} = \frac{\partial f}{\partial q} \frac{\partial q}{\partial x}\) 。实际上，这只是保存有两个梯度的数值相乘。让我们看一个具体的例子：</p>
+            <p>然而，我们并不关心中间值 \(q\) 的梯度 ，\(\frac{\partial f}{\partial q}\) 是没有作用的。相反，我们最终感兴趣的是函数 \(f\) 相对于输入 \(x, y, z\) 的梯度。<strong>链式法则 (Chain Rule)</strong> 告诉我们，将这些梯度表达式“链接”在一起的正确方法是通过乘法。例如 \(\frac{\partial f}{\partial x} = \frac{\partial f}{\partial q} \frac{\partial q}{\partial x}\) 。实际上，这只是保存有两个梯度的数值相乘。打开 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/4_gradient/compound.py">compound.py</a> 文件，让我们看一个具体的例子：</p>
             <pre><code># set some inputs
 x = -2; y = 5; z = -4
 
@@ -126,7 +126,7 @@ assert df_dz == 3</code></pre>
             <p class="highlight-math" style="text-align: center;">
                 \(\frac{d\sigma(x)}{dx} = \frac{e^{-x}}{(1 + e^{-x})^2} = (\frac{1 + e^{-x} - 1}{1 + e^{-x}})(\frac{1}{1 + e^{-x}}) = (1 - \sigma(x))\sigma(x)\)
             </p>
-            <p>正如我们所见，梯度变得非常简单。比如 sigmoid 函数接收一个 1.0 的输入，那么前向传递过程的输出结果是 0.73 。那么局部梯度就是 \((1 - 0.73) * 0.73 ~= 0.2\) ，就像上面的计算图那样，只不过这里使用了一个非常有效的表达式。因此，对于实际的应用程序来说，将这些操作集合成单个门是非常有用的。文件 展示了这个神经元的反向传播过程：</p>
+            <p>正如我们所见，梯度变得非常简单。比如 sigmoid 函数接收一个 1.0 的输入，那么前向传递过程的输出结果是 0.73 。那么局部梯度就是 \((1 - 0.73) * 0.73 ~= 0.2\) ，就像上面的计算图那样，只不过这里使用了一个非常有效的表达式。因此，对于实际的应用程序来说，将这些操作集合成单个门是非常有用的。文件 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/4_gradient/sigmoid.py">sigmoid.py</a> 展示了这个神经元的反向传播过程：</p>
             <pre><code>w = [2, -3, -3] # assume some random weights and data
 x = [-1, -2]
 
@@ -149,7 +149,7 @@ print([round(w, 2) for w in dw])</code></pre>
             <p>本小节的重点是如何计算反向传播，以及为了方便，将多个操作整合成门。了解表达式的哪些部分具有简单的局部梯度很有帮助，这样就可以用最少的代码和精力将它们串联在一起。</p>
 
             <h3>1.4.6 分阶段计算</h3>
-            <p>让我们用另一个例子来看一下，假设我们有一个如下形式的函数：</p>
+            <p>让我们用另一个例子来看一下，代码在文件 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/4_gradient/staged.py">staged.py</a> 中，假设我们有一个如下形式的函数：</p>
             <div class="highlight-math" style="text-align: center;">
                 \(f(x, y) = \frac{x + \sigma(y)}{\sigma(x) + (x + y)^2}\)
             </div>
@@ -213,11 +213,22 @@ assert round(dy, 2) == 1.59</code></pre>
 
             <h3>1.4.8 数组梯度</h3>
             <p>以上都是涉及的单个变量，但所有概念都可以直接延伸到矩阵和向量运算。然而，必须更加关注维度和转置运算。</p>
-            <p>可能最棘手的运算之一是矩阵与矩阵乘法：</p>
+            <p>可能最棘手的运算之一是矩阵与矩阵乘法，代码在文件 <a href="https://github.com/artinte/machine-learning-series/blob/develop/pytorch/01_tensor/4_gradient/vectorized.py">vectorized.py</a> 中：</p>
+            <pre><code># forward pass
+W = np.random.randn(5, 10)
+X = np.random.randn(10, 3)
+D = W.dot(X)
 
+# now suppose we had the gradient on D from above in the circuit
+dD = np.random.randn(*D.shape)  # same shape as D
+dW = dD.dot(X.T)    # .T gives the transpose of the matrix
+dX = W.T.dot(dD)</code></pre>
+            <p>我们不需要记住 <code>dW</code> 和 <code>dX</code> 的表达式，因为很容易推导。比如，我们知道权重 <code>dW</code> 的维度和 <code>W</code> 的维度是一样。它的大小是 <code>X</code> 和 <code>dD</code> 相乘（与 <code>X</code> 和 <code>W</code> 是单个数值时的梯度计算规则类似）。</p>
+            <p>比如上面的例子中，<code>X</code> 的维度是 [10x3] ，<code>dD</code> 的维度是 [5, 3] ，<code>W</code> 的维度是 [5x10]，我们想要得到 <code>dW</code> ，那么只能通过 <code>dD.dot(X.T)</code> 计算得到。</p>
+            <p>有些人一开始可能发现很难推导某些矢量化表达式的梯度，我们的建议是，先明确写出一个最小的矢量化示例，在纸上推导梯度，然后将该模式推导到其高效的矢量化形式。</p>
             <div class="navigation">
                 <a href="principle_learn.html">上一节：1.3 深度学习原理</a>
-                <a href="#">下一节：1.5 手写神经网络</a>
+                <a href="network_scratch.html">下一节：1.5 手写神经网络</a>
             </div>
         </main>
 

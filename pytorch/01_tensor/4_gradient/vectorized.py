@@ -9,3 +9,6 @@ D = W.dot(X)
 dD = np.random.randn(*D.shape)  # same shape as D
 dW = dD.dot(X.T)    # .T gives the transpose of the matrix
 dX = W.T.dot(dD)
+assert dD.shape == (5, 3)
+assert dX.shape == (10, 3)
+assert dW.shape == (5, 10)
