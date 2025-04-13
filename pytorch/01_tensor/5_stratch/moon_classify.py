@@ -3,7 +3,7 @@ import sklearn.datasets
 from matplotlib import pyplot
 import sklearn.linear_model
 
-def plot_decision_boundary(x, pred_func):
+def internal_decision_plot(x, pred_func):
     # Set min and max values and give it some padding
     x_min, x_max = x[:, 0].min() - .5, x[:, 0].max() + .5
     y_min, y_max = x[:, 1].min() - .5, x[:, 1].max() + .5
@@ -16,10 +16,19 @@ def plot_decision_boundary(x, pred_func):
     Z = Z.reshape(xx.shape)
     # Plot the contour and training examples
     pyplot.contourf(xx, yy, Z, cmap='Wistia', alpha=0.8)
-    pyplot.scatter(x[:, 0], x[:, 1], c=y)
+
+def plot_single(x, pred_func):
+    internal_decision_plot(x, pred_func)
     pyplot.grid(True)
+    pyplot.scatter(x[:, 0], x[:, 1], c=y)
     pyplot.subplots_adjust(left=0.08, right=0.92, top=0.96, bottom=0.06)
     pyplot.show()
+
+def plot_multi(x, pred_func):
+    internal_decision_plot(x, pred_func)
+    pyplot.axis('off')
+    pyplot.scatter(x[:, 0], x[:, 1], c=y, s=10)
+    pyplot.subplots_adjust(left=0.08, right=0.92, top=0.92, bottom=0.02)
 
 if __name__ == '__main__':
     rng = numpy.random.default_rng(0)
@@ -32,7 +41,7 @@ if __name__ == '__main__':
     # Train the logistic regression classifier.
     clf = sklearn.linear_model.LogisticRegressionCV()
     clf.fit(X, y)
-    plot_decision_boundary(X, lambda x: clf.predict(x))
+    plot_single(X, lambda x: clf.predict(x))
 
     num_examples = len(X)   # training set size
     nn_input_dim = 2        # input layer dimensionlity
@@ -125,5 +134,14 @@ if __name__ == '__main__':
     model = build_model(3, print_loss=True)
     
     # Plot the decision boundary
-    plot_decision_boundary(X, lambda x: predict(model, x))
+    plot_single(X, lambda x: predict(model, x))
+    pyplot.show()
+
+    figure = pyplot.figure()
+    hidden_layer_dims = [1, 2, 4, 10, 50, 100]
+    for i , nn_dim in enumerate(hidden_layer_dims):
+        figure.add_subplot(2, 3, i + 1)
+        pyplot.title('Hidden size ' + str(nn_dim))
+        model = build_model(nn_hdim=nn_dim)
+        plot_multi(X, lambda x: predict(model, x))
     pyplot.show()

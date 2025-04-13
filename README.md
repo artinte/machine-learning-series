@@ -1,26 +1,50 @@
 # 机器学习系列
 
-[《机器学习系列》](https://artinte.github.io/machine-learning-series/) 是一个深入浅出地介绍机器学习各个领域的学习资源的集合。
+[机器学习系列](https://artinte.github.io/machine-learning-series/) 是一个深入浅出地介绍机器学习各个领域的学习资源的集合。
 
 ---
 
 ## 📖 [PyTorch 详解](https://artinte.github.io/machine-learning-series/pytorch/index.html)
 
-[x] 📹 [《PyTorch 详解》开篇介绍](https://youtu.be/fQl-dHQjYgo?si=p5EjdOAZjKRAJ9E9)
+本书不仅注重理论知识的讲解，更加重视工程实践。通过结合大量实际的案例，特别是如何训练、优化和部署模型，读者将能够掌握如何使用 PyTorch 完成各种深度学习任务。
+
+- [x] 📹 [《PyTorch 详解》开篇介绍](https://youtu.be/fQl-dHQjYgo?si=p5EjdOAZjKRAJ9E9)
 
 ### 第 01 章 张量与梯度基础
 
 #### 1.1 程序安装
 
-[x] 📝 [程序安装 - 安装 CUDA 以及 PyTorch 相关库！](https://artinte.github.io/machine-learning-series/pytorch/cuda_install.html)
+- [x] 📝 [程序安装 - 安装 CUDA 以及 PyTorch 相关库！](https://artinte.github.io/machine-learning-series/pytorch/cuda_install.html)
 
-[x] 📹 [] [CUDA 和 PyTorch 程序安装与验证](https://youtu.be/rcx_YbX7FVU?si=03M1KDdCZSW43rn0)
+- [x] 📹 [CUDA 和 PyTorch 程序安装与验证](https://youtu.be/rcx_YbX7FVU?si=03M1KDdCZSW43rn0)
 
 #### 1.2 张量介绍
 
-[x] 📝 [张量介绍 - 介绍 PyTorch 中常见的张量接口，包括创建、索引、操作等函数！](https://artinte.github.io/machine-learning-series/pytorch/tensor_intro.html)
+- [x] 📝 [张量介绍 - 介绍 PyTorch 中常见的张量接口，包括创建、索引、操作等函数！](https://artinte.github.io/machine-learning-series/pytorch/tensor_intro.html)
 
-[x] 📹 [张量介绍：创建、索引、计算](https://youtu.be/z7sWsFsgZYw?si=dZexu4uxgkIhPvMM)
+- [x] 📹 [张量介绍：创建、索引、计算](https://youtu.be/z7sWsFsgZYw?si=dZexu4uxgkIhPvMM)
+
+#### 1.3 深度学习原理
+
+- [x] 📝 [深度学习原理 - 理解神经网络以及它的运行原理！](https://artinte.github.io/machine-learning-series/pytorch/principle_learn.html)
+
+- [ ] 📹 神经网络是如何工作的？
+
+#### 1.4 梯度
+
+- [x] 📝 [梯度 - 理解反向传播的核心：梯度！](https://artinte.github.io/machine-learning-series/pytorch/gradient.html)
+
+- [ ] 📹 反向传播算法：梯度计算
+
+#### 1.5 手写神经网络
+
+- [ ] 📝 [手写神经网络 - 使用 NumPy 实现数据的分类！](https://artinte.github.io/machine-learning-series/pytorch/network_scratch.html)
+
+- [ ] 📹 手写神经网络（三层）进行数据分类
+
+#### 1.6 micrograd
+
+
 
 ---
 
