@@ -1,6 +1,6 @@
 // 获取所有的 h3 和 h4 元素
 const sidebar = document.getElementById('dynamic-sidebar');
-const elements = Array.from(document.querySelectorAll('h3, h4')); // 获取所有 h3 和 h4 元素
+const elements = Array.from(document.querySelectorAll('h2, h3, h4')); // 获取所有 h2, h3 和 h4 元素
 
 // 动态生成目录项
 elements.forEach(element => {
