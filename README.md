@@ -1,6 +1,6 @@
 # 机器学习系列
 
-[机器学习系列](https://artinte.github.io/machine-learning-series/) 是一个深入浅出地介绍机器学习各个领域的学习资源的集合。包括以下几个部分：
+[机器学习系列](https://artinte.github.io/machine-learning-series/) 是一个介绍机器学习各个领域的学习资源的集合。包括以下几个部分：
 
 * [PyTorch 详解](https://artinte.github.io/machine-learning-series/pytorch/index.html)：深入浅出讲解 PyTorch 使用
 
@@ -30,7 +30,7 @@
 
 - [x] 📝 [深度学习原理 - 理解神经网络以及它的运行原理！](https://artinte.github.io/machine-learning-series/pytorch/principle_learn.html)
 
-- [ ] 📹 神经网络是如何工作的？
+- [x] 📹 [深度学习原理：神经网络的运行过程](https://youtu.be/U7QvNUhlou4?si=U_dOlmlPc_zcYrmI)
 
 #### 1.4 梯度
 
@@ -46,13 +46,17 @@
 
 #### 1.6 micrograd
 
-- [ ] micrograd：一个微型的对标量值进行自动求导的引擎！ 
+- [ ] [micrograd：一个微型的对标量值进行自动求导的引擎！](https://artinte.github.io/machine-learning-series/pytorch/micrograd.html)
 
 ### 02 全连接网络
 
 #### 2.1 MNIST 数据集
 
+- [ ] [MNIST 数据集 - 解析 MNIST 数据集，使用 Matplotlib 进行绘制！](https://artinte.github.io/machine-learning-series/pytorch/mnist_dataset.html)
+
 #### 2.2 手写数字分类
+
+- [ ] [手写数字分类 - 手写数字分类 (MNIST) 是一个经典的深度学习入门任务！](https://artinte.github.io/machine-learning-series/pytorch/mnist_classify.html)
 
 #### 2.3 激活函数
 
