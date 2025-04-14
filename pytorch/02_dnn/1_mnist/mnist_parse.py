@@ -87,5 +87,5 @@ if __name__ == '__main__':
         index += 1
     pyplot.tight_layout()
     pyplot.subplots_adjust(left=0.04, right=0.96, top=0.96, bottom=0.01)
-    pyplot.savefig('res/mnist_dataset_sample.png')
+    pyplot.savefig('temp/mnist_sample.png')
     pyplot.show()
