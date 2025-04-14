@@ -1,6 +1,8 @@
 # 机器学习系列
 
-[机器学习系列](https://artinte.github.io/machine-learning-series/) 是一个深入浅出地介绍机器学习各个领域的学习资源的集合。
+[机器学习系列](https://artinte.github.io/machine-learning-series/) 是一个深入浅出地介绍机器学习各个领域的学习资源的集合。包括以下几个部分：
+
+* [PyTorch 详解](https://artinte.github.io/machine-learning-series/pytorch/index.html)：深入浅出讲解 PyTorch 使用
 
 ---
 
@@ -38,13 +40,29 @@
 
 #### 1.5 手写神经网络
 
-- [ ] 📝 [手写神经网络 - 使用 NumPy 实现数据的分类！](https://artinte.github.io/machine-learning-series/pytorch/network_scratch.html)
+- [x] 📝 [手写神经网络 - 使用 NumPy 实现数据的分类！](https://artinte.github.io/machine-learning-series/pytorch/network_scratch.html)
 
 - [ ] 📹 手写神经网络（三层）进行数据分类
 
 #### 1.6 micrograd
 
+- [ ] micrograd：一个微型的对标量值进行自动求导的引擎！ 
 
+### 02 全连接网络
+
+#### 2.1 MNIST 数据集
+
+#### 2.2 手写数字分类
+
+#### 2.3 激活函数
+
+#### 2.4 损失函数
+
+#### 2.5 优化器
+
+#### 2.6 检测糖尿病
+
+### 03 卷积网络
 
 ---
 

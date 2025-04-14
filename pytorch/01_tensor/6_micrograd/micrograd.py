@@ -5,6 +5,7 @@ to 3 classes (red, green, blue) using a simple multilayer perceptron (MLP).
 import numpy
 import math
 from matplotlib import pyplot
+from matplotlib.colors import ListedColormap
 from utils import RNG, gen_data_yinyang, draw_dot, vis_color
 random = RNG(42)
 
@@ -299,7 +300,7 @@ for step in range(num_steps):
     # evaluate the validation split every few steps
     if step % 10 == 0:
         val_loss = loss_fun(model, val_split)
-        print(f"step {step+1}/{num_steps}, val loss {val_loss.data:.6f}")
+        print(f"step {step+1}/{num_steps}, val loss {val_loss.data:.4f}")
 
     # forward the network and the loss and all training datapoints
     loss = loss_fun(model, train_split)
@@ -309,9 +310,9 @@ for step in range(num_steps):
     optimizer.step()
     optimizer.zero_grad()
     # print some stats
-    print(f"step {step+1}/{num_steps}, train loss {loss.data}")
+    print(f"step {step+1}/{num_steps}, train loss {loss.data:.4f}")
     
-def plot_decision_plot(x, pred_func):
+def plot_decision_boundary(x, pred_func):
     # Set min and max values and give it some padding
     x_min, x_max = x[:, 0].min() - .5, x[:, 0].max() + .5
     y_min, y_max = x[:, 1].min() - .5, x[:, 1].max() + .5
@@ -328,14 +329,18 @@ def plot_decision_plot(x, pred_func):
     Z = Z.reshape(xx.shape)
     pyplot.figure(figsize=(5, 5))
     pyplot.subplots_adjust(left=0.06, right=0.94, top=0.94, bottom=0.06)
+    custom_cmap = ListedColormap(['red', 'yellow', 'green'])
     # Plot the contour and training examples
-    pyplot.contourf(xx, yy, Z, cmap='Wistia', alpha=0.8)
-    pyplot.grid(True)
-    # pyplot.scatter(x[:, 0], x[:, 1], c=y)
+    pyplot.contourf(xx, yy, Z, cmap=custom_cmap, alpha=0.8)
+
+    radius = 2.0  # Define the radius of the circle for decision boundary
+    circle = pyplot.Circle((0, 0), radius, color='white',
+                           fill=False, linewidth=2)
+    pyplot.gca().add_artist(circle)
     pyplot.show()
 
 # 绘制预测边界
-plot_decision_plot(numpy.array([point[0] for point in train_split]),
+plot_decision_boundary(numpy.array([point[0] for point in train_split]),
                    lambda x: predict(model, x))
 
 # (optional) visualization at the end: take origin (0,0) and draw the computational graph
