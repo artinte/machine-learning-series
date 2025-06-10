@@ -12,6 +12,8 @@
 
 - [x] 📹 [《PyTorch 详解》开篇介绍](https://youtu.be/fQl-dHQjYgo?si=p5EjdOAZjKRAJ9E9)
 
+全新英文版链接 [Deep Learning with PyTorch](https://github.com/artinte/deep-learning)
+
 ### 第 01 章 张量与梯度基础
 
 #### 1.1 程序安装
